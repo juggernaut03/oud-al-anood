@@ -1674,62 +1674,7 @@
 /* Home page collection styles moved to src/pages/Home.css */
 
 /* Testimonials Styles */
-.testimonials-section {
-  padding: var(--spacing-xl) 0;
-  background: var(--bg-cream);
-}
-/* Testimonial Carousel Styles */
-.testimonial-carousel-container {
-  max-width: 900px;
-  margin: 0 auto;
-  position: relative;
-  overflow: hidden;
-  min-height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.testimonial-slide-wrapper {
-  position: relative;
-  height: 300px;
-  display: flex;
-  align-items: center;
-}
-
-.testimonial-card.slide {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  padding: var(--spacing-lg);
-}
-
-.author-info {
-  margin-top: 2rem;
-}
-
-.carousel-nav {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 2rem;
-}
-
-.nav-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--border-light);
-  transition: all 0.4s ease;
-  border: none;
-  cursor: pointer;
-}
-
-.nav-dot.active {
-  width: 24px;
-  background: var(--primary-gold);
-  border-radius: 4px;
-}
+/* Testimonial styles moved to src/components/TestimonialCarousel.css */
 
 /* Blog Preview Styles */
 .blog-preview-section {
