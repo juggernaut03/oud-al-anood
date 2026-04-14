@@ -2166,6 +2166,55 @@
   height: 32px;
   object-fit: contain;
 }
+/* Shop Through Section */
+.shop-through-section {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  background: var(--bg-cream);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+}
+.shop-through-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+.platform-pills {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.platform-pill {
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+.platform-pill img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+.platform-pill:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary-gold);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 480px) {
+  .platform-pills {
+    justify-content: center;
+  }
+}
 
 .platform-content {
   flex: 1;

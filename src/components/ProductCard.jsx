@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
 const ProductCard = ({ product }) => {
-  const { wishlist, toggleWishlist, language, t, isWholesale, openPurchaseModal } = useAppContext();
+  const { wishlist, toggleWishlist, language, t, isWholesale, addToCart } = useAppContext();
   const isWishlisted = wishlist.includes(product.id);
   
   const displayPrice = isWholesale ? (product.price * 0.7).toFixed(2) : product.price.toFixed(2);
@@ -28,11 +28,12 @@ const ProductCard = ({ product }) => {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              openPurchaseModal(product);
+              e.stopPropagation();
+              addToCart(product);
             }}
           >
             <ShoppingBag size={18} />
-            <span>Order Now</span>
+            <span>Add to Bag</span>
           </button>
           {isWholesale && <div className="bulk-badge">Bulk Only</div>}
         </div>

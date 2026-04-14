@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const { products, wishlist, toggleWishlist, language, t, openPurchaseModal } = useAppContext();
+  const { products, wishlist, toggleWishlist, language, t, addToCart } = useAppContext();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState(null);
 
@@ -30,6 +30,13 @@ const ProductDetail = () => {
       addToCart(product);
     }
   };
+
+  const platforms = [
+    { id: 'shopee', name: 'Shopee', logo: '/images/shopee.png' },
+    { id: 'grab', name: 'Grab', logo: '/images/grab.png' },
+    { id: 'lalamove', name: 'Lalamove', logo: '/images/lalamove.png' },
+    { id: 'jnt', name: 'J&T Express', logo: '/images/jnt.png' }
+  ];
 
   return (
     <div className="product-detail-page container">
@@ -80,9 +87,9 @@ const ProductDetail = () => {
               <span>{quantity}</span>
               <button onClick={incrementQty}><Plus size={16} /></button>
             </div>
-            <button className="add-cart-btn-large" onClick={() => openPurchaseModal(product)}>
+            <button className="add-cart-btn-large" onClick={handleAddToCart}>
               <ShoppingBag size={20} />
-              Order Now
+              Add to Bag
             </button>
             <button 
               className={`wishlist-toggle-btn ${isWishlisted ? 'active' : ''}`}
@@ -90,6 +97,23 @@ const ProductDetail = () => {
             >
               <Heart size={24} fill={isWishlisted ? "var(--accent-burgundy)" : "none"} />
             </button>
+          </div>
+
+          <div className="shop-through-section">
+            <h4 className="shop-through-title">Shop Through Partner Platforms</h4>
+            <div className="platform-pills">
+              {platforms.map(platform => (
+                <a 
+                  key={platform.id}
+                  href={product.purchaseLinks?.[platform.id] || '#'} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="platform-pill"
+                >
+                  <img src={platform.logo} alt={platform.name} />
+                </a>
+              ))}
+            </div>
           </div>
 
           <div className="trust-points">
