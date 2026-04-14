@@ -65,8 +65,10 @@
 .item-5 { grid-column: span 2; grid-row: span 1; }
 .item-6 { grid-column: span 1; grid-row: span 1; }
 
-/* Logo tile */
+/* Logo tile — pinned to centre cell (col 2, row 3) */
 .gallery-logo-tile {
+  grid-column: 2;
+  grid-row: 3;
   position: relative;
   background: var(--bg-dark, #0f0f0f);
   border-radius: 8px;
