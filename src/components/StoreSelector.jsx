@@ -1,99 +1,192 @@
-import React from 'react';
+import { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { X, MapPin, Navigation, Clock, Phone } from 'lucide-react';
+import { X, MapPin, Navigation, Clock, Phone, ChevronRight, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import './StoreSelector.css';
 
 const StoreSelector = () => {
-  const { 
-    isStoreSelectorOpen, 
-    toggleStoreSelector, 
-    stores, 
-    selectedStore, 
-    setSelectedStore, 
-    language 
+  const {
+    isStoreSelectorOpen,
+    toggleStoreSelector,
+    stores,
+    selectedStore,
+    setSelectedStore,
+    language
   } = useAppContext();
+
+  const [viewMode, setViewMode] = useState('select'); // 'select' or 'map'
+
+  const handleStoreSelect = (store) => {
+    setSelectedStore(store);
+    setViewMode('map');
+  };
+
+  const handleBack = () => {
+    setViewMode('select');
+  };
+
+  const handleClose = () => {
+    setViewMode('select');
+    toggleStoreSelector();
+  };
 
   if (!isStoreSelectorOpen) return null;
 
   return (
     <AnimatePresence>
-      <div className="modal-overlay" onClick={toggleStoreSelector}>
-        <motion.div 
-          className="store-selector-modal glass-luxury"
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+      <motion.div
+        className="drive-overlay"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={handleClose}
+      >
+        <motion.div
+          className="drive-panel"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 40 }}
+          transition={{ type: 'spring', damping: 30, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <button className="close-modal-btn" onClick={toggleStoreSelector}>
-            <X size={24} />
+          {/* Close Button */}
+          <button className="drive-close" onClick={handleClose}>
+            <X size={20} />
           </button>
 
-          <div className="store-selector-layout">
-            {/* Left: Store List */}
-            <div className="store-sidebar">
-              <h2 className="serif-title small">Boutique Locations</h2>
-              <p className="sidebar-desc">Select a boutique to view details and get directions.</p>
-              
-              <div className="store-list">
-                {stores.map(store => (
-                  <button 
-                    key={store.id}
-                    className={`store-item-card ${selectedStore.id === store.id ? 'active' : ''}`}
-                    onClick={() => setSelectedStore(store)}
-                  >
-                    <div className="store-item-icon">
-                      <MapPin size={20} />
-                    </div>
-                    <div className="store-item-info">
-                      <h3>{store.name[language]}</h3>
-                      <p>{store.address[language]}</p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Right: Map & Directions */}
-            <div className="store-main-view">
-              <div className="map-container-premium">
-                <iframe 
-                  title={selectedStore.name[language]}
-                  src={selectedStore.mapEmbed}
-                  width="100%" 
-                  height="100%" 
-                  style={{ border: 0 }} 
-                  allowFullScreen="" 
-                  loading="lazy"
-                ></iframe>
-              </div>
-
-              <div className="store-action-footer">
-                <div className="store-meta-info">
-                  <div className="meta-row">
-                    <Clock size={16} />
-                    <span>Daily: 10:00 AM - 10:00 PM</span>
+          <AnimatePresence mode="wait">
+            {viewMode === 'select' ? (
+              <motion.div
+                className="drive-select-view"
+                key="select"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.25 }}
+              >
+                {/* Header */}
+                <div className="drive-header">
+                  <div className="drive-header-icon">
+                    <Navigation size={24} />
                   </div>
-                  <div className="meta-row">
-                    <Phone size={16} />
-                    <span>+60 3-1234 5678</span>
+                  <span className="drive-label">Visit Us</span>
+                  <h2 className="drive-title">Drive to Our Boutique</h2>
+                  <p className="drive-subtitle">
+                    Choose your nearest location and we'll guide you there.
+                  </p>
+                </div>
+
+                {/* Store Cards */}
+                <div className="drive-store-cards">
+                  {stores.map((store, index) => (
+                    <motion.button
+                      key={store.id}
+                      className={`drive-store-card ${selectedStore.id === store.id ? 'selected' : ''}`}
+                      onClick={() => handleStoreSelect(store)}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      whileHover={{ y: -4 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <div className="drive-card-pin">
+                        <MapPin size={22} />
+                      </div>
+                      <div className="drive-card-body">
+                        <h3>{store.name[language]}</h3>
+                        <p className="drive-card-address">{store.address[language]}</p>
+                        <div className="drive-card-details">
+                          <span className="drive-card-hours">
+                            <Clock size={13} />
+                            10 AM – 10 PM
+                          </span>
+                        </div>
+                      </div>
+                      <div className="drive-card-arrow">
+                        <ChevronRight size={20} />
+                      </div>
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* Footer Note */}
+                <div className="drive-footer-note">
+                  <Sparkles size={14} />
+                  <span>Complimentary fragrance consultation at every visit</span>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                className="drive-map-view"
+                key="map"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.25 }}
+              >
+                {/* Map Header */}
+                <div className="drive-map-header">
+                  <button className="drive-back-btn" onClick={handleBack}>
+                    <ChevronRight size={18} className="back-icon" />
+                    <span>All Locations</span>
+                  </button>
+                  <div className="drive-map-store-name">
+                    <MapPin size={16} />
+                    <h3>{selectedStore.name[language]}</h3>
                   </div>
                 </div>
-                
-                <a 
-                  href={selectedStore.navLink} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="drive-to-btn-large"
-                >
-                  <Navigation size={20} />
-                  Drive to This Boutique
-                </a>
-              </div>
-            </div>
-          </div>
+
+                {/* Map */}
+                <div className="drive-map-container">
+                  <iframe
+                    title={selectedStore.name[language]}
+                    src={selectedStore.mapEmbed}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                  />
+                </div>
+
+                {/* Info + Action */}
+                <div className="drive-map-footer">
+                  <div className="drive-map-info">
+                    <div className="drive-info-item">
+                      <div className="drive-info-icon">
+                        <MapPin size={16} />
+                      </div>
+                      <span>{selectedStore.address[language]}</span>
+                    </div>
+                    <div className="drive-info-item">
+                      <div className="drive-info-icon">
+                        <Clock size={16} />
+                      </div>
+                      <span>Daily: 10:00 AM – 10:00 PM</span>
+                    </div>
+                    <div className="drive-info-item">
+                      <div className="drive-info-icon">
+                        <Phone size={16} />
+                      </div>
+                      <span>+60 3-1234 5678</span>
+                    </div>
+                  </div>
+
+                  <a
+                    href={selectedStore.navLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="drive-navigate-btn"
+                  >
+                    <Navigation size={18} />
+                    <span>Get Directions</span>
+                  </a>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
-      </div>
+      </motion.div>
     </AnimatePresence>
   );
 };
