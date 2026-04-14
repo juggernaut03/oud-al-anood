@@ -7,7 +7,7 @@ const blogPosts = [
       en: 'Discover how to combine different oud oils for a truly unique signature scent...',
       ar: 'اكتشف كيفية الجمع بين زيوت العود المختلفة للحصول على رائحة مميزة فريدة حقًا...',
     },
-    image: 'https://images.unsplash.com/photo-1547637589-f54c34f5d7a4?auto=format&fit=crop&q=80&w=800',
+    image: 'https://m.media-amazon.com/images/I/71Rt86TIqhL._AC_UF1000,1000_QL80_.jpg',
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const blogPosts = [
       en: 'A journey into the deep jungles of Southeast Asia in search of liquid gold...',
       ar: 'رحلة إلى غابة جنوب شرق آسيا العميقة بحثًا عن الذهب السائل...',
     },
-    image: 'https://images.unsplash.com/photo-1615484477201-9f4953340fab?auto=format&fit=crop&q=80&w=800',
+    image: 'https://splashfragrance.in/wp-content/uploads/2025/10/3-min.png',
   },
 ];
 
