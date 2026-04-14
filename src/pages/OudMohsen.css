@@ -1,0 +1,20 @@
+.oud-mohsen-page {
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+.category-hero {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  background: var(--bg-cream);
+  padding: var(--spacing-xl);
+  border-radius: 8px;
+}
+.category-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-gold);
+}
+.category-desc {
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--text-muted);
+}

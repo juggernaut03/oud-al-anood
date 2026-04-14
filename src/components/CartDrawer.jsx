@@ -1,5 +1,5 @@
-import React from 'react';
 import { X, Trash2, ArrowRight } from 'lucide-react';
+import './CartDrawer.css';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { motion, AnimatePresence } from 'framer-motion';

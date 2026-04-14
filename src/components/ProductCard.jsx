@@ -1,4 +1,5 @@
 import { ShoppingBag, Heart } from 'lucide-react';
+import './ProductCard.css';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 

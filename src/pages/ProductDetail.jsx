@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import './ProductDetail.css';
 import { useParams, Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { ShoppingBag, Heart, Minus, Plus, ChevronRight, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
@@ -7,7 +8,7 @@ import { motion } from 'framer-motion';
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const { products, wishlist, toggleWishlist, language, t, addToCart } = useAppContext();
+  const { products, wishlist, toggleWishlist, language, t, openPurchaseModal } = useAppContext();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -26,18 +27,13 @@ const ProductDetail = () => {
   const incrementQty = () => setQuantity(prev => prev + 1);
   const decrementQty = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
-  const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product);
-    }
-  };
-
   const platforms = [
     { id: 'shopee', name: 'Shopee', logo: '/images/shopee.png' },
     { id: 'grab', name: 'Grab', logo: '/images/grab.png' },
     { id: 'lalamove', name: 'Lalamove', logo: '/images/lalamove.png' },
     { id: 'jnt', name: 'J&T Express', logo: '/images/jnt.png' }
   ];
+
 
   return (
     <div className="product-detail-page container">
@@ -88,9 +84,9 @@ const ProductDetail = () => {
               <span>{quantity}</span>
               <button onClick={incrementQty}><Plus size={16} /></button>
             </div>
-            <button className="add-cart-btn-large" onClick={handleAddToCart}>
+            <button className="add-cart-btn-large" onClick={() => openPurchaseModal(product)}>
               <ShoppingBag size={20} />
-              Add to Bag
+              Order Now
             </button>
             <button 
               className={`wishlist-toggle-btn ${isWishlisted ? 'active' : ''}`}

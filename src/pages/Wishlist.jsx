@@ -1,6 +1,6 @@
-import React from 'react';
 import { useAppContext } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
+import './Wishlist.css';
 import { Heart, ShoppingBag } from 'lucide-react';
 
 const Wishlist = () => {

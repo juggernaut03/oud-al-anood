@@ -1,0 +1,127 @@
+.shop-page {
+  padding: var(--spacing-xl) 0;
+}
+.subtitle {
+  color: var(--text-muted);
+  font-family: var(--font-secondary);
+  margin-top: 0.5rem;
+}
+
+/* Wholesale toggle */
+.channel-toggle-wrapper {
+  margin: var(--spacing-lg) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.channel-toggle {
+  display: flex;
+  position: relative;
+  background: var(--bg-cream);
+  padding: 4px;
+  border-radius: 50px;
+  border: 1px solid var(--border-light);
+  width: 240px;
+}
+.channel-toggle button {
+  flex: 1;
+  padding: 0.8rem 1.5rem;
+  z-index: 1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: var(--transition-smooth);
+}
+.channel-toggle button.active {
+  color: white;
+}
+.toggle-slider {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  background: var(--text-dark);
+  border-radius: 50px;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.channel-toggle.wholesale .toggle-slider {
+  transform: translateX(100%);
+}
+.wholesale-note {
+  font-size: 0.8rem;
+  color: var(--primary-gold);
+  font-weight: 600;
+  font-style: italic;
+}
+
+/* Wholesale Concierge Section */
+.wholesale-concierge {
+  padding: 4rem 0 8rem;
+  display: flex;
+  justify-content: center;
+}
+.concierge-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 5rem 3rem;
+  text-align: center;
+  border-radius: 32px;
+}
+.concierge-desc {
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+}
+.concierge-actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+}
+.concierge-btn {
+  padding: 1.25rem 2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+.concierge-btn.whatsapp {
+  background: #25D366;
+  color: white;
+}
+.concierge-btn.email {
+  background: var(--text-dark);
+  color: white;
+}
+.concierge-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+.wholesale-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+}
+.benefit {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+.benefit .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--primary-gold);
+  border-radius: 50%;
+}

@@ -1,4 +1,5 @@
 import Hero from '../components/Hero';
+import './Home.css';
 import BrandGallery from '../components/BrandGallery';
 import ProductGrid from '../components/ProductGrid';
 import TestimonialCarousel from '../components/TestimonialCarousel';

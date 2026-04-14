@@ -1,5 +1,5 @@
-import React from 'react';
 import { useAppContext, LOGO_URL } from '../context/AppContext';
+import './Footer.css';
 import { Camera, MessageCircle, Send, MapPin, Phone, Mail } from 'lucide-react';
 
 const Footer = () => {

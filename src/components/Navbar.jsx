@@ -1,11 +1,24 @@
-import { ShoppingBag, User, Search, MapPin } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { ShoppingBag, User, Search, MapPin, Menu, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAppContext, LOGO_URL } from '../context/AppContext';
+import './Navbar.css';
 
 const Navbar = () => {
-  const { language, setLanguage, t, setIsCartOpen, cart } = useAppContext();
+  const { 
+    language, 
+    setLanguage, 
+    t, 
+    setIsCartOpen, 
+    cart, 
+    toggleStoreSelector 
+  } = useAppContext();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
     <nav className="navbar">
@@ -32,17 +45,17 @@ const Navbar = () => {
         </div>
 
         <div className="nav-logo">
-          <Link to="/">
+          <Link to="/" onClick={closeMobileMenu}>
             <img src={LOGO_URL} alt="OUD AL-ANOOD" className="logo-img" />
           </Link>
         </div>
 
         <div className="nav-links">
-          <Link to="/" className="nav-link">{t('nav_home')}</Link>
-          <Link to="/shop" className="nav-link">{t('nav_shop')}</Link>
-          <Link to="/offers" className="nav-link">Specials</Link>
-          <Link to="/oud-mohsen" className="nav-link">{t('nav_oud_mohsen')}</Link>
-          <Link to="/about" className="nav-link">{t('nav_about')}</Link>
+          <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>{t('nav_home')}</Link>
+          <Link to="/shop" className={`nav-link ${location.pathname === '/shop' ? 'active' : ''}`}>{t('nav_shop')}</Link>
+          <Link to="/offers" className={`nav-link ${location.pathname === '/offers' ? 'active' : ''}`}>Specials</Link>
+          <Link to="/oud-mohsen" className={`nav-link ${location.pathname === '/oud-mohsen' ? 'active' : ''}`}>{t('nav_oud_mohsen')}</Link>
+          <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>{t('nav_about')}</Link>
         </div>
 
         <div className="nav-right">
@@ -61,8 +74,27 @@ const Navbar = () => {
             <ShoppingBag size={20} />
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </button>
+          <button 
+            className="nav-icon-btn hamburger-btn" 
+            onClick={() => setMobileMenuOpen(prev => !prev)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
       </div>
+
+      {mobileMenuOpen && (
+        <div className="mobile-menu">
+          <Link to="/" className="mobile-nav-link" onClick={closeMobileMenu}>{t('nav_home')}</Link>
+          <Link to="/shop" className="mobile-nav-link" onClick={closeMobileMenu}>{t('nav_shop')}</Link>
+          <Link to="/oud-mohsen" className="mobile-nav-link" onClick={closeMobileMenu}>{t('nav_oud_mohsen')}</Link>
+          <Link to="/about" className="mobile-nav-link" onClick={closeMobileMenu}>{t('nav_about')}</Link>
+          <Link to="/offers" className="mobile-nav-link" onClick={closeMobileMenu}>Specials</Link>
+          <Link to="/contact" className="mobile-nav-link" onClick={closeMobileMenu}>Contact</Link>
+          <Link to="/blog" className="mobile-nav-link" onClick={closeMobileMenu}>Journal</Link>
+        </div>
+      )}
     </nav>
   );
 };

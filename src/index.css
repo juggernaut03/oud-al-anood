@@ -136,6 +136,10 @@ img {
 }
 
 @media (max-width: 768px) {
+  :root {
+    --spacing-xl: 2rem;
+  }
+
   .section-padding {
     padding: 60px 0;
   }
