@@ -3,8 +3,9 @@ import './ProductGrid.css';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'framer-motion';
 
-const ProductGrid = ({ title }) => {
+const ProductGrid = ({ title, limit }) => {
   const { products, t } = useAppContext();
+  const displayProducts = limit ? products.slice(0, limit) : products;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -39,7 +40,7 @@ const ProductGrid = ({ title }) => {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        {products.map(product => (
+        {displayProducts.map(product => (
           <motion.div key={product.id} variants={itemVariants}>
             <ProductCard product={product} />
           </motion.div>

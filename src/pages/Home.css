@@ -1,4 +1,138 @@
-/* Heritage Section */
+/* ============================================
+   Home Page
+   ============================================ */
+
+/* ---- Collection Section ---- */
+.home-collection {
+  padding: 3.5rem 0 1rem;
+}
+
+/* Banner */
+.hc-banner {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+}
+
+.hc-banner-img {
+  position: absolute;
+  inset: 0;
+}
+.hc-banner-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hc-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(10, 10, 20, 0.8) 0%,
+    rgba(10, 10, 20, 0.5) 50%,
+    rgba(10, 10, 20, 0.15) 100%
+  );
+}
+
+.hc-banner-content {
+  position: relative;
+  padding: 3rem 3.5rem;
+  max-width: 500px;
+}
+
+.hc-banner-tag {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid rgba(198, 156, 109, 0.5);
+  border-radius: 50px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--primary-gold);
+  margin-bottom: 1rem;
+}
+
+.hc-banner-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 0.6rem;
+}
+
+.hc-banner-subtitle {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.hc-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary-gold);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hc-banner-btn:hover {
+  background: #d4a855;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(198, 156, 109, 0.35);
+}
+
+/* Product Row */
+.hc-products-row {
+  position: relative;
+  margin-top: 1.75rem;
+}
+
+.hc-products-scroll {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+}
+.hc-products-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.hc-product-item {
+  flex: 0 0 220px;
+  scroll-snap-align: start;
+}
+
+.hc-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary-gold);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: gap 0.25s ease;
+}
+.hc-view-all:hover {
+  gap: 0.6rem;
+}
+
+/* ---- Heritage Section ---- */
 .heritage-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -47,66 +181,7 @@
   }
 }
 
-/* Offers Section */
-.offers-section {
-  padding-top: var(--spacing-xl);
-  padding-bottom: var(--spacing-xl);
-}
-.offers-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-xl);
-}
-.offer-card {
-  position: relative;
-  height: 400px;
-  border-radius: 12px;
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-  padding: var(--spacing-lg);
-}
-.offer-card img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
-}
-.offer-info {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  padding: var(--spacing-lg);
-  border-radius: 8px;
-  width: 100%;
-}
-.offer-info h3 {
-  font-family: var(--font-serif);
-  font-size: 1.75rem;
-  margin-bottom: 0.5rem;
-}
-.offer-info p {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-}
-.offer-link {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--primary-gold);
-}
-
-@media (max-width: 768px) {
-  .offers-grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
-  }
-}
-
-/* Blog Preview Section */
+/* ---- Blog Preview Section ---- */
 .blog-preview-section {
   padding-top: var(--spacing-xl);
   padding-bottom: var(--spacing-xl);
@@ -152,7 +227,42 @@
   line-height: 1.8;
 }
 
-@media (max-width: 768px) {
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .hc-banner {
+    min-height: 240px;
+  }
+  .hc-banner-content {
+    padding: 2.5rem 2rem;
+  }
+  .hc-banner-title {
+    font-size: 1.6rem;
+  }
+  .hc-product-item {
+    flex: 0 0 190px;
+  }
+}
+
+@media (max-width: 600px) {
+  .home-collection {
+    padding: 2.5rem 0 0.5rem;
+  }
+  .hc-banner {
+    min-height: 220px;
+    border-radius: 16px;
+  }
+  .hc-banner-content {
+    padding: 2rem 1.5rem;
+  }
+  .hc-banner-title {
+    font-size: 1.35rem;
+  }
+  .hc-banner-subtitle {
+    font-size: 0.82rem;
+  }
+  .hc-product-item {
+    flex: 0 0 170px;
+  }
   .blog-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);

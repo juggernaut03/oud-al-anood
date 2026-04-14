@@ -1,13 +1,33 @@
+/* ============================================
+   Shop Page
+   ============================================ */
 .shop-page {
-  padding: var(--spacing-xl) 0;
-}
-.subtitle {
-  color: var(--text-muted);
-  font-family: var(--font-secondary);
-  margin-top: 0.5rem;
+  padding-bottom: 6rem;
 }
 
-/* Wholesale toggle */
+/* ---- Header ---- */
+.shop-header {
+  text-align: center;
+  padding-top: var(--spacing-xl);
+  padding-bottom: 0;
+}
+
+.shop-title {
+  font-family: var(--font-serif);
+  font-size: 2.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.shop-subtitle {
+  color: var(--text-muted);
+  font-family: var(--font-secondary);
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+}
+
+/* ---- Wholesale toggle ---- */
 .channel-toggle-wrapper {
   margin: var(--spacing-lg) 0;
   display: flex;
@@ -58,107 +78,156 @@
   font-style: italic;
 }
 
-/* Wholesale Concierge Section */
-.wholesale-concierge {
-  padding: 4rem 0 8rem;
+/* ---- Shop Body ---- */
+.shop-body {
+  padding-top: 1rem;
+}
+
+/* ---- Category Navigation ---- */
+.shop-categories {
   display: flex;
   justify-content: center;
-}
-.concierge-card {
-  width: 100%;
-  max-width: 600px;
-  padding: 5rem 3rem;
-  text-align: center;
-  border-radius: 32px;
-}
-.concierge-desc {
-  color: var(--text-muted);
-  line-height: 1.8;
-  margin-bottom: 3rem;
-  font-size: 1.1rem;
-}
-.concierge-actions {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  margin-bottom: 4rem;
+  gap: 0.625rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
 }
-.concierge-btn {
-  padding: 1.25rem 2rem;
+
+.shop-cat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 1.5px solid var(--border-light);
   border-radius: 50px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.4s ease;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
-}
-.concierge-btn.whatsapp {
-  background: #25D366;
-  color: white;
-}
-.concierge-btn.email {
-  background: var(--text-dark);
-  color: white;
-}
-.concierge-btn:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-}
-.wholesale-benefits {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  align-items: center;
-}
-.benefit {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.9rem;
+  background: #fff;
+  color: var(--text-muted);
+  font-size: 0.82rem;
   font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.shop-cat-btn:hover {
+  border-color: var(--primary-gold);
   color: var(--text-dark);
+  background: #fff;
 }
-.benefit .dot {
-  width: 6px;
-  height: 6px;
-  background: var(--primary-gold);
-  border-radius: 50%;
+.shop-cat-btn.active {
+  background: var(--text-dark);
+  border-color: var(--text-dark);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(26, 26, 46, 0.15);
 }
-/* Wholesale QR Section */
-.concierge-qr-section {
+
+/* ---- Subcategory Tabs ---- */
+.shop-subcategories {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 3.5rem;
-}
-.qr-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--primary-gold);
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-}
-.concierge-qr-wrapper {
-  padding: 1.5rem;
-  border-radius: 20px;
-  background: var(--text-dark); /* Contrast with the likely white/light QR image */
-  width: 200px;
-  height: 200px;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-  transition: transform 0.4s ease;
-  overflow: hidden;
+  gap: 0.25rem;
+  margin-bottom: 1.75rem;
+  background: var(--bg-cream);
+  border-radius: 14px;
+  padding: 5px;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
 }
-.concierge-qr-wrapper:hover {
-  transform: scale(1.02) rotate(1deg);
+
+.shop-sub-btn {
+  padding: 0.6rem 1.25rem;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
 }
-.concierge-qr {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Since it's a vertical card, we might need cover or contain depending on the QR position */
-  display: block;
+.shop-sub-btn:hover {
+  color: var(--text-dark);
+  background: rgba(255, 255, 255, 0.6);
+}
+.shop-sub-btn.active {
+  background: #fff;
+  color: var(--text-dark);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ---- Results Bar ---- */
+.shop-results-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding: 0 0.25rem;
+}
+
+.shop-count {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-light);
+  letter-spacing: 0.3px;
+}
+
+/* ---- Product Grid ---- */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+}
+
+/* ---- Empty State ---- */
+.shop-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 5rem 2rem;
+}
+.shop-empty p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+  .shop-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .shop-title {
+    font-size: 2rem;
+  }
+  .shop-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+  .shop-categories {
+    gap: 0.5rem;
+  }
+  .shop-cat-btn {
+    padding: 0.6rem 1.15rem;
+    font-size: 0.78rem;
+  }
+  .shop-subcategories {
+    max-width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  .shop-cat-btn span {
+    display: none;
+  }
+  .shop-cat-btn {
+    padding: 0.7rem;
+    border-radius: 12px;
+  }
+  .shop-cat-btn.active {
+    border-radius: 12px;
+  }
 }
