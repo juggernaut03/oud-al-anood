@@ -1,4 +1,4 @@
-import { ShoppingBag, User, Search } from 'lucide-react';
+import { ShoppingBag, User, Search, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAppContext, LOGO_URL } from '../context/AppContext';
 
@@ -45,6 +45,14 @@ const Navbar = () => {
         </div>
 
         <div className="nav-right">
+          <button 
+            className="nav-drive-btn" 
+            onClick={toggleStoreSelector}
+            title="Drive to Us"
+          >
+            <MapPin size={18} />
+            <span className="btn-label">Drive to Us</span>
+          </button>
           <Link to="/account" className="nav-icon-btn">
             <User size={20} />
           </Link>

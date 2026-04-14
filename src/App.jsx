@@ -5,12 +5,12 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
 import PurchaseModal from './components/PurchaseModal';
+import StoreSelector from './components/StoreSelector';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import OudMohsen from './pages/OudMohsen';
 import About from './pages/About';
 import Account from './pages/Account';
-
 import Wishlist from './pages/Wishlist';
 import Checkout from './pages/Checkout';
 import Contact from './pages/Contact';
@@ -45,6 +45,7 @@ const AppContent = () => {
           onClose={closePurchaseModal} 
           product={selectedProduct} 
         />
+        <StoreSelector />
       </div>
     </Router>
   );
