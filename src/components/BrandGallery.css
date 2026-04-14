@@ -92,7 +92,7 @@
   z-index: 1;
 }
 .gallery-logo-img {
-  width: 110px;
+  width: 200px;
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 4px 20px rgba(196,156,85,0.3));
