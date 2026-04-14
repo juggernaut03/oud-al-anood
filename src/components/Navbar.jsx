@@ -40,6 +40,7 @@ const Navbar = () => {
         <div className="nav-links">
           <Link to="/" className="nav-link">{t('nav_home')}</Link>
           <Link to="/shop" className="nav-link">{t('nav_shop')}</Link>
+          <Link to="/offers" className="nav-link">Specials</Link>
           <Link to="/oud-mohsen" className="nav-link">{t('nav_oud_mohsen')}</Link>
           <Link to="/about" className="nav-link">{t('nav_about')}</Link>
         </div>

@@ -2531,3 +2531,198 @@
     margin-right: 0.5rem;
   }
 }
+/* Review & Offering Refinements - Boutique Edition */
+.write-review-btn {
+  padding: 1rem 2rem;
+  background: white;
+  border: 1px solid var(--primary-gold);
+  color: var(--primary-gold);
+  border-radius: 50px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+.write-review-btn:hover {
+  background: var(--primary-gold);
+  color: white;
+  box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+}
+
+.review-form-modal {
+  width: 100%;
+  max-width: 600px;
+  padding: 4rem 3rem;
+  border-radius: 32px;
+}
+.form-subtitle {
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  font-size: 0.9rem;
+}
+.star-rating-select {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.stars-input {
+  font-size: 1.5rem;
+  color: var(--primary-gold);
+  letter-spacing: 5px;
+  cursor: pointer;
+}
+.submit-review-btn {
+  padding: 1.25rem 3rem;
+  background: var(--text-dark);
+  color: white;
+  border-radius: 50px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.submit-review-btn:hover {
+  background: var(--primary-gold);
+  transform: translateY(-2px);
+}
+
+/* Festivals & Offers Page */
+.offers-page {
+  padding: 6rem 0 10rem;
+}
+.festivals-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin-top: 5rem;
+}
+.festival-card-large {
+  display: flex;
+  gap: 4rem;
+  padding: 2rem;
+  border-radius: 40px;
+  align-items: center;
+}
+.festival-img {
+  width: 45%;
+  height: 500px;
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+}
+.festival-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.festival-badge-shimmer {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: linear-gradient(135deg, var(--primary-gold), #fff);
+  background-size: 200% 200%;
+  animation: shimmer 3s infinite;
+  color: var(--text-dark);
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.festival-details {
+  flex: 1;
+}
+.fest-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--primary-gold);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.fest-desc {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-bottom: 3rem;
+}
+.fest-footer {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+.fest-price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+.fest-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 700;
+  color: var(--primary-gold);
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.seasonal-banner {
+  margin-top: 8rem;
+  padding: 6rem;
+  text-align: center;
+}
+.contact-specialist {
+  display: inline-block;
+  margin-top: 2.5rem;
+  padding: 1.25rem 3rem;
+  background: white;
+  border: 1px solid var(--border-light);
+  border-radius: 50px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text-dark);
+  transition: all 0.3s ease;
+}
+.contact-specialist:hover {
+  border-color: var(--primary-gold);
+  color: var(--primary-gold);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 991px) {
+  .festival-card-large {
+    flex-direction: column;
+    text-align: center;
+    gap: 2.5rem;
+  }
+  .festival-img {
+    width: 100%;
+    height: 350px;
+  }
+  .fest-footer {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .seasonal-banner {
+    padding: 3rem 1.5rem;
+  }
+}

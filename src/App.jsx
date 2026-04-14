@@ -16,6 +16,7 @@ import Checkout from './pages/Checkout';
 import Contact from './pages/Contact';
 import ProductDetail from './pages/ProductDetail';
 import Blog from './pages/Blog';
+import Offers from './pages/Offers';
 
 const AppContent = () => {
   const { language, isPurchaseModalOpen, closePurchaseModal, selectedProduct } = useAppContext();
@@ -37,6 +38,7 @@ const AppContent = () => {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<Blog />} />
+          <Route path="/offers" element={<Offers />} />
         </Routes>
         <Footer />
         <CartDrawer />

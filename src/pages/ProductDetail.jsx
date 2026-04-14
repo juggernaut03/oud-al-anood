@@ -10,6 +10,7 @@ const ProductDetail = () => {
   const { products, wishlist, toggleWishlist, language, t, addToCart } = useAppContext();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
 
   useEffect(() => {
     const foundProduct = products.find(p => p.id === parseInt(id));
@@ -154,7 +155,48 @@ const ProductDetail = () => {
             <div className="stars large">★★★★★</div>
             <p>Based on 12 verified purchases</p>
           </div>
+          <div className="write-review-btn-container">
+            <button className="write-review-btn" onClick={() => setShowReviewForm(true)}>
+              Share Your Experience
+            </button>
+          </div>
         </div>
+
+        {/* Review Form Modal */}
+        {showReviewForm && (
+          <div className="modal-overlay" onClick={() => setShowReviewForm(false)}>
+            <motion.div 
+              className="review-form-modal glass-luxury"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="serif-title small">Boutique Review</h3>
+              <p className="form-subtitle">Tell your story about {product.name[language]}</p>
+              
+              <div className="review-inputs">
+                <div className="star-rating-select">
+                  <span className="label">Rating</span>
+                  <div className="stars-input">★★★★★</div>
+                </div>
+                <div className="input-group">
+                  <label>Your Story</label>
+                  <textarea placeholder="Describe your experience with this fragrance..." rows="10"></textarea>
+                </div>
+                <div className="form-actions">
+                  <button className="submit-review-btn" onClick={() => {
+                    alert('Thank you for sharing your journey! Your review is being curated.');
+                    setShowReviewForm(false);
+                  }}>
+                    Post Review
+                  </button>
+                  <button className="cancel-btn" onClick={() => setShowReviewForm(false)}>Cancel</button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
         <div className="reviews-list">
           <div className="review-item">
             <div className="review-meta">
