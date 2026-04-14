@@ -70,7 +70,7 @@
   grid-column: 2;
   grid-row: 3;
   position: relative;
-  background: var(--bg-dark, #0f0f0f);
+  background: var(--bg-white, #ffffff);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -81,7 +81,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, rgba(196,156,85,0.15) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(196,156,85,0.08) 0%, transparent 70%);
 }
 .gallery-logo-inner {
   display: flex;
