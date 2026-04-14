@@ -100,10 +100,45 @@
   color: var(--border-light);
 }
 
+.hamburger-btn {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .nav-links {
     display: none;
   }
+  .hamburger-btn {
+    display: flex;
+  }
+}
+
+/* Mobile Menu Dropdown */
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-light);
+  padding: var(--spacing-md) 0;
+}
+.mobile-nav-link {
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dark);
+  padding: 1rem var(--spacing-lg);
+  border-bottom: 1px solid var(--border-light);
+  transition: var(--transition-smooth);
+}
+.mobile-nav-link:last-child {
+  border-bottom: none;
+}
+.mobile-nav-link:hover {
+  color: var(--primary-gold);
+  background: var(--bg-cream);
 }
 
 /* Hero Styles */
@@ -197,6 +232,9 @@
   .hero-content {
     margin: 0 auto;
   }
+  .hero-title {
+    font-size: 2.25rem;
+  }
   .hero-collage {
     height: 400px;
     margin-top: var(--spacing-lg);
@@ -273,6 +311,14 @@
 .product-card:hover .quick-add-btn {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* Always show quick-add on touch devices */
+@media (hover: none) {
+  .quick-add-btn {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 .quick-add-btn:hover {
   background: var(--primary-gold);
@@ -946,7 +992,8 @@
 
 /* Checkout Page */
 .checkout-page {
-  padding: var(--spacing-xl) 0;
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
   min-height: 80vh;
 }
 .checkout-page.empty {
@@ -1184,6 +1231,12 @@
   }
 }
 
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Brand Gallery Styles */
 .brand-gallery {
   padding: var(--spacing-xl) var(--spacing-md);
@@ -1226,6 +1279,13 @@
 }
 .gallery-item:hover .overlay {
   opacity: 1;
+}
+
+/* Always show gallery overlay on touch devices */
+@media (hover: none) {
+  .gallery-item .overlay {
+    opacity: 1;
+  }
 }
 .gallery-item .overlay span {
   color: white;
@@ -1481,7 +1541,8 @@
 
 /* Product Detail Page Styles */
 .product-detail-page {
-  padding: var(--spacing-xl) 0;
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
 }
 .breadcrumbs {
   display: flex;
@@ -1670,9 +1731,23 @@
   }
 }
 
+@media (max-width: 480px) {
+  .purchase-controls {
+    flex-wrap: wrap;
+  }
+  .add-cart-btn-large {
+    flex: 1 1 100%;
+    order: -1;
+  }
+  .qty-selector {
+    flex: 0 0 auto;
+  }
+}
+
 /* Offers Section Styles */
 .offers-section {
-  padding: var(--spacing-xl) 0;
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
 }
 .offers-grid {
   display: grid;
@@ -1723,7 +1798,8 @@
 
 /* Testimonials Styles */
 .testimonials-section {
-  padding: var(--spacing-xl) 0;
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
   background: var(--bg-cream);
 }
 /* Testimonial Carousel Styles */
@@ -1743,6 +1819,20 @@
   height: 300px;
   display: flex;
   align-items: center;
+}
+
+@media (max-width: 600px) {
+  .testimonial-carousel-container {
+    min-height: unset;
+  }
+  .testimonial-slide-wrapper {
+    height: auto;
+    min-height: 220px;
+    padding-bottom: var(--spacing-md);
+  }
+  .testimonial-card.slide {
+    position: relative;
+  }
 }
 
 .testimonial-card.slide {
@@ -1781,7 +1871,8 @@
 
 /* Blog Preview Styles */
 .blog-preview-section {
-  padding: var(--spacing-xl) 0;
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
 }
 .blog-grid {
   display: grid;
@@ -1922,7 +2013,8 @@
 
 /* Product Reviews Styles */
 .product-reviews {
-  padding: var(--spacing-xl) 0;
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
   border-top: 1px solid var(--border-light);
 }
 .reviews-summary {
@@ -2020,7 +2112,8 @@
 
 /* Blog Detail Page */
 .blog-detail-page {
-  padding: var(--spacing-xl) 0;
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
 }
 .back-link {
   display: flex;
