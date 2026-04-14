@@ -1,0 +1,115 @@
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 2000;
+  backdrop-filter: blur(2px);
+}
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  width: 400px;
+  height: 100vh;
+  background: var(--bg-white);
+  z-index: 2001;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+  padding: var(--spacing-lg);
+}
+[dir="ltr"] .cart-drawer { right: 0; }
+[dir="rtl"] .cart-drawer { left: 0; }
+
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: var(--spacing-md);
+}
+.cart-header h2 {
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+.empty-cart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--text-muted);
+}
+.cart-item {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-light);
+}
+.cart-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.item-details {
+  flex: 1;
+}
+.item-details h3 {
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+.remove-btn {
+  color: var(--text-light);
+  transition: var(--transition-smooth);
+}
+.remove-btn:hover {
+  color: var(--accent-burgundy);
+}
+.cart-footer {
+  margin-top: auto;
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--border-light);
+}
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-md);
+}
+.checkout-btn {
+  width: 100%;
+  background: var(--text-dark);
+  color: white;
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: var(--transition-smooth);
+}
+.checkout-btn:hover {
+  background: var(--primary-gold);
+}
+
+@media (max-width: 450px) {
+  .cart-drawer {
+    width: 100vw;
+  }
+}

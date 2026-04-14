@@ -1,4 +1,5 @@
 import ProductCard from './ProductCard';
+import './ProductGrid.css';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'framer-motion';
 

@@ -1,5 +1,5 @@
-import React from 'react';
 import { useAppContext } from '../context/AppContext';
+import './About.css';
 
 const About = () => {
   const { t } = useAppContext();

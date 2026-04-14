@@ -1,5 +1,5 @@
-import React from 'react';
 import { useParams, Link } from 'react-router-dom';
+import './Blog.css';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'framer-motion';
 import { Calendar, User, ChevronLeft } from 'lucide-react';

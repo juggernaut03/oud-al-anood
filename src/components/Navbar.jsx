@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './Navbar.css';
 import { ShoppingBag, User, Search, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppContext, LOGO_URL } from '../context/AppContext';

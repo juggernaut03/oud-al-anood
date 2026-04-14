@@ -1,6 +1,6 @@
-import React from 'react';
 import { useAppContext } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
+import './OudMohsen.css';
 
 const OudMohsen = () => {
   const { t, products } = useAppContext();

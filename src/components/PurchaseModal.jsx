@@ -1,5 +1,5 @@
-import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import './PurchaseModal.css';
 import { X, ExternalLink } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 

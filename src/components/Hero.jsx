@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import './Hero.css';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 

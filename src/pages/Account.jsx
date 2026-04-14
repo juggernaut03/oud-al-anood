@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
+import './Account.css';
 import { User, Package, Heart, LogOut } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import Orders from './Orders';

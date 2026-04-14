@@ -1,5 +1,5 @@
-import React from 'react';
 import ProductGrid from '../components/ProductGrid';
+import './Shop.css';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'framer-motion';
 
@@ -40,8 +40,7 @@ const Shop = () => {
           )}
         </div>
       </div>
-      </div>
-      
+
       {!isWholesale ? (
         <ProductGrid />
       ) : (

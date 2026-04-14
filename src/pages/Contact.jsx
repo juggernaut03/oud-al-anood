@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
+import './Contact.css';
 import { Phone, Mail, MapPin, Camera, Send, PlayCircle, Globe } from 'lucide-react';
 
 const Contact = () => {
