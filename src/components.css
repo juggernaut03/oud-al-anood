@@ -2270,3 +2270,75 @@
     padding: 3rem 1.5rem;
   }
 }
+/* Wholesale Concierge Section */
+.wholesale-concierge {
+  padding: 4rem 0 8rem;
+  display: flex;
+  justify-content: center;
+}
+.concierge-card {
+  width: 100%;
+  max-width: 600px;
+  padding: 5rem 3rem;
+  text-align: center;
+  border-radius: 32px;
+}
+.concierge-desc {
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+}
+.concierge-actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 4rem;
+}
+.concierge-btn {
+  padding: 1.25rem 2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+.concierge-btn.whatsapp {
+  background: #25D366;
+  color: white;
+}
+.concierge-btn.email {
+  background: var(--text-dark);
+  color: white;
+}
+.concierge-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+.wholesale-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+}
+.benefit {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+.benefit .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--primary-gold);
+  border-radius: 50%;
+}
+
+@media (max-width: 600px) {
+  .concierge-actions {
+    flex-direction: column;
+  }
+}
