@@ -40,7 +40,6 @@ const Shop = () => {
           )}
         </div>
       </div>
-      </div>
       
       {!isWholesale ? (
         <ProductGrid />
