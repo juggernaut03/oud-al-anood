@@ -1,4 +1,5 @@
 import { useAppContext } from '../context/AppContext';
+import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import './Wishlist.css';
 import { Heart, ShoppingBag } from 'lucide-react';
@@ -31,7 +32,7 @@ const Wishlist = () => {
             <Heart size={64} strokeWidth={1} />
             <h2>Your wishlist is empty</h2>
             <p>Explore our shop and find something you love.</p>
-            <a href="/shop" className="shop-link">Go to Shop</a>
+            <Link to="/shop" className="shop-link">Go to Shop</Link>
           </div>
         ) : (
           <div className="product-grid">

@@ -100,7 +100,7 @@ const Home = () => {
             Nestled in the heart of Bukit Bintang, we bring the finest oud and perfumes to those who appreciate
             the soul of traditional scents fused with modern elegance.
           </p>
-          <a href="/about" className="heritage-link">{t('nav_about')}</a>
+          <Link to="/about" className="heritage-link">{t('nav_about')}</Link>
         </div>
         <div className="heritage-image">
           <img src="/images/page5.png" alt="Heritage" />

@@ -5,13 +5,17 @@
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-light);
-  padding: var(--spacing-sm) 0;
 }
-.nav-content {
+
+/* Row 1: Logo, lang, icons */
+.nav-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-top: 0.4rem;
+  padding-bottom: 0.25rem;
 }
+
 .nav-left, .nav-right {
   display: flex;
   align-items: center;
@@ -21,15 +25,15 @@
 .nav-right {
   justify-content: flex-end;
 }
+
 .nav-logo {
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 .logo-img {
-  height: 60px;
+  height: 55px;
   width: auto;
   object-fit: contain;
   transition: transform 0.3s ease;
@@ -37,27 +41,7 @@
 .logo-img:hover {
   transform: scale(1.05);
 }
-.footer-logo-img {
-  max-height: 100px;
-  width: auto;
-  object-fit: contain;
-  margin-bottom: var(--spacing-md);
-}
-.nav-links {
-  display: flex;
-  gap: var(--spacing-lg);
-  margin: 0 var(--spacing-xl);
-}
-.nav-link {
-  font-family: var(--font-primary);
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.nav-link:hover {
-  color: var(--primary-gold);
-}
+
 .nav-icon-btn {
   position: relative;
   color: var(--text-dark);
@@ -67,6 +51,7 @@
 .nav-icon-btn:hover {
   color: var(--primary-gold);
 }
+
 .cart-badge {
   position: absolute;
   top: 0;
@@ -81,6 +66,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .lang-switcher {
   display: flex;
   align-items: center;
@@ -99,43 +85,127 @@
   color: var(--border-light);
 }
 
-.hamburger-btn {
-  display: none;
-}
-
-@media (max-width: 900px) {
-  .nav-links {
-    display: none;
-  }
-  .hamburger-btn {
-    display: flex;
-  }
-}
-
-/* Mobile Menu Dropdown */
-.mobile-menu {
+/* Row 2: Nav links */
+.nav-bottom {
   display: flex;
-  flex-direction: column;
-  background: rgba(255, 255, 255, 0.97);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid var(--border-light);
-  padding: var(--spacing-md) 0;
+  justify-content: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
 }
-.mobile-nav-link {
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0.5rem 0;
+}
+
+.nav-link {
   font-family: var(--font-primary);
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
+  white-space: nowrap;
   color: var(--text-dark);
-  padding: 1rem var(--spacing-lg);
-  border-bottom: 1px solid var(--border-light);
-  transition: var(--transition-smooth);
+  position: relative;
 }
-.mobile-nav-link:last-child {
-  border-bottom: none;
-}
-.mobile-nav-link:hover {
+.nav-link:hover {
   color: var(--primary-gold);
-  background: var(--bg-cream);
+}
+.nav-link.active {
+  color: var(--primary-gold);
+}
+
+/* Hide hamburger/mobile menu permanently */
+.hamburger-btn {
+  display: none !important;
+}
+.mobile-menu {
+  display: none !important;
+}
+
+/* Footer logo — keep here to avoid missing style */
+.footer-logo-img {
+  max-height: 100px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: var(--spacing-md);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .nav-top {
+    padding-top: 0.3rem;
+    padding-bottom: 0.2rem;
+  }
+  .logo-img {
+    height: 40px;
+  }
+  .nav-left, .nav-right {
+    gap: 0.4rem;
+  }
+  .nav-icon-btn {
+    padding: 5px;
+  }
+  .nav-icon-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  .nav-links {
+    gap: 1rem;
+    padding: 0.4rem 0;
+  }
+  .nav-link {
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+  }
+  .lang-switcher {
+    font-size: 0.65rem;
+    gap: 4px;
+  }
+  .nav-drive-btn {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.6rem;
+    gap: 0.3rem;
+    margin-right: 0.25rem;
+  }
+  .nav-drive-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+  .cart-badge {
+    width: 14px;
+    height: 14px;
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-img {
+    height: 34px;
+  }
+  .nav-links {
+    gap: 0.6rem;
+    padding: 0.35rem 0;
+    flex-wrap: wrap;
+  }
+  .nav-link {
+    font-size: 0.58rem;
+    letter-spacing: 0.3px;
+  }
+  .nav-icon-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+  .btn-label {
+    display: none;
+  }
+  .nav-drive-btn {
+    padding: 0.35rem;
+    margin-right: 0.15rem;
+  }
+  .lang-switcher {
+    font-size: 0.6rem;
+  }
 }

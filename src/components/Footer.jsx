@@ -1,4 +1,5 @@
 import { useAppContext, LOGO_URL } from '../context/AppContext';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 import { Camera, MessageCircle, Send, MapPin, Phone, Mail } from 'lucide-react';
 
@@ -36,11 +37,11 @@ const Footer = () => {
 
         <div className="footer-section links">
           <h3>Quick Links</h3>
-          <a href="/shop">{t('nav_shop')}</a>
-          <a href="/about">{t('nav_about')}</a>
-          <a href="/contact">Contact Us</a>
-          <a href="/account">{t('nav_account')}</a>
-          <a href="/privacy">Privacy Policy</a>
+          <Link to="/shop">{t('nav_shop')}</Link>
+          <Link to="/about">{t('nav_about')}</Link>
+          <Link to="/contact">Contact Us</Link>
+          <Link to="/account">{t('nav_account')}</Link>
+          <Link to="/offers">Specials</Link>
         </div>
       </div>
 
