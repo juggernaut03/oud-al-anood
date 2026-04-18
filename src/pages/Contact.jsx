@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
+import { api } from '../lib/api';
 import './Contact.css';
 import { Phone, Mail, MapPin, Camera, Send, PlayCircle, Globe } from 'lucide-react';
 
@@ -11,11 +12,30 @@ const Contact = () => {
     email: '',
     message: ''
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Thank you for contacting OUD AL-ANOOD! We will get back to you soon.');
-    setFormData({ firstName: '', lastName: '', email: '', message: '' });
+    setStatus(null);
+    setSubmitting(true);
+    try {
+      await api.post('/api/contact', {
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        message: formData.message,
+        subject: 'Website contact form'
+      });
+      setStatus({ type: 'success', message: 'Thanks — we will get back to you soon.' });
+      setFormData({ firstName: '', lastName: '', email: '', message: '' });
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        message: err?.response?.data?.message || 'Failed to send message'
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -102,7 +122,14 @@ const Contact = () => {
                 rows="6"
               />
             </div>
-            <button type="submit" className="send-btn">SEND</button>
+            {status && (
+              <p style={{ marginTop: 12, color: status.type === 'success' ? '#2f7a45' : '#b42525' }}>
+                {status.message}
+              </p>
+            )}
+            <button type="submit" className="send-btn" disabled={submitting}>
+              {submitting ? 'SENDING…' : 'SEND'}
+            </button>
           </form>
         </div>
       </div>

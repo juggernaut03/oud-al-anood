@@ -1,16 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppContext } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
+import { api } from '../lib/api';
 import './Checkout.css';
 import { CreditCard, Truck, ShoppingBag, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Checkout = () => {
-  const { cart, t, language, clearCart } = useAppContext();
+  const { cart, t, language, clearCart, isWholesale } = useAppContext();
+  const { user } = useAuth();
   const [isSuccess, setIsSuccess] = useState(false);
+  const [orderNumber, setOrderNumber] = useState('');
+  const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     address: '',
     city: '',
     zip: '',
@@ -19,19 +26,51 @@ const Checkout = () => {
     cvv: ''
   });
 
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || user.name || '',
+        email: prev.email || user.email || '',
+        phone: prev.phone || user.phone || ''
+      }));
+    }
+  }, [user]);
+
   const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate API call
-    setTimeout(() => {
+    setError(null);
+    setSubmitting(true);
+    try {
+      const payload = {
+        customer: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone
+        },
+        items: cart.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity
+        })),
+        isWholesale,
+        notes: [formData.address, formData.city, formData.zip].filter(Boolean).join(', '),
+        channel: 'website'
+      };
+      const { data } = await api.post('/api/orders', payload);
+      setOrderNumber(data?.data?.orderNumber || data?.data?._id || '');
       setIsSuccess(true);
       clearCart();
-    }, 1500);
+    } catch (err) {
+      setError(err?.response?.data?.message || err?.message || 'Order failed');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (isSuccess) {
@@ -45,7 +84,7 @@ const Checkout = () => {
           <CheckCircle size={80} className="success-icon" />
           <h1>Order Placed Successfully!</h1>
           <p>Thank you for shopping with OUD AL-ANOOD. Your exquisite fragrance will be with you shortly.</p>
-          <p className="order-number">Order ID: #ORD-{Math.floor(Math.random() * 90000) + 10000}</p>
+          <p className="order-number">Order ID: {orderNumber || '—'}</p>
           <Link to="/" className="home-btn">Return Home</Link>
         </motion.div>
       </div>
@@ -88,13 +127,23 @@ const Checkout = () => {
             </div>
             <div className="form-group">
               <label>Email Address</label>
-              <input 
-                type="email" 
-                name="email" 
-                value={formData.email} 
-                onChange={handleInputChange} 
-                required 
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
                 placeholder="john@example.com"
+              />
+            </div>
+            <div className="form-group">
+              <label>Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="+60 12 345 6789"
               />
             </div>
             <div className="form-group">
@@ -174,8 +223,11 @@ const Checkout = () => {
               </div>
             </div>
 
-            <button type="submit" className="place-order-btn">
-              Place Order • {t('price_rm')} {total.toFixed(2)}
+            {error && (
+              <p style={{ color: '#b42525', marginTop: 12 }}>{error}</p>
+            )}
+            <button type="submit" className="place-order-btn" disabled={submitting}>
+              {submitting ? 'Placing order…' : `Place Order • ${t('price_rm')} ${total.toFixed(2)}`}
             </button>
           </form>
         </div>

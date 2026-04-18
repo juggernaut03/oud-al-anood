@@ -10,7 +10,9 @@ const Blog = () => {
 
   // If ID is provided, show detail view, otherwise listing
   if (id) {
-    const post = blogPosts.find(p => p.id === parseInt(id));
+    const post = blogPosts.find(
+      (p) => String(p.id) === String(id) || p.slug === id
+    );
     if (!post) return <div className="container">Post not found</div>;
 
     return (
