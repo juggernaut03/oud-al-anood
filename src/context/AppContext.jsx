@@ -124,8 +124,8 @@ export const AppProvider = ({ children }) => {
         const res = await api.get('/api/testimonials', { params: { isPublished: 'true' } });
         const list = toList(res, normalizeTestimonial);
         if (!cancelled && list.length) setTestimonials(list);
-      } catch {
-        // keep fallback
+      } catch (err) {
+        console.error('[AppContext] Failed to fetch testimonials:', err?.message || err);
       }
     })();
     return () => {
