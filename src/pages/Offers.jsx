@@ -57,13 +57,15 @@ const Offers = () => {
 
   const displayOffers = offers.length > 0 ? offers : FALLBACK_OFFERS;
 
+  const isPct = (type) => type === 'percentage' || type === 'percent';
+
   const maxDiscount = displayOffers.reduce((max, o) => {
-    if (o.discountType === 'percentage') return Math.max(max, o.discountValue || 0);
+    if (isPct(o.discountType)) return Math.max(max, o.discountValue || 0);
     return max;
   }, 0);
 
   const discountLabel = (offer) => {
-    if (offer.discountType === 'percentage' && offer.discountValue)
+    if (isPct(offer.discountType) && offer.discountValue)
       return `${offer.discountValue}% ${t('offers_pct_off')}`;
     if (offer.discountType === 'fixed' && offer.discountValue)
       return `${t('price_rm')} ${offer.discountValue} ${t('offers_fixed_off')}`;
