@@ -191,6 +191,14 @@ const translations = {
     orders_empty: "You haven't placed any orders yet.",
     orders_items: 'items',
     orders_view: 'View Details',
+    orders_detail_title: 'Order Details',
+    orders_detail_date: 'Date',
+    orders_detail_status: 'Status',
+    orders_detail_customer: 'Customer',
+    orders_detail_email: 'Email',
+    orders_detail_phone: 'Phone',
+    orders_detail_address: 'Delivery Address',
+    orders_detail_items: 'Items Ordered',
 
     // Wishlist
     wishlist_title: 'My Wishlist',
@@ -469,6 +477,14 @@ const translations = {
     orders_empty: 'لم تقم بأي طلبات بعد.',
     orders_items: 'عناصر',
     orders_view: 'عرض التفاصيل',
+    orders_detail_title: 'تفاصيل الطلب',
+    orders_detail_date: 'التاريخ',
+    orders_detail_status: 'الحالة',
+    orders_detail_customer: 'العميل',
+    orders_detail_email: 'البريد الإلكتروني',
+    orders_detail_phone: 'الهاتف',
+    orders_detail_address: 'عنوان التوصيل',
+    orders_detail_items: 'العناصر المطلوبة',
 
     // Wishlist
     wishlist_title: 'قائمة رغباتي',
