@@ -3,6 +3,7 @@ import ProductCard from '../components/ProductCard';
 import BoutiqueToggle from '../components/BoutiqueToggle';
 import WholesaleConcierge from '../components/WholesaleConcierge';
 import { useAppContext } from '../context/AppContext';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Droplets, SprayCan, Gem, LayoutGrid } from 'lucide-react';
 import './Shop.css';
@@ -37,7 +38,12 @@ const SUBCATEGORIES = {
 
 const Shop = () => {
   const { t, isWholesale, products, language } = useAppContext();
-  const [activeCategory, setActiveCategory] = useState('all');
+  const { search: qs } = useLocation();
+  const initialCategory = useMemo(() => {
+    const param = new URLSearchParams(qs).get('category') || 'all';
+    return CATEGORIES.some((c) => c.key === param) ? param : 'all';
+  }, [qs]);
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [activeSubcategory, setActiveSubcategory] = useState('all');
 
   const handleCategoryChange = (key) => {

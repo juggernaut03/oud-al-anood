@@ -16,7 +16,7 @@ const FALLBACK_COLLECTIONS = [
     image: '/images/page4.png',
     tag: { en: 'Heritage', ar: 'تراث' },
     filter: (p) => p.category === 'oud',
-    link: '/shop',
+    link: '/shop?category=oud',
   },
   {
     id: 'perfumes',
@@ -25,7 +25,7 @@ const FALLBACK_COLLECTIONS = [
     image: '/images/page6.png',
     tag: { en: 'New Arrivals', ar: 'وصل حديثاً' },
     filter: (p) => p.category === 'perfumes',
-    link: '/shop',
+    link: '/shop?category=perfumes',
   },
 ];
 
