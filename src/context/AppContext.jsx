@@ -58,6 +58,7 @@ export const AppProvider = ({ children }) => {
   const [stores, setStores] = useState(fallbackStores);
   const [selectedStore, setSelectedStore] = useState(fallbackStores[0]);
   const [banners, setBanners] = useState([]);
+  const [offers, setOffers] = useState([]);
 
   // User orders are loaded from API when authenticated.
   const [orders, setOrders] = useState([]);
@@ -145,6 +146,22 @@ export const AppProvider = ({ children }) => {
         if (!cancelled && list.length) setBanners(list);
       } catch (err) {
         console.error('[AppContext] Failed to fetch banners:', err?.message || err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await api.get('/api/offers', { params: { current: 'true' } });
+        const list = toList(res, normalizeOffer);
+        if (!cancelled && list.length) setOffers(list);
+      } catch (err) {
+        console.error('[AppContext] Failed to fetch offers:', err?.message || err);
       }
     })();
     return () => {
@@ -317,6 +334,7 @@ export const AppProvider = ({ children }) => {
       testimonials,
       stores,
       banners,
+      offers,
       isStoreSelectorOpen,
       setIsStoreSelectorOpen,
       toggleStoreSelector,
@@ -346,6 +364,7 @@ export const AppProvider = ({ children }) => {
       testimonials,
       stores,
       banners,
+      offers,
       isStoreSelectorOpen,
       toggleStoreSelector,
       selectedStore

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Sparkles, ArrowRight, Gift, Star, Clock, Crown, Flame } from 'lucide-react';
 import './Offers.css';
 
-const festivalSets = [
+const FALLBACK_OFFERS = [
   {
     id: 1,
     title: { en: 'Eid Al-Fitr Gold Set', ar: 'طقم عيد الفطر الذهبي' },
@@ -12,11 +12,14 @@ const festivalSets = [
       en: 'A majestic combination of our finest Kalakassi Oud and traditional Cambodian Aged 25 years. Presented in a hand-crafted wooden chest.',
       ar: 'مزيج مهيب من أجود أنواع عود كالكاسي والكمبودي التقليدي المعتق لمدة ٢٥ عاماً. يُقدم في صندوق خشبي مصنوع يدوياً.',
     },
-    originalPrice: 620,
+    originalPrice: null,
     price: 499,
     image: '/images/page2.png',
-    tag: 'Eid Exclusive',
-    includes: ['Kalakassi Oud Oil 3ml', 'Cambodian Aged 3ml', 'Luxury Gift Box'],
+    badge: 'Eid Exclusive',
+    discountType: 'percentage',
+    discountValue: 20,
+    link: '/shop',
+    products: ['Kalakassi Oud Oil 3ml', 'Cambodian Aged 3ml', 'Luxury Gift Box'],
   },
   {
     id: 2,
@@ -25,11 +28,14 @@ const festivalSets = [
       en: 'Deep, smoky notes designed for the spiritual serenity of Ramadan nights. A curated duo of Hindi Turabi and Cambodian Old.',
       ar: 'نوتات عميقة ومدخنة مصممة للهدوء الروحاني في ليالي رمضان. ثنائي منتقى من هندي ترابي وكمبودي قديم.',
     },
-    originalPrice: 350,
+    originalPrice: null,
     price: 280,
     image: '/images/page4.png',
-    tag: 'Limited Edition',
-    includes: ['Hindi Turabi 3ml', 'Cambodian Old 3ml', 'Velvet Pouch'],
+    badge: 'Limited Edition',
+    discountType: 'percentage',
+    discountValue: 20,
+    link: '/shop',
+    products: ['Hindi Turabi 3ml', 'Cambodian Old 3ml', 'Velvet Pouch'],
   },
 ];
 
@@ -46,8 +52,26 @@ const fadeUp = {
   transition: { duration: 0.6 },
 };
 
+const discountLabel = (offer) => {
+  if (offer.discountType === 'percentage' && offer.discountValue)
+    return `${offer.discountValue}% Off`;
+  if (offer.discountType === 'fixed' && offer.discountValue)
+    return `RM ${offer.discountValue} Off`;
+  if (offer.discountType === 'bogo') return 'Buy 1 Get 1';
+  if (offer.discountType === 'bundle') return 'Bundle Deal';
+  return null;
+};
+
 const Offers = () => {
-  const { language } = useAppContext();
+  const { language, offers } = useAppContext();
+
+  const displayOffers = offers.length > 0 ? offers : FALLBACK_OFFERS;
+
+  // Compute a summary stat for the hero
+  const maxDiscount = displayOffers.reduce((max, o) => {
+    if (o.discountType === 'percentage') return Math.max(max, o.discountValue || 0);
+    return max;
+  }, 0);
 
   return (
     <div className="offers-page">
@@ -69,13 +93,17 @@ const Offers = () => {
             Curated sets celebrating heritage through the art of fragrance.
           </p>
           <div className="offers-hero-stats">
+            {maxDiscount > 0 && (
+              <>
+                <div className="offers-stat">
+                  <span className="offers-stat-num">{maxDiscount}%</span>
+                  <span className="offers-stat-label">Savings</span>
+                </div>
+                <div className="offers-stat-divider" />
+              </>
+            )}
             <div className="offers-stat">
-              <span className="offers-stat-num">20%</span>
-              <span className="offers-stat-label">Savings</span>
-            </div>
-            <div className="offers-stat-divider" />
-            <div className="offers-stat">
-              <span className="offers-stat-num">2</span>
+              <span className="offers-stat-num">{displayOffers.length}</span>
               <span className="offers-stat-label">Exclusive Sets</span>
             </div>
             <div className="offers-stat-divider" />
@@ -89,7 +117,7 @@ const Offers = () => {
         </motion.div>
       </section>
 
-      {/* Festival Sets */}
+      {/* Offer Cards */}
       <section className="offers-sets container">
         <div className="offers-section-label">
           <Clock size={15} />
@@ -97,57 +125,63 @@ const Offers = () => {
         </div>
 
         <div className="offers-grid">
-          {festivalSets.map((set, index) => (
-            <motion.article
-              key={set.id}
-              className="offer-card"
-              {...fadeUp}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-            >
-              {/* Image */}
-              <div className="offer-card-img">
-                <img src={set.image} alt={set.title[language]} />
-                <div className="offer-card-badge">
-                  <Sparkles size={12} />
-                  {set.tag}
-                </div>
-              </div>
+          {displayOffers.map((offer, index) => {
+            const label = discountLabel(offer);
+            // products array may contain populated objects or plain strings (fallback)
+            const productNames = offer.products.map((p) =>
+              typeof p === 'string' ? p : p.name?.[language] || p.name?.en || ''
+            ).filter(Boolean);
 
-              {/* Content */}
-              <div className="offer-card-content">
-                <h2 className="offer-card-title">{set.title[language]}</h2>
-                <p className="offer-card-desc">{set.description[language]}</p>
-
-                {/* Includes */}
-                <div className="offer-card-includes">
-                  <span className="offer-includes-label">Set Includes</span>
-                  <ul>
-                    {set.includes.map((item) => (
-                      <li key={item}>
-                        <Star size={12} />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Price + CTA */}
-                <div className="offer-card-bottom">
-                  <div className="offer-card-pricing">
-                    <span className="offer-original-price">RM {set.originalPrice}</span>
-                    <span className="offer-current-price">RM {set.price}</span>
-                    <span className="offer-save-tag">
-                      Save RM {set.originalPrice - set.price}
-                    </span>
+            return (
+              <motion.article
+                key={offer.id}
+                className="offer-card"
+                {...fadeUp}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+              >
+                {/* Image */}
+                <div className="offer-card-img">
+                  <img src={offer.image || '/images/page2.png'} alt={offer.title[language] || offer.title.en} />
+                  <div className="offer-card-badge">
+                    <Sparkles size={12} />
+                    {offer.badge || label || 'Special Offer'}
                   </div>
-                  <Link to="/shop" className="offer-reserve-btn">
-                    Reserve Set
-                    <ArrowRight size={16} />
-                  </Link>
                 </div>
-              </div>
-            </motion.article>
-          ))}
+
+                {/* Content */}
+                <div className="offer-card-content">
+                  <h2 className="offer-card-title">{offer.title[language] || offer.title.en}</h2>
+                  <p className="offer-card-desc">{offer.description[language] || offer.description.en}</p>
+
+                  {/* Included products */}
+                  {productNames.length > 0 && (
+                    <div className="offer-card-includes">
+                      <span className="offer-includes-label">Set Includes</span>
+                      <ul>
+                        {productNames.map((name) => (
+                          <li key={name}>
+                            <Star size={12} />
+                            {name}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Price + CTA */}
+                  <div className="offer-card-bottom">
+                    <div className="offer-card-pricing">
+                      {label && <span className="offer-save-tag">{label}</span>}
+                    </div>
+                    <Link to={offer.link || '/shop'} className="offer-reserve-btn">
+                      Shop Now
+                      <ArrowRight size={16} />
+                    </Link>
+                  </div>
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
       </section>
 
