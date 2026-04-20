@@ -36,6 +36,23 @@ export const normalizeTestimonial = (t) => {
   };
 };
 
+export const normalizeBanner = (b) => {
+  if (!b) return b;
+  return {
+    ...b,
+    id: b._id || b.id,
+    section: b.section || '',
+    title: b.title || { en: '', ar: '' },
+    subtitle: b.subtitle || { en: '', ar: '' },
+    description: b.description || { en: '', ar: '' },
+    image: b.image || '',
+    mobileImage: b.mobileImage || '',
+    ctaText: b.ctaText || { en: '', ar: '' },
+    ctaLink: b.ctaLink || '',
+    sortOrder: b.sortOrder ?? 0,
+  };
+};
+
 export const normalizeBlogPost = (post) => {
   if (!post) return post;
   const created = post.publishedAt || post.createdAt;

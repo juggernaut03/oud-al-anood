@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 
-const collections = [
+const FALLBACK_COLLECTIONS = [
   {
     id: 'oud-oils',
     title: { en: 'Oud Oils Collection', ar: 'مجموعة دهن العود' },
@@ -30,7 +30,21 @@ const collections = [
 ];
 
 const Home = () => {
-  const { t, language, blogPosts, products } = useAppContext();
+  const { t, language, blogPosts, products, banners } = useAppContext();
+
+  // Use admin-managed homepage/promo banners if available, otherwise fallback to hardcoded collections.
+  const cmsBanners = banners.filter((b) => b.section === 'homepage' || b.section === 'promo');
+  const collections = cmsBanners.length > 0
+    ? cmsBanners.map((b) => ({
+        id: b.id,
+        title: b.title,
+        subtitle: b.subtitle,
+        image: b.image || '/images/page4.png',
+        tag: b.ctaText,
+        filter: () => true,
+        link: b.ctaLink || '/shop',
+      }))
+    : FALLBACK_COLLECTIONS;
 
   return (
     <main>

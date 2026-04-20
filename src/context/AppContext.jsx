@@ -6,6 +6,7 @@ import fallbackTestimonials from '../data/testimonials';
 import fallbackStores from '../data/stores';
 import { api } from '../lib/api';
 import {
+  normalizeBanner,
   normalizeBlogPost,
   normalizeProduct,
   normalizeStore,
@@ -55,6 +56,7 @@ export const AppProvider = ({ children }) => {
   const [testimonials, setTestimonials] = useState(fallbackTestimonials);
   const [stores, setStores] = useState(fallbackStores);
   const [selectedStore, setSelectedStore] = useState(fallbackStores[0]);
+  const [banners, setBanners] = useState([]);
 
   // User orders are loaded from API when authenticated.
   const [orders, setOrders] = useState([]);
@@ -126,6 +128,22 @@ export const AppProvider = ({ children }) => {
         if (!cancelled && list.length) setTestimonials(list);
       } catch (err) {
         console.error('[AppContext] Failed to fetch testimonials:', err?.message || err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await api.get('/api/banners', { params: { isActive: 'true' } });
+        const list = toList(res, normalizeBanner);
+        if (!cancelled && list.length) setBanners(list);
+      } catch (err) {
+        console.error('[AppContext] Failed to fetch banners:', err?.message || err);
       }
     })();
     return () => {
@@ -297,6 +315,7 @@ export const AppProvider = ({ children }) => {
       blogPosts,
       testimonials,
       stores,
+      banners,
       isStoreSelectorOpen,
       setIsStoreSelectorOpen,
       toggleStoreSelector,
@@ -325,6 +344,7 @@ export const AppProvider = ({ children }) => {
       blogPosts,
       testimonials,
       stores,
+      banners,
       isStoreSelectorOpen,
       toggleStoreSelector,
       selectedStore
