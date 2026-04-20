@@ -53,6 +53,23 @@ export const normalizeBanner = (b) => {
   };
 };
 
+export const normalizeOffer = (o) => {
+  if (!o) return o;
+  return {
+    ...o,
+    id: o._id || o.id,
+    title: o.title || { en: '', ar: '' },
+    description: o.description || { en: '', ar: '' },
+    image: o.image || '',
+    badge: o.badge || '',
+    discountType: o.discountType || 'percentage',
+    discountValue: o.discountValue ?? 0,
+    link: o.link || '/shop',
+    products: Array.isArray(o.products) ? o.products : [],
+    sortOrder: o.sortOrder ?? 0,
+  };
+};
+
 export const normalizeBlogPost = (post) => {
   if (!post) return post;
   const created = post.publishedAt || post.createdAt;

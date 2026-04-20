@@ -8,6 +8,7 @@ import { api } from '../lib/api';
 import {
   normalizeBanner,
   normalizeBlogPost,
+  normalizeOffer,
   normalizeProduct,
   normalizeStore,
   normalizeTestimonial,

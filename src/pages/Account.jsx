@@ -87,126 +87,132 @@ const Account = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="account-page container">
-        <div className="account-header">
-          <h1>{t('nav_account')}</h1>
-          <p>Sign in or create an account</p>
-        </div>
+      <div className="auth-page">
+        <div className="auth-card">
+          {/* Brand mark */}
+          <div className="auth-brand">
+            <img src="/images/perfume.png" alt="Oud Al-Anood" className="auth-logo" />
+            <span className="auth-brand-name">OUD AL-ANOOD</span>
+          </div>
 
-        <div className="account-layout">
-          <section className="account-content">
-            <div className="card login-card">
-              <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-                <button
-                  type="button"
-                  className="edit-btn"
-                  style={{ opacity: mode === 'login' ? 1 : 0.6 }}
-                  onClick={() => {
-                    setMode('login');
-                    setAuthError(null);
-                  }}
-                >
-                  Login
-                </button>
-                <button
-                  type="button"
-                  className="edit-btn"
-                  style={{ opacity: mode === 'register' ? 1 : 0.6 }}
-                  onClick={() => {
-                    setMode('register');
-                    setAuthError(null);
-                  }}
-                >
-                  Register
-                </button>
+          <h2 className="auth-heading">
+            {mode === 'login' ? 'Welcome back' : 'Create account'}
+          </h2>
+          <p className="auth-subheading">
+            {mode === 'login'
+              ? 'Sign in to access your orders and wishlist'
+              : 'Join us for an exclusive fragrance experience'}
+          </p>
+
+          {/* Tab switcher */}
+          <div className="auth-tabs">
+            <button
+              type="button"
+              className={`auth-tab ${mode === 'login' ? 'active' : ''}`}
+              onClick={() => { setMode('login'); setAuthError(null); }}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              className={`auth-tab ${mode === 'register' ? 'active' : ''}`}
+              onClick={() => { setMode('register'); setAuthError(null); }}
+            >
+              Register
+            </button>
+          </div>
+
+          {mode === 'login' ? (
+            <form onSubmit={handleLogin} className="auth-form">
+              <div className="auth-field">
+                <label className="auth-label">Email address</label>
+                <input
+                  className="auth-input"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={loginForm.email}
+                  onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
+                  required
+                />
               </div>
+              <div className="auth-field">
+                <label className="auth-label">Password</label>
+                <input
+                  className="auth-input"
+                  type="password"
+                  placeholder="••••••••"
+                  value={loginForm.password}
+                  onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                  required
+                />
+              </div>
+              {authError && <p className="auth-error">{authError}</p>}
+              <button type="submit" className="auth-submit" disabled={submitting}>
+                {submitting ? 'Signing in…' : 'Sign In'}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleRegister} className="auth-form">
+              <div className="auth-field">
+                <label className="auth-label">Full name</label>
+                <input
+                  className="auth-input"
+                  type="text"
+                  placeholder="Your name"
+                  value={registerForm.name}
+                  onChange={(e) => setRegisterForm({ ...registerForm, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="auth-field">
+                <label className="auth-label">Email address</label>
+                <input
+                  className="auth-input"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={registerForm.email}
+                  onChange={(e) => setRegisterForm({ ...registerForm, email: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="auth-field">
+                <label className="auth-label">Phone <span className="auth-optional">(optional)</span></label>
+                <input
+                  className="auth-input"
+                  type="tel"
+                  placeholder="+60 12 345 6789"
+                  value={registerForm.phone}
+                  onChange={(e) => setRegisterForm({ ...registerForm, phone: e.target.value })}
+                />
+              </div>
+              <div className="auth-field">
+                <label className="auth-label">Password</label>
+                <input
+                  className="auth-input"
+                  type="password"
+                  placeholder="••••••••"
+                  value={registerForm.password}
+                  onChange={(e) => setRegisterForm({ ...registerForm, password: e.target.value })}
+                  required
+                />
+              </div>
+              {authError && <p className="auth-error">{authError}</p>}
+              <button type="submit" className="auth-submit" disabled={submitting}>
+                {submitting ? 'Creating account…' : 'Create Account'}
+              </button>
+            </form>
+          )}
 
-              {mode === 'login' ? (
-                <form onSubmit={handleLogin}>
-                  <div className="profile-details">
-                    <div className="detail-row">
-                      <label>Email</label>
-                      <input
-                        type="email"
-                        value={loginForm.email}
-                        onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="detail-row">
-                      <label>Password</label>
-                      <input
-                        type="password"
-                        value={loginForm.password}
-                        onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-                        required
-                      />
-                    </div>
-                  </div>
-                  {authError && (
-                    <p style={{ color: '#b42525', marginTop: 12 }}>{authError}</p>
-                  )}
-                  <button type="submit" className="edit-btn" disabled={submitting}>
-                    {submitting ? 'Signing in…' : 'Sign in'}
-                  </button>
-                </form>
-              ) : (
-                <form onSubmit={handleRegister}>
-                  <div className="profile-details">
-                    <div className="detail-row">
-                      <label>Full Name</label>
-                      <input
-                        type="text"
-                        value={registerForm.name}
-                        onChange={(e) =>
-                          setRegisterForm({ ...registerForm, name: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-                    <div className="detail-row">
-                      <label>Email</label>
-                      <input
-                        type="email"
-                        value={registerForm.email}
-                        onChange={(e) =>
-                          setRegisterForm({ ...registerForm, email: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-                    <div className="detail-row">
-                      <label>Phone</label>
-                      <input
-                        type="tel"
-                        value={registerForm.phone}
-                        onChange={(e) =>
-                          setRegisterForm({ ...registerForm, phone: e.target.value })
-                        }
-                      />
-                    </div>
-                    <div className="detail-row">
-                      <label>Password</label>
-                      <input
-                        type="password"
-                        value={registerForm.password}
-                        onChange={(e) =>
-                          setRegisterForm({ ...registerForm, password: e.target.value })
-                        }
-                        required
-                      />
-                    </div>
-                  </div>
-                  {authError && (
-                    <p style={{ color: '#b42525', marginTop: 12 }}>{authError}</p>
-                  )}
-                  <button type="submit" className="edit-btn" disabled={submitting}>
-                    {submitting ? 'Creating account…' : 'Create account'}
-                  </button>
-                </form>
-              )}
-            </div>
-          </section>
+          <p className="auth-switch">
+            {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
+            <button
+              type="button"
+              className="auth-switch-btn"
+              onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setAuthError(null); }}
+            >
+              {mode === 'login' ? 'Register' : 'Sign in'}
+            </button>
+          </p>
         </div>
       </div>
     );
