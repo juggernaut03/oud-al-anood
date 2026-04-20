@@ -6,7 +6,7 @@ import { useAppContext } from '../context/AppContext';
 const ProductCard = ({ product }) => {
   const { wishlist, toggleWishlist, language, t, isWholesale, addToCart } = useAppContext();
   const isWishlisted = wishlist.includes(product.id);
-  
+
   const displayPrice = isWholesale ? (product.price * 0.7).toFixed(2) : product.price.toFixed(2);
 
   return (
@@ -14,7 +14,7 @@ const ProductCard = ({ product }) => {
       <Link to={`/product/${product.id}`} className="product-card-link">
         <div className="product-image-wrapper">
           <img src={product.image} alt={product.name[language]} className="product-image" />
-          <button 
+          <button
             className={`wishlist-btn ${isWishlisted ? 'active' : ''}`}
             onClick={(e) => {
               e.preventDefault();
@@ -24,19 +24,18 @@ const ProductCard = ({ product }) => {
           >
             <Heart size={18} fill={isWishlisted ? "var(--accent-burgundy)" : "none"} />
           </button>
-          <button 
+          <button
             className="quick-add-btn"
             onClick={(e) => {
               e.preventDefault();
-              e.stopPropagation();
               e.stopPropagation();
               addToCart(product);
             }}
           >
             <ShoppingBag size={18} />
-            <span>Add to Bag</span>
+            <span>{t('product_add_bag')}</span>
           </button>
-          {isWholesale && <div className="bulk-badge">Bulk Only</div>}
+          {isWholesale && <div className="bulk-badge">{t('bulk_only')}</div>}
         </div>
         <div className="product-info">
           <h3 className="product-name">{product.name[language]}</h3>

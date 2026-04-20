@@ -20,7 +20,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-section contact">
-          <h3>Contact Us</h3>
+          <h3>{t('footer_contact_us')}</h3>
           <div className="contact-item">
             <MapPin size={18} />
             <span>{t('footer_location')}</span>
@@ -36,21 +36,20 @@ const Footer = () => {
         </div>
 
         <div className="footer-section links">
-          <h3>Quick Links</h3>
+          <h3>{t('footer_quick_links')}</h3>
           <Link to="/shop">{t('nav_shop')}</Link>
           <Link to="/about">{t('nav_about')}</Link>
-          <Link to="/contact">Contact Us</Link>
+          <Link to="/contact">{t('footer_contact_us')}</Link>
           <Link to="/account">{t('nav_account')}</Link>
-          <Link to="/offers">Specials</Link>
+          <Link to="/offers">{t('footer_specials')}</Link>
         </div>
       </div>
 
       <div className="footer-bottom">
         <div className="container">
-          <p>&copy; {t('footer_copyright')}. All rights reserved.</p>
+          <p>&copy; {t('footer_copyright')}. {t('footer_rights')}</p>
         </div>
       </div>
-
     </footer>
   );
 };

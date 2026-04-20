@@ -15,7 +15,7 @@ const FALLBACK_OFFERS = [
     originalPrice: null,
     price: 499,
     image: '/images/page2.png',
-    badge: 'Eid Exclusive',
+    badge: { en: 'Eid Exclusive', ar: 'حصري للعيد' },
     discountType: 'percentage',
     discountValue: 20,
     link: '/shop',
@@ -31,7 +31,7 @@ const FALLBACK_OFFERS = [
     originalPrice: null,
     price: 280,
     image: '/images/page4.png',
-    badge: 'Limited Edition',
+    badge: { en: 'Limited Edition', ar: 'إصدار محدود' },
     discountType: 'percentage',
     discountValue: 20,
     link: '/shop',
@@ -39,10 +39,10 @@ const FALLBACK_OFFERS = [
   },
 ];
 
-const perks = [
-  { icon: Gift, title: 'Gift Wrapping', desc: 'Complimentary luxury packaging on all seasonal sets' },
-  { icon: Crown, title: 'Loyalty Points', desc: '2x points on every festival collection purchase' },
-  { icon: Flame, title: 'Free Sample', desc: 'Receive a bonus sample of our newest release' },
+const PERKS = [
+  { icon: Gift,  titleKey: 'offers_perk1_title', descKey: 'offers_perk1_desc' },
+  { icon: Crown, titleKey: 'offers_perk2_title', descKey: 'offers_perk2_desc' },
+  { icon: Flame, titleKey: 'offers_perk3_title', descKey: 'offers_perk3_desc' },
 ];
 
 const fadeUp = {
@@ -52,26 +52,31 @@ const fadeUp = {
   transition: { duration: 0.6 },
 };
 
-const discountLabel = (offer) => {
-  if (offer.discountType === 'percentage' && offer.discountValue)
-    return `${offer.discountValue}% Off`;
-  if (offer.discountType === 'fixed' && offer.discountValue)
-    return `RM ${offer.discountValue} Off`;
-  if (offer.discountType === 'bogo') return 'Buy 1 Get 1';
-  if (offer.discountType === 'bundle') return 'Bundle Deal';
-  return null;
-};
-
 const Offers = () => {
-  const { language, offers } = useAppContext();
+  const { language, offers, t } = useAppContext();
 
   const displayOffers = offers.length > 0 ? offers : FALLBACK_OFFERS;
 
-  // Compute a summary stat for the hero
   const maxDiscount = displayOffers.reduce((max, o) => {
     if (o.discountType === 'percentage') return Math.max(max, o.discountValue || 0);
     return max;
   }, 0);
+
+  const discountLabel = (offer) => {
+    if (offer.discountType === 'percentage' && offer.discountValue)
+      return `${offer.discountValue}% ${t('offers_pct_off')}`;
+    if (offer.discountType === 'fixed' && offer.discountValue)
+      return `${t('price_rm')} ${offer.discountValue} ${t('offers_fixed_off')}`;
+    if (offer.discountType === 'bogo') return t('offers_bogo');
+    if (offer.discountType === 'bundle') return t('offers_bundle');
+    return null;
+  };
+
+  const getBadge = (offer) => {
+    if (!offer.badge) return t('offers_special_fallback');
+    if (typeof offer.badge === 'object') return offer.badge[language] || offer.badge.en || t('offers_special_fallback');
+    return offer.badge;
+  };
 
   return (
     <div className="offers-page">
@@ -86,32 +91,28 @@ const Offers = () => {
         >
           <span className="offers-hero-tag">
             <Sparkles size={14} />
-            Seasonal Collection
+            {t('offers_seasonal_tag')}
           </span>
-          <h1 className="offers-hero-title">Festivals &amp; Specials</h1>
-          <p className="offers-hero-subtitle">
-            Curated sets celebrating heritage through the art of fragrance.
-          </p>
+          <h1 className="offers-hero-title">{t('offers_hero_title')}</h1>
+          <p className="offers-hero-subtitle">{t('offers_hero_subtitle')}</p>
           <div className="offers-hero-stats">
             {maxDiscount > 0 && (
               <>
                 <div className="offers-stat">
                   <span className="offers-stat-num">{maxDiscount}%</span>
-                  <span className="offers-stat-label">Savings</span>
+                  <span className="offers-stat-label">{t('offers_savings')}</span>
                 </div>
                 <div className="offers-stat-divider" />
               </>
             )}
             <div className="offers-stat">
               <span className="offers-stat-num">{displayOffers.length}</span>
-              <span className="offers-stat-label">Exclusive Sets</span>
+              <span className="offers-stat-label">{t('offers_exclusive_sets')}</span>
             </div>
             <div className="offers-stat-divider" />
             <div className="offers-stat">
-              <span className="offers-stat-num">
-                <Gift size={18} />
-              </span>
-              <span className="offers-stat-label">Free Gift Wrap</span>
+              <span className="offers-stat-num"><Gift size={18} /></span>
+              <span className="offers-stat-label">{t('offers_free_wrap')}</span>
             </div>
           </div>
         </motion.div>
@@ -121,13 +122,12 @@ const Offers = () => {
       <section className="offers-sets container">
         <div className="offers-section-label">
           <Clock size={15} />
-          <span>Limited Time Offers</span>
+          <span>{t('offers_limited')}</span>
         </div>
 
         <div className="offers-grid">
           {displayOffers.map((offer, index) => {
             const label = discountLabel(offer);
-            // products array may contain populated objects or plain strings (fallback)
             const productNames = offer.products.map((p) =>
               typeof p === 'string' ? p : p.name?.[language] || p.name?.en || ''
             ).filter(Boolean);
@@ -139,24 +139,21 @@ const Offers = () => {
                 {...fadeUp}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
               >
-                {/* Image */}
                 <div className="offer-card-img">
                   <img src={offer.image || '/images/page2.png'} alt={offer.title[language] || offer.title.en} />
                   <div className="offer-card-badge">
                     <Sparkles size={12} />
-                    {offer.badge || label || 'Special Offer'}
+                    {getBadge(offer)}
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="offer-card-content">
                   <h2 className="offer-card-title">{offer.title[language] || offer.title.en}</h2>
                   <p className="offer-card-desc">{offer.description[language] || offer.description.en}</p>
 
-                  {/* Included products */}
                   {productNames.length > 0 && (
                     <div className="offer-card-includes">
-                      <span className="offer-includes-label">Set Includes</span>
+                      <span className="offer-includes-label">{t('offers_set_includes')}</span>
                       <ul>
                         {productNames.map((name) => (
                           <li key={name}>
@@ -168,13 +165,12 @@ const Offers = () => {
                     </div>
                   )}
 
-                  {/* Price + CTA */}
                   <div className="offer-card-bottom">
                     <div className="offer-card-pricing">
                       {label && <span className="offer-save-tag">{label}</span>}
                     </div>
                     <Link to={offer.link || '/shop'} className="offer-reserve-btn">
-                      Shop Now
+                      {t('offers_shop_now')}
                       <ArrowRight size={16} />
                     </Link>
                   </div>
@@ -189,9 +185,9 @@ const Offers = () => {
       <section className="offers-perks">
         <div className="container">
           <div className="perks-grid">
-            {perks.map((perk, i) => (
+            {PERKS.map((perk, i) => (
               <motion.div
-                key={perk.title}
+                key={perk.titleKey}
                 className="perk-item"
                 {...fadeUp}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
@@ -199,8 +195,8 @@ const Offers = () => {
                 <div className="perk-icon">
                   <perk.icon size={22} />
                 </div>
-                <h3>{perk.title}</h3>
-                <p>{perk.desc}</p>
+                <h3>{t(perk.titleKey)}</h3>
+                <p>{t(perk.descKey)}</p>
               </motion.div>
             ))}
           </div>
@@ -211,14 +207,11 @@ const Offers = () => {
       <section className="offers-cta container">
         <motion.div className="offers-cta-card" {...fadeUp}>
           <div className="offers-cta-inner">
-            <span className="offers-cta-tag">Bespoke Gifting</span>
-            <h2 className="offers-cta-title">Craft Your Own Set</h2>
-            <p className="offers-cta-desc">
-              Work with our fragrance specialists to create a personalized gift set
-              with custom engraving and luxury packaging.
-            </p>
+            <span className="offers-cta-tag">{t('offers_bespoke_tag')}</span>
+            <h2 className="offers-cta-title">{t('offers_bespoke_title')}</h2>
+            <p className="offers-cta-desc">{t('offers_bespoke_desc')}</p>
             <Link to="/contact" className="offers-cta-btn">
-              Consult a Specialist
+              {t('offers_consult')}
               <ArrowRight size={16} />
             </Link>
           </div>

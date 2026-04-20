@@ -8,30 +8,30 @@ import { Droplets, SprayCan, Gem, LayoutGrid } from 'lucide-react';
 import './Shop.css';
 
 const CATEGORIES = [
-  { key: 'all', label: { en: 'All', ar: 'الكل' }, icon: LayoutGrid },
-  { key: 'oud', label: { en: 'Oud', ar: 'العود' }, icon: Droplets },
-  { key: 'perfumes', label: { en: 'Perfumes', ar: 'العطور' }, icon: SprayCan },
-  { key: 'accessories', label: { en: 'Accessories', ar: 'الإكسسوارات' }, icon: Gem },
+  { key: 'all',        label: { en: 'All',         ar: 'الكل' },           icon: LayoutGrid },
+  { key: 'oud',        label: { en: 'Oud',          ar: 'العود' },          icon: Droplets },
+  { key: 'perfumes',   label: { en: 'Perfumes',     ar: 'العطور' },         icon: SprayCan },
+  { key: 'accessories',label: { en: 'Accessories',  ar: 'الإكسسوارات' },   icon: Gem },
 ];
 
 const SUBCATEGORIES = {
   oud: [
-    { key: 'all', label: { en: 'All Oud', ar: 'كل العود' } },
-    { key: 'oil', label: { en: 'Oils', ar: 'الدهون' } },
-    { key: 'bakhoor', label: { en: 'Bakhoor', ar: 'بخور' } },
-    { key: 'chips', label: { en: 'Wood Chips', ar: 'رقائق العود' } },
+    { key: 'all',     label: { en: 'All Oud',      ar: 'كل العود' } },
+    { key: 'oil',     label: { en: 'Oils',          ar: 'الدهون' } },
+    { key: 'bakhoor', label: { en: 'Bakhoor',       ar: 'بخور' } },
+    { key: 'chips',   label: { en: 'Wood Chips',    ar: 'رقائق العود' } },
   ],
   perfumes: [
-    { key: 'all', label: { en: 'All Perfumes', ar: 'كل العطور' } },
-    { key: 'men', label: { en: 'Men', ar: 'رجالي' } },
-    { key: 'women', label: { en: 'Women', ar: 'نسائي' } },
-    { key: 'unisex', label: { en: 'Unisex', ar: 'للجنسين' } },
+    { key: 'all',    label: { en: 'All Perfumes',  ar: 'كل العطور' } },
+    { key: 'men',    label: { en: 'Men',            ar: 'رجالي' } },
+    { key: 'women',  label: { en: 'Women',          ar: 'نسائي' } },
+    { key: 'unisex', label: { en: 'Unisex',         ar: 'للجنسين' } },
   ],
   accessories: [
-    { key: 'all', label: { en: 'All Accessories', ar: 'كل الإكسسوارات' } },
-    { key: 'burners', label: { en: 'Burners', ar: 'مباخر' } },
-    { key: 'bottles', label: { en: 'Bottles', ar: 'زجاجات' } },
-    { key: 'gifting', label: { en: 'Gifting', ar: 'هدايا' } },
+    { key: 'all',     label: { en: 'All Accessories', ar: 'كل الإكسسوارات' } },
+    { key: 'burners', label: { en: 'Burners',          ar: 'مباخر' } },
+    { key: 'bottles', label: { en: 'Bottles',          ar: 'زجاجات' } },
+    { key: 'gifting', label: { en: 'Gifting',          ar: 'هدايا' } },
   ],
 };
 
@@ -47,31 +47,28 @@ const Shop = () => {
 
   const filteredProducts = useMemo(() => {
     let result = products;
-    if (activeCategory !== 'all') {
-      result = result.filter((p) => p.category === activeCategory);
-    }
-    if (activeSubcategory !== 'all') {
-      result = result.filter((p) => p.subcategory === activeSubcategory);
-    }
+    if (activeCategory !== 'all') result = result.filter((p) => p.category === activeCategory);
+    if (activeSubcategory !== 'all') result = result.filter((p) => p.subcategory === activeSubcategory);
     return result;
   }, [products, activeCategory, activeSubcategory]);
 
   const subcategories = SUBCATEGORIES[activeCategory] || null;
 
+  const countLabel = filteredProducts.length === 1
+    ? `1 ${t('shop_product')}`
+    : `${filteredProducts.length} ${t('shop_products')}`;
+
   return (
     <main className="shop-page">
-      {/* Page Header */}
       <header className="shop-header container">
         <h1 className="shop-title">{t('nav_shop')}</h1>
-        <p className="shop-subtitle">Curated collections of the finest oriental fragrances.</p>
+        <p className="shop-subtitle">{t('shop_subtitle')}</p>
         <BoutiqueToggle />
       </header>
 
-      {/* Main Content */}
       <div className="shop-body container">
         {!isWholesale ? (
           <>
-            {/* Category Nav */}
             <nav className="shop-categories">
               {CATEGORIES.map((cat) => {
                 const Icon = cat.icon;
@@ -89,7 +86,6 @@ const Shop = () => {
               })}
             </nav>
 
-            {/* Subcategory Tabs */}
             <AnimatePresence mode="wait">
               {subcategories && (
                 <motion.div
@@ -113,14 +109,10 @@ const Shop = () => {
               )}
             </AnimatePresence>
 
-            {/* Product Count */}
             <div className="shop-results-bar">
-              <span className="shop-count">
-                {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
-              </span>
+              <span className="shop-count">{countLabel}</span>
             </div>
 
-            {/* Product Grid */}
             <AnimatePresence mode="wait">
               <motion.div
                 className="shop-grid"
@@ -143,7 +135,7 @@ const Shop = () => {
                   ))
                 ) : (
                   <div className="shop-empty">
-                    <p>No products found in this category.</p>
+                    <p>{t('shop_empty')}</p>
                   </div>
                 )}
               </motion.div>

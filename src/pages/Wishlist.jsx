@@ -16,12 +16,12 @@ const Wishlist = () => {
   return (
     <div className="wishlist-page container">
       <div className="page-header">
-        <h1>My Wishlist</h1>
-        <p>Your collection of favorite fragrances.</p>
-        
+        <h1>{t('wishlist_title')}</h1>
+        <p>{t('wishlist_subtitle')}</p>
+
         {wishlistedProducts.length > 0 && (
           <button className="add-all-btn" onClick={addAllToCart}>
-            <ShoppingBag size={18} /> Add All to Cart
+            <ShoppingBag size={18} /> {t('wishlist_add_all')}
           </button>
         )}
       </div>
@@ -30,9 +30,9 @@ const Wishlist = () => {
         {wishlistedProducts.length === 0 ? (
           <div className="empty-state">
             <Heart size={64} strokeWidth={1} />
-            <h2>Your wishlist is empty</h2>
-            <p>Explore our shop and find something you love.</p>
-            <Link to="/shop" className="shop-link">Go to Shop</Link>
+            <h2>{t('wishlist_empty_title')}</h2>
+            <p>{t('wishlist_empty_text')}</p>
+            <Link to="/shop" className="shop-link">{t('wishlist_go_shop')}</Link>
           </div>
         ) : (
           <div className="product-grid">
@@ -42,7 +42,6 @@ const Wishlist = () => {
           </div>
         )}
       </div>
-
     </div>
   );
 };

@@ -32,7 +32,6 @@ const FALLBACK_COLLECTIONS = [
 const Home = () => {
   const { t, language, blogPosts, products, banners } = useAppContext();
 
-  // Use admin-managed homepage/promo banners if available, otherwise fallback to hardcoded collections.
   const cmsBanners = banners.filter((b) => b.section === 'homepage' || b.section === 'promo');
   const collections = cmsBanners.length > 0
     ? cmsBanners.map((b) => ({
@@ -50,13 +49,11 @@ const Home = () => {
     <main>
       <Hero />
 
-      {/* Collection Banners + Products */}
       {collections.map((collection, idx) => {
         const collectionProducts = products.filter(collection.filter).slice(0, 6);
         return (
           <section className="home-collection" key={collection.id}>
             <div className="container">
-              {/* Banner */}
               <motion.div
                 className="hc-banner"
                 initial={{ opacity: 0, y: 24 }}
@@ -73,13 +70,12 @@ const Home = () => {
                   <h2 className="hc-banner-title">{collection.title[language]}</h2>
                   <p className="hc-banner-subtitle">{collection.subtitle[language]}</p>
                   <Link to={collection.link} className="hc-banner-btn">
-                    Explore All
+                    {t('explore_all')}
                     <ArrowRight size={16} />
                   </Link>
                 </div>
               </motion.div>
 
-              {/* Horizontal Product Row */}
               <div className="hc-products-row">
                 <div className="hc-products-scroll">
                   {collectionProducts.map((product, i) => (
@@ -96,7 +92,7 @@ const Home = () => {
                   ))}
                 </div>
                 <Link to={collection.link} className="hc-view-all">
-                  View All
+                  {t('view_all')}
                   <ChevronRight size={16} />
                 </Link>
               </div>
@@ -108,16 +104,12 @@ const Home = () => {
       {/* Heritage Section */}
       <section className="heritage-section container">
         <div className="heritage-content">
-          <h2 className="heritage-title">Heritage since 1995</h2>
-          <p className="heritage-text">
-            For over two decades, Oud Al-Anood has been the pinnacle of artisanal fragrance in Kuala Lumpur.
-            Nestled in the heart of Bukit Bintang, we bring the finest oud and perfumes to those who appreciate
-            the soul of traditional scents fused with modern elegance.
-          </p>
+          <h2 className="heritage-title">{t('home_heritage_title')}</h2>
+          <p className="heritage-text">{t('home_heritage_text')}</p>
           <Link to="/about" className="heritage-link">{t('nav_about')}</Link>
         </div>
         <div className="heritage-image">
-          <img src="/images/page5.png" alt="Heritage" />
+          <img src="/images/page5.png" alt={t('home_heritage_title')} />
         </div>
       </section>
 
@@ -126,7 +118,7 @@ const Home = () => {
       {/* Testimonials */}
       <section className="testimonials-section container">
         <div className="section-header">
-          <h2 className="section-title">Customer Stories</h2>
+          <h2 className="section-title">{t('home_customer_stories')}</h2>
           <div className="section-line"></div>
         </div>
         <TestimonialCarousel />
@@ -135,7 +127,7 @@ const Home = () => {
       {/* Blog Preview */}
       <section className="blog-preview-section container">
         <div className="section-header">
-          <h2 className="section-title">From the Journal</h2>
+          <h2 className="section-title">{t('home_from_journal')}</h2>
           <div className="section-line"></div>
         </div>
         <div className="blog-grid">

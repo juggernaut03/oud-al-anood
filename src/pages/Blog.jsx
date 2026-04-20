@@ -6,22 +6,21 @@ import { Calendar, User, ChevronLeft } from 'lucide-react';
 
 const Blog = () => {
   const { id } = useParams();
-  const { blogPosts, language } = useAppContext();
+  const { blogPosts, language, t } = useAppContext();
 
-  // If ID is provided, show detail view, otherwise listing
   if (id) {
     const post = blogPosts.find(
       (p) => String(p.id) === String(id) || p.slug === id
     );
-    if (!post) return <div className="container">Post not found</div>;
+    if (!post) return <div className="container">{t('blog_not_found')}</div>;
 
     return (
       <div className="blog-detail-page container">
         <Link to="/blog" className="back-link">
           <ChevronLeft size={18} />
-          Back to Journal
+          {t('blog_back')}
         </Link>
-        <motion.article 
+        <motion.article
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="blog-article"
@@ -33,14 +32,9 @@ const Blog = () => {
           </div>
           <div className="article-content">
             <p className="lead">{post.excerpt[language]}</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </p>
-            <p>
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+            {post.body?.[language] ? (
+              <p>{post.body[language]}</p>
+            ) : null}
           </div>
         </motion.article>
       </div>
@@ -50,14 +44,14 @@ const Blog = () => {
   return (
     <div className="blog-listing-page section-padding container">
       <div className="page-header">
-        <h1 className="serif-title">The Journal</h1>
-        <p className="subtitle">Stories of heritage, craft, and the soul of orientation.</p>
+        <h1 className="serif-title">{t('blog_title')}</h1>
+        <p className="subtitle">{t('blog_subtitle')}</p>
         <div className="section-line margin-auto"></div>
       </div>
-      
+
       <div className="blog-grid wide">
         {blogPosts.map((post, index) => (
-          <motion.div 
+          <motion.div
             key={post.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -70,11 +64,11 @@ const Blog = () => {
               <div className="blog-content">
                 <div className="blog-meta">
                   <span className="date"><Calendar size={14} /> {post.date}</span>
-                  <span className="author"><User size={14} /> OUD AL-ANOOD</span>
+                  <span className="author"><User size={14} /> {t('blog_author')}</span>
                 </div>
                 <h3>{post.title[language]}</h3>
                 <p>{post.excerpt[language]}</p>
-                <span className="read-more">Read Full Story</span>
+                <span className="read-more">{t('blog_read_more')}</span>
               </div>
             </Link>
           </motion.div>

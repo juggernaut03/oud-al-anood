@@ -7,15 +7,15 @@ const Orders = () => {
   return (
     <div className="orders-page">
       <div className="section-header">
-        <h2>My Orders</h2>
-        <p>Manage and track your recent orders.</p>
+        <h2>{t('orders_title')}</h2>
+        <p>{t('orders_subtitle')}</p>
       </div>
 
       <div className="orders-list">
         {orders.length === 0 ? (
           <div className="empty-state">
             <Package size={48} />
-            <p>You haven't placed any orders yet.</p>
+            <p>{t('orders_empty')}</p>
           </div>
         ) : (
           orders.map(order => (
@@ -33,19 +33,18 @@ const Orders = () => {
               </div>
               <div className="order-meta">
                 <div className="meta-details">
-                  <span>{order.itemsCount} items</span>
+                  <span>{order.itemsCount} {t('orders_items')}</span>
                   <span className="divider">•</span>
                   <span className="total">RM {order.total.toFixed(2)}</span>
                 </div>
                 <button className="view-btn">
-                  View Details <ChevronRight size={16} />
+                  {t('orders_view')} <ChevronRight size={16} />
                 </button>
               </div>
             </div>
           ))
         )}
       </div>
-
     </div>
   );
 };

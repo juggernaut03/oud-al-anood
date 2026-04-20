@@ -51,10 +51,10 @@ const Navbar = () => {
           <button
             className="nav-drive-btn"
             onClick={toggleStoreSelector}
-            title="Drive to Us"
+            title={t('nav_drive')}
           >
             <MapPin size={18} />
-            <span className="btn-label">Drive to Us</span>
+            <span className="btn-label">{t('nav_drive')}</span>
           </button>
           <Link to="/account" className="nav-icon-btn">
             <User size={20} />
@@ -71,11 +71,11 @@ const Navbar = () => {
         <div className="nav-links">
           <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>{t('nav_home')}</Link>
           <Link to="/shop" className={`nav-link ${location.pathname === '/shop' ? 'active' : ''}`}>{t('nav_shop')}</Link>
-          <Link to="/offers" className={`nav-link ${location.pathname === '/offers' ? 'active' : ''}`}>Specials</Link>
+          <Link to="/offers" className={`nav-link ${location.pathname === '/offers' ? 'active' : ''}`}>{t('nav_specials')}</Link>
           <Link to="/oud-mohsen" className={`nav-link ${location.pathname === '/oud-mohsen' ? 'active' : ''}`}>{t('nav_oud_mohsen')}</Link>
           <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>{t('nav_about')}</Link>
-          <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}>Contact</Link>
-          <Link to="/blog" className={`nav-link ${location.pathname === '/blog' ? 'active' : ''}`}>Journal</Link>
+          <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}>{t('nav_contact')}</Link>
+          <Link to="/blog" className={`nav-link ${location.pathname === '/blog' ? 'active' : ''}`}>{t('nav_journal')}</Link>
         </div>
       </div>
     </nav>

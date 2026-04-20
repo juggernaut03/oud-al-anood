@@ -4,26 +4,20 @@ import { X, ExternalLink } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
 const PurchaseModal = ({ isOpen, onClose, product }) => {
-  const { language } = useAppContext();
+  const { language, t } = useAppContext();
 
   if (!isOpen || !product) return null;
 
   const platforms = [
-    { id: 'shopee', name: 'Shopee', logo: '/images/shopee.png', color: '#EE4D2D' },
-    { id: 'grab', name: 'Grab', logo: '/images/grab.png', color: '#00B14F' },
-    { id: 'lalamove', name: 'Lalamove', logo: '/images/lalamove.png', color: '#F68B1E' },
-    { id: 'jnt', name: 'J&T Express', logo: '/images/jnt.png', color: '#FF0000' }
+    { id: 'shopee',   name: 'Shopee',     logo: '/images/shopee.png',   color: '#EE4D2D' },
+    { id: 'grab',     name: 'Grab',       logo: '/images/grab.png',     color: '#00B14F' },
+    { id: 'lalamove', name: 'Lalamove',   logo: '/images/lalamove.png', color: '#F68B1E' },
+    { id: 'jnt',      name: 'J&T Express',logo: '/images/jnt.png',      color: '#FF0000' },
   ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
   };
 
   const itemVariants = {
@@ -34,7 +28,7 @@ const PurchaseModal = ({ isOpen, onClose, product }) => {
   return (
     <AnimatePresence>
       <div className="modal-overlay" onClick={onClose}>
-        <motion.div 
+        <motion.div
           className="purchase-modal glass-luxury"
           initial={{ opacity: 0, scale: 0.95, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -47,12 +41,12 @@ const PurchaseModal = ({ isOpen, onClose, product }) => {
           </button>
 
           <div className="modal-header">
-            <span className="premium-tag">Authorized Partners</span>
-            <h3 className="serif-title small">Purchase Through</h3>
+            <span className="premium-tag">{t('modal_partners')}</span>
+            <h3 className="serif-title small">{t('modal_purchase_through')}</h3>
             <p className="product-name-highlight">{product.name[language]}</p>
           </div>
 
-          <motion.div 
+          <motion.div
             className="platforms-grid"
             variants={containerVariants}
             initial="hidden"
@@ -74,7 +68,7 @@ const PurchaseModal = ({ isOpen, onClose, product }) => {
                   <img src={platform.logo} alt={platform.name} className="platform-logo" />
                 </div>
                 <div className="platform-content">
-                  <span className="platform-label">SHOP ON</span>
+                  <span className="platform-label">{t('modal_shop_on')}</span>
                   <span className="platform-title">{platform.name}</span>
                 </div>
                 <ExternalLink size={16} className="link-icon-sleek" />
@@ -83,7 +77,7 @@ const PurchaseModal = ({ isOpen, onClose, product }) => {
           </motion.div>
 
           <div className="modal-footer-sleek">
-            <p>Direct premium delivery via Grab & Lalamove</p>
+            <p>{t('modal_delivery')}</p>
           </div>
         </motion.div>
       </div>

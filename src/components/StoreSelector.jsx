@@ -11,19 +11,18 @@ const StoreSelector = () => {
     stores,
     selectedStore,
     setSelectedStore,
-    language
+    language,
+    t
   } = useAppContext();
 
-  const [viewMode, setViewMode] = useState('select'); // 'select' or 'map'
+  const [viewMode, setViewMode] = useState('select');
 
   const handleStoreSelect = (store) => {
     setSelectedStore(store);
     setViewMode('map');
   };
 
-  const handleBack = () => {
-    setViewMode('select');
-  };
+  const handleBack = () => setViewMode('select');
 
   const handleClose = () => {
     setViewMode('select');
@@ -49,7 +48,6 @@ const StoreSelector = () => {
           transition={{ type: 'spring', damping: 30, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Close Button */}
           <button className="drive-close" onClick={handleClose}>
             <X size={20} />
           </button>
@@ -64,19 +62,15 @@ const StoreSelector = () => {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.25 }}
               >
-                {/* Header */}
                 <div className="drive-header">
                   <div className="drive-header-icon">
                     <Navigation size={24} />
                   </div>
-                  <span className="drive-label">Visit Us</span>
-                  <h2 className="drive-title">Drive to Our Boutique</h2>
-                  <p className="drive-subtitle">
-                    Choose your nearest location and we'll guide you there.
-                  </p>
+                  <span className="drive-label">{t('store_visit')}</span>
+                  <h2 className="drive-title">{t('store_drive_title')}</h2>
+                  <p className="drive-subtitle">{t('store_drive_subtitle')}</p>
                 </div>
 
-                {/* Store Cards */}
                 <div className="drive-store-cards">
                   {stores.map((store, index) => (
                     <motion.button
@@ -98,7 +92,7 @@ const StoreSelector = () => {
                         <div className="drive-card-details">
                           <span className="drive-card-hours">
                             <Clock size={13} />
-                            10 AM – 10 PM
+                            {t('store_hours')}
                           </span>
                         </div>
                       </div>
@@ -109,10 +103,9 @@ const StoreSelector = () => {
                   ))}
                 </div>
 
-                {/* Footer Note */}
                 <div className="drive-footer-note">
                   <Sparkles size={14} />
-                  <span>Complimentary fragrance consultation at every visit</span>
+                  <span>{t('store_consult')}</span>
                 </div>
               </motion.div>
             ) : (
@@ -124,11 +117,10 @@ const StoreSelector = () => {
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.25 }}
               >
-                {/* Map Header */}
                 <div className="drive-map-header">
                   <button className="drive-back-btn" onClick={handleBack}>
                     <ChevronRight size={18} className="back-icon" />
-                    <span>All Locations</span>
+                    <span>{t('store_all_locations')}</span>
                   </button>
                   <div className="drive-map-store-name">
                     <MapPin size={16} />
@@ -136,7 +128,6 @@ const StoreSelector = () => {
                   </div>
                 </div>
 
-                {/* Map */}
                 <div className="drive-map-container">
                   <iframe
                     title={selectedStore.name[language]}
@@ -149,25 +140,18 @@ const StoreSelector = () => {
                   />
                 </div>
 
-                {/* Info + Action */}
                 <div className="drive-map-footer">
                   <div className="drive-map-info">
                     <div className="drive-info-item">
-                      <div className="drive-info-icon">
-                        <MapPin size={16} />
-                      </div>
+                      <div className="drive-info-icon"><MapPin size={16} /></div>
                       <span>{selectedStore.address[language]}</span>
                     </div>
                     <div className="drive-info-item">
-                      <div className="drive-info-icon">
-                        <Clock size={16} />
-                      </div>
-                      <span>Daily: 10:00 AM – 10:00 PM</span>
+                      <div className="drive-info-icon"><Clock size={16} /></div>
+                      <span>{t('store_daily_hours')}</span>
                     </div>
                     <div className="drive-info-item">
-                      <div className="drive-info-icon">
-                        <Phone size={16} />
-                      </div>
+                      <div className="drive-info-icon"><Phone size={16} /></div>
                       <span>+60 3-1234 5678</span>
                     </div>
                   </div>
@@ -179,7 +163,7 @@ const StoreSelector = () => {
                     className="drive-navigate-btn"
                   >
                     <Navigation size={18} />
-                    <span>Get Directions</span>
+                    <span>{t('store_directions')}</span>
                   </a>
                 </div>
               </motion.div>

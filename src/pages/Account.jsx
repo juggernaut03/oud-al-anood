@@ -54,11 +54,7 @@ const Account = () => {
   };
 
   const startEdit = () => {
-    setProfileForm({
-      name: user?.name || '',
-      phone: user?.phone || '',
-      language: user?.language || 'en'
-    });
+    setProfileForm({ name: user?.name || '', phone: user?.phone || '', language: user?.language || 'en' });
     setEditing(true);
     setProfileMessage(null);
   };
@@ -80,7 +76,7 @@ const Account = () => {
   if (status === 'loading') {
     return (
       <div className="account-page container">
-        <p>Loading…</p>
+        <p>{t('account_loading')}</p>
       </div>
     );
   }
@@ -89,58 +85,54 @@ const Account = () => {
     return (
       <div className="auth-page">
         <div className="auth-card">
-          {/* Brand mark */}
           <div className="auth-brand">
             <img src="/images/perfume.png" alt="Oud Al-Anood" className="auth-logo" />
             <span className="auth-brand-name">OUD AL-ANOOD</span>
           </div>
 
           <h2 className="auth-heading">
-            {mode === 'login' ? 'Welcome back' : 'Create account'}
+            {mode === 'login' ? t('account_welcome_back') : t('account_create')}
           </h2>
           <p className="auth-subheading">
-            {mode === 'login'
-              ? 'Sign in to access your orders and wishlist'
-              : 'Join us for an exclusive fragrance experience'}
+            {mode === 'login' ? t('account_signin_sub') : t('account_register_sub')}
           </p>
 
-          {/* Tab switcher */}
           <div className="auth-tabs">
             <button
               type="button"
               className={`auth-tab ${mode === 'login' ? 'active' : ''}`}
               onClick={() => { setMode('login'); setAuthError(null); }}
             >
-              Sign In
+              {t('account_sign_in_tab')}
             </button>
             <button
               type="button"
               className={`auth-tab ${mode === 'register' ? 'active' : ''}`}
               onClick={() => { setMode('register'); setAuthError(null); }}
             >
-              Register
+              {t('account_register_tab')}
             </button>
           </div>
 
           {mode === 'login' ? (
             <form onSubmit={handleLogin} className="auth-form">
               <div className="auth-field">
-                <label className="auth-label">Email address</label>
+                <label className="auth-label">{t('account_email')}</label>
                 <input
                   className="auth-input"
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder={t('account_email_placeholder')}
                   value={loginForm.email}
                   onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
                   required
                 />
               </div>
               <div className="auth-field">
-                <label className="auth-label">Password</label>
+                <label className="auth-label">{t('account_password')}</label>
                 <input
                   className="auth-input"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder={t('account_password_placeholder')}
                   value={loginForm.password}
                   onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                   required
@@ -148,49 +140,51 @@ const Account = () => {
               </div>
               {authError && <p className="auth-error">{authError}</p>}
               <button type="submit" className="auth-submit" disabled={submitting}>
-                {submitting ? 'Signing in…' : 'Sign In'}
+                {submitting ? t('account_signing_in') : t('account_sign_in_btn')}
               </button>
             </form>
           ) : (
             <form onSubmit={handleRegister} className="auth-form">
               <div className="auth-field">
-                <label className="auth-label">Full name</label>
+                <label className="auth-label">{t('account_full_name')}</label>
                 <input
                   className="auth-input"
                   type="text"
-                  placeholder="Your name"
+                  placeholder={t('account_name_placeholder')}
                   value={registerForm.name}
                   onChange={(e) => setRegisterForm({ ...registerForm, name: e.target.value })}
                   required
                 />
               </div>
               <div className="auth-field">
-                <label className="auth-label">Email address</label>
+                <label className="auth-label">{t('account_email')}</label>
                 <input
                   className="auth-input"
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder={t('account_email_placeholder')}
                   value={registerForm.email}
                   onChange={(e) => setRegisterForm({ ...registerForm, email: e.target.value })}
                   required
                 />
               </div>
               <div className="auth-field">
-                <label className="auth-label">Phone <span className="auth-optional">(optional)</span></label>
+                <label className="auth-label">
+                  {t('account_phone_optional')} <span className="auth-optional">{t('account_optional')}</span>
+                </label>
                 <input
                   className="auth-input"
                   type="tel"
-                  placeholder="+60 12 345 6789"
+                  placeholder={t('checkout_phone_placeholder')}
                   value={registerForm.phone}
                   onChange={(e) => setRegisterForm({ ...registerForm, phone: e.target.value })}
                 />
               </div>
               <div className="auth-field">
-                <label className="auth-label">Password</label>
+                <label className="auth-label">{t('account_password')}</label>
                 <input
                   className="auth-input"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder={t('account_password_placeholder')}
                   value={registerForm.password}
                   onChange={(e) => setRegisterForm({ ...registerForm, password: e.target.value })}
                   required
@@ -198,19 +192,19 @@ const Account = () => {
               </div>
               {authError && <p className="auth-error">{authError}</p>}
               <button type="submit" className="auth-submit" disabled={submitting}>
-                {submitting ? 'Creating account…' : 'Create Account'}
+                {submitting ? t('account_creating') : t('account_create_btn')}
               </button>
             </form>
           )}
 
           <p className="auth-switch">
-            {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
+            {mode === 'login' ? t('account_no_account') : t('account_have_account')}{' '}
             <button
               type="button"
               className="auth-switch-btn"
               onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setAuthError(null); }}
             >
-              {mode === 'login' ? 'Register' : 'Sign in'}
+              {mode === 'login' ? t('account_register_link') : t('account_signin_link')}
             </button>
           </p>
         </div>
@@ -222,22 +216,22 @@ const Account = () => {
     <div className="account-page container">
       <div className="account-header">
         <h1>{t('nav_account')}</h1>
-        <p>Welcome back, {user?.name || 'Guest'}</p>
+        <p>{t('account_greeting')} {user?.name || 'Guest'}</p>
       </div>
 
       <div className="account-layout">
         <aside className="account-nav">
           <NavLink to="/account" end className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <User size={20} /> Profile
+            <User size={20} /> {t('account_profile')}
           </NavLink>
           <NavLink to="/account/orders" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <Package size={20} /> My Orders
+            <Package size={20} /> {t('account_my_orders')}
           </NavLink>
           <NavLink to="/wishlist" className="nav-item">
-            <Heart size={20} /> Wishlist
+            <Heart size={20} /> {t('account_wishlist')}
           </NavLink>
           <button className="nav-item logout" onClick={logout}>
-            <LogOut size={20} /> Logout
+            <LogOut size={20} /> {t('account_logout')}
           </button>
         </aside>
 
@@ -246,56 +240,45 @@ const Account = () => {
             <Orders />
           ) : (
             <div className="card login-card">
-              <h2>My Profile</h2>
+              <h2>{t('account_my_profile')}</h2>
               {editing ? (
                 <form onSubmit={handleProfileSave}>
                   <div className="profile-details">
                     <div className="detail-row">
-                      <label>Full Name</label>
+                      <label>{t('account_full_name')}</label>
                       <input
                         type="text"
                         value={profileForm.name}
-                        onChange={(e) =>
-                          setProfileForm({ ...profileForm, name: e.target.value })
-                        }
+                        onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
                         required
                       />
                     </div>
                     <div className="detail-row">
-                      <label>Phone</label>
+                      <label>{t('account_phone_label')}</label>
                       <input
                         type="tel"
                         value={profileForm.phone}
-                        onChange={(e) =>
-                          setProfileForm({ ...profileForm, phone: e.target.value })
-                        }
+                        onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
                       />
                     </div>
                     <div className="detail-row">
-                      <label>Language</label>
+                      <label>{t('account_language')}</label>
                       <select
                         value={profileForm.language}
-                        onChange={(e) =>
-                          setProfileForm({ ...profileForm, language: e.target.value })
-                        }
+                        onChange={(e) => setProfileForm({ ...profileForm, language: e.target.value })}
                       >
-                        <option value="en">English</option>
-                        <option value="ar">العربية</option>
+                        <option value="en">{t('account_lang_en')}</option>
+                        <option value="ar">{t('account_lang_ar')}</option>
                       </select>
                     </div>
                   </div>
                   {profileMessage && <p style={{ marginTop: 12 }}>{profileMessage}</p>}
                   <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
                     <button type="submit" className="edit-btn" disabled={submitting}>
-                      {submitting ? 'Saving…' : 'Save changes'}
+                      {submitting ? t('account_saving') : t('account_save')}
                     </button>
-                    <button
-                      type="button"
-                      className="edit-btn"
-                      onClick={() => setEditing(false)}
-                      style={{ opacity: 0.7 }}
-                    >
-                      Cancel
+                    <button type="button" className="edit-btn" onClick={() => setEditing(false)} style={{ opacity: 0.7 }}>
+                      {t('account_cancel')}
                     </button>
                   </div>
                 </form>
@@ -303,25 +286,25 @@ const Account = () => {
                 <>
                   <div className="profile-details">
                     <div className="detail-row">
-                      <label>Full Name</label>
+                      <label>{t('account_full_name')}</label>
                       <span>{user?.name || '—'}</span>
                     </div>
                     <div className="detail-row">
-                      <label>Email</label>
+                      <label>{t('account_email_label')}</label>
                       <span>{user?.email || '—'}</span>
                     </div>
                     <div className="detail-row">
-                      <label>Phone</label>
+                      <label>{t('account_phone_label')}</label>
                       <span>{user?.phone || '—'}</span>
                     </div>
                     <div className="detail-row">
-                      <label>Language</label>
+                      <label>{t('account_language')}</label>
                       <span>{(user?.language || 'en').toUpperCase()}</span>
                     </div>
                   </div>
                   {profileMessage && <p style={{ marginTop: 12 }}>{profileMessage}</p>}
                   <button className="edit-btn" onClick={startEdit}>
-                    Edit Profile
+                    {t('account_edit')}
                   </button>
                 </>
               )}

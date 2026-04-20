@@ -19,14 +19,14 @@ const CartDrawer = () => {
     <AnimatePresence>
       {isCartOpen && (
         <>
-          <motion.div 
+          <motion.div
             className="cart-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsCartOpen(false)}
           />
-          <motion.div 
+          <motion.div
             className="cart-drawer"
             initial={{ [language === 'ar' ? 'left' : 'right']: '-100%' }}
             animate={{ [language === 'ar' ? 'left' : 'right']: 0 }}
@@ -64,7 +64,7 @@ const CartDrawer = () => {
             {cart.length > 0 && (
               <div className="cart-footer">
                 <div className="total-row">
-                  <span>Total</span>
+                  <span>{t('total')}</span>
                   <span>{t('price_rm')} {total.toFixed(2)}</span>
                 </div>
                 <button className="checkout-btn" onClick={handleCheckout}>
@@ -76,7 +76,6 @@ const CartDrawer = () => {
           </motion.div>
         </>
       )}
-
     </AnimatePresence>
   );
 };
