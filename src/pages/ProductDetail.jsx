@@ -121,10 +121,9 @@ const ProductDetail = () => {
     product.dimensions?.length != null || product.dimensions?.width != null || product.dimensions?.height != null;
 
   const platforms = [
-    { id: 'shopee',   name: 'Shopee',      logo: '/images/shopee.png' },
-    { id: 'grab',     name: 'Grab',        logo: '/images/grab.png' },
-    { id: 'lalamove', name: 'Lalamove',    logo: '/images/lalamove.png' },
-    { id: 'jnt',      name: 'J&T Express', logo: '/images/jnt.png' },
+    { id: 'shopee', name: 'Shopee',      logo: '/images/shopee.png' },
+    { id: 'lojada', name: 'Lojada',      logo: '/images/lojada.png' },
+    { id: 'tiktok', name: 'TikTok Shop', logo: '/images/tiktok.png' },
   ];
 
   const reviewCountLabel = reviewSummary.count > 0
