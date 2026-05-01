@@ -9,7 +9,11 @@ export const normalizeProduct = (p) => {
     description: p.description || { en: '', ar: '' },
     features: Array.isArray(p.features) ? p.features : [],
     purchaseLinks: { ...DEFAULT_PURCHASE_LINKS, ...(p.purchaseLinks || {}) },
-    image: p.image || ''
+    image: p.image || '',
+    images: Array.isArray(p.images) ? p.images : [],
+    sizeVariants: Array.isArray(p.sizeVariants) ? p.sizeVariants : [],
+    weight: p.weight || { value: null, unit: 'g' },
+    dimensions: p.dimensions || { length: null, width: null, height: null, unit: 'cm' },
   };
 };
 

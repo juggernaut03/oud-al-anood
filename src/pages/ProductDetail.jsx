@@ -20,6 +20,8 @@ const ProductDetail = () => {
   const { user } = useAuth();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState(null);
+  const [activeImage, setActiveImage] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState(null);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [reviewSummary, setReviewSummary] = useState({ average: 0, count: 0 });
@@ -45,6 +47,12 @@ const ProductDetail = () => {
     }
     return () => { cancelled = true; };
   }, [id, products]);
+
+  // Reset gallery & variant selection when product changes
+  useEffect(() => {
+    setActiveImage(0);
+    setSelectedVariant(null);
+  }, [product?.id]);
 
   useEffect(() => {
     if (!product?.id) return;
@@ -88,6 +96,13 @@ const ProductDetail = () => {
 
   if (!product) return <div className="loading">{t('product_loading')}</div>;
 
+  // Build unified gallery from images array + fallback to single image
+  const gallery = product.images && product.images.length > 0
+    ? product.images.map(img => (typeof img === 'string' ? img : img.url))
+    : product.image ? [product.image] : [];
+
+  const currentImage = gallery[activeImage] || product.image || '';
+
   const isWishlisted = wishlist.includes(product.id);
   const relatedProducts = products
     .filter((p) => p.category === product.category && !matchesId(p, product.id))
@@ -95,6 +110,15 @@ const ProductDetail = () => {
 
   const incrementQty = () => setQuantity(prev => prev + 1);
   const decrementQty = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
+
+  const hasVariants = Array.isArray(product.sizeVariants) && product.sizeVariants.length > 0;
+  const displayPrice = hasVariants
+    ? (selectedVariant !== null ? product.sizeVariants[selectedVariant].price : null)
+    : product.price;
+
+  const hasWeight = product.weight?.value != null && product.weight.value !== '';
+  const hasDimensions =
+    product.dimensions?.length != null || product.dimensions?.width != null || product.dimensions?.height != null;
 
   const platforms = [
     { id: 'shopee',   name: 'Shopee',      logo: '/images/shopee.png' },
@@ -118,16 +142,32 @@ const ProductDetail = () => {
       </nav>
 
       <div className="product-main">
+        {/* ── Gallery ── */}
         <motion.div
           className="product-gallery"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
         >
           <div className="main-image">
-            <img src={product.image} alt={product.name[language]} />
+            <img src={currentImage} alt={product.name[language]} />
           </div>
+
+          {gallery.length > 1 && (
+            <div className="gallery-thumbnails">
+              {gallery.map((url, idx) => (
+                <button
+                  key={idx}
+                  className={`thumb-btn${activeImage === idx ? ' active' : ''}`}
+                  onClick={() => setActiveImage(idx)}
+                >
+                  <img src={url} alt={`${product.name[language]} ${idx + 1}`} />
+                </button>
+              ))}
+            </div>
+          )}
         </motion.div>
 
+        {/* ── Details ── */}
         <motion.div
           className="product-details"
           initial={{ opacity: 0, x: 20 }}
@@ -135,7 +175,17 @@ const ProductDetail = () => {
         >
           <span className="product-cat">{product.category.toUpperCase()}</span>
           <h1 className="product-title">{product.name[language]}</h1>
-          <p className="product-price-large">{t('price_rm')} {product.price.toFixed(2)}</p>
+
+          {/* Price display */}
+          {hasVariants ? (
+            <p className="product-price-large">
+              {selectedVariant !== null
+                ? `${t('price_rm')} ${product.sizeVariants[selectedVariant].price.toFixed(2)}`
+                : t('product_select_size') || 'Select a size'}
+            </p>
+          ) : (
+            <p className="product-price-large">{t('price_rm')} {product.price.toFixed(2)}</p>
+          )}
 
           <div className="product-description">
             <p>{product.description?.[language] || t('product_desc_fallback')}</p>
@@ -145,13 +195,66 @@ const ProductDetail = () => {
             {product.features?.map((f, i) => <li key={i}>{f}</li>)}
           </ul>
 
+          {/* ── Size variants ── */}
+          {hasVariants && (
+            <div className="size-variants-section">
+              <p className="size-variants-label">
+                {t('product_select_size') || 'Select Size'}
+              </p>
+              <div className="size-variants-grid">
+                {product.sizeVariants.map((v, idx) => (
+                  <button
+                    key={idx}
+                    className={`size-variant-btn${selectedVariant === idx ? ' selected' : ''}`}
+                    onClick={() => setSelectedVariant(selectedVariant === idx ? null : idx)}
+                  >
+                    <span className="variant-option-label">
+                      {String.fromCharCode(65 + idx)}
+                    </span>
+                    <span className="variant-size">{v.label}</span>
+                    <span className="variant-price">{t('price_rm')} {Number(v.price).toFixed(2)}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Physical specs ── */}
+          {(hasWeight || hasDimensions) && (
+            <div className="product-specs">
+              <h4 className="specs-title">{t('product_specs') || 'Specifications'}</h4>
+              <dl className="specs-list">
+                {hasWeight && (
+                  <>
+                    <dt>{t('product_weight') || 'Weight'}</dt>
+                    <dd>{product.weight.value} {product.weight.unit}</dd>
+                  </>
+                )}
+                {hasDimensions && (
+                  <>
+                    <dt>{t('product_dimensions') || 'Dimensions'}</dt>
+                    <dd>
+                      {[product.dimensions.length, product.dimensions.width, product.dimensions.height]
+                        .filter(v => v != null)
+                        .join(' × ')} {product.dimensions.unit}
+                    </dd>
+                  </>
+                )}
+              </dl>
+            </div>
+          )}
+
           <div className="purchase-controls">
             <div className="qty-selector">
               <button onClick={decrementQty}><Minus size={16} /></button>
               <span>{quantity}</span>
               <button onClick={incrementQty}><Plus size={16} /></button>
             </div>
-            <button className="add-cart-btn-large" onClick={() => openPurchaseModal(product)}>
+            <button
+              className="add-cart-btn-large"
+              onClick={() => openPurchaseModal(product)}
+              disabled={hasVariants && selectedVariant === null}
+            >
               <ShoppingBag size={20} />
               {t('product_order_now')}
             </button>
@@ -206,7 +309,7 @@ const ProductDetail = () => {
         </motion.div>
       </div>
 
-      {/* Reviews Section */}
+      {/* ── Reviews ── */}
       <section className="product-reviews container">
         <div className="section-header">
           <h2 className="section-title">{t('product_reviews_title')}</h2>
