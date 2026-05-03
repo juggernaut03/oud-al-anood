@@ -253,20 +253,21 @@ export const AppProvider = ({ children }) => {
   );
 
   const addToCart = useCallback(
-    (product) => {
+    (product, qty = 1, { silent = false } = {}) => {
       if (!product) return;
       const finalPrice = isWholesale ? product.price * 0.7 : product.price;
       const finalProduct = { ...product, price: finalPrice };
+      const amount = Math.max(1, Math.floor(qty));
       setCart((prev) => {
         const existing = prev.find((item) => item.id === product.id);
         if (existing) {
           return prev.map((item) =>
-            item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+            item.id === product.id ? { ...item, quantity: item.quantity + amount } : item
           );
         }
-        return [...prev, { ...finalProduct, quantity: 1 }];
+        return [...prev, { ...finalProduct, quantity: amount }];
       });
-      setIsCartOpen(true);
+      if (!silent) setIsCartOpen(true);
     },
     [isWholesale]
   );

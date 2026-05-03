@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './ProductDetail.css';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../lib/api';
@@ -16,8 +16,9 @@ const matchesId = (p, id) => {
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const { products, wishlist, toggleWishlist, language, t, openPurchaseModal } = useAppContext();
+  const { products, wishlist, toggleWishlist, language, t, addToCart } = useAppContext();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
@@ -251,7 +252,13 @@ const ProductDetail = () => {
             </div>
             <button
               className="add-cart-btn-large"
-              onClick={() => openPurchaseModal(product)}
+              onClick={() => {
+                const item = hasVariants && selectedVariant !== null
+                  ? { ...product, price: product.sizeVariants[selectedVariant].price }
+                  : product;
+                addToCart(item, quantity, { silent: true });
+                navigate('/checkout');
+              }}
               disabled={hasVariants && selectedVariant === null}
             >
               <ShoppingBag size={20} />
@@ -265,22 +272,24 @@ const ProductDetail = () => {
             </button>
           </div>
 
-          <div className="shop-through-section">
-            <h4 className="shop-through-title">{t('product_shop_partners')}</h4>
-            <div className="platform-pills">
-              {platforms.map(platform => (
-                <a
-                  key={platform.id}
-                  href={product.purchaseLinks?.[platform.id] || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="platform-pill"
-                >
-                  <img src={platform.logo} alt={platform.name} />
-                </a>
-              ))}
+          {platforms.some(p => product.purchaseLinks?.[p.id]) && (
+            <div className="shop-through-section">
+              <h4 className="shop-through-title">{t('product_shop_partners')}</h4>
+              <div className="platform-pills">
+                {platforms.filter(p => product.purchaseLinks?.[p.id]).map(platform => (
+                  <a
+                    key={platform.id}
+                    href={product.purchaseLinks[platform.id]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="platform-pill"
+                  >
+                    <img src={platform.logo} alt={platform.name} />
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="trust-points">
             <div className="trust-item">
