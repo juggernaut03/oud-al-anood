@@ -24,6 +24,13 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-xl);
   align-items: center;
+  margin-bottom: var(--spacing-xl);
+}
+.about-content--reverse {
+  direction: rtl;
+}
+.about-content--reverse > * {
+  direction: ltr;
 }
 .about-text-section h2 {
   font-size: 2rem;
