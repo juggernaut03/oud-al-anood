@@ -14,6 +14,7 @@ export const normalizeProduct = (p) => {
     sizeVariants: Array.isArray(p.sizeVariants) ? p.sizeVariants : [],
     weight: p.weight || { value: null, unit: 'g' },
     dimensions: p.dimensions || { length: null, width: null, height: null, unit: 'cm' },
+    gender: p.gender || '',
   };
 };
 

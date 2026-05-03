@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
 import BoutiqueToggle from '../components/BoutiqueToggle';
 import WholesaleConcierge from '../components/WholesaleConcierge';
@@ -6,59 +6,100 @@ import { useAppContext } from '../context/AppContext';
 import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Droplets, SprayCan, Gem, LayoutGrid } from 'lucide-react';
+import { api } from '../lib/api';
 import './Shop.css';
 
-const CATEGORIES = [
-  { key: 'all',        label: { en: 'All',         ar: 'الكل' },           icon: LayoutGrid },
-  { key: 'oud',        label: { en: 'Oud',          ar: 'العود' },          icon: Droplets },
-  { key: 'perfumes',   label: { en: 'Perfumes',     ar: 'العطور' },         icon: SprayCan },
-  { key: 'accessories',label: { en: 'Accessories',  ar: 'الإكسسوارات' },   icon: Gem },
+const STATIC_CATEGORIES = [
+  { key: 'all',         label: { en: 'All',          ar: 'الكل' },           icon: LayoutGrid },
+  { key: 'oud',         label: { en: 'Oud',           ar: 'العود' },          icon: Droplets },
+  { key: 'perfumes',    label: { en: 'Perfumes',      ar: 'العطور' },         icon: SprayCan },
+  { key: 'accessories', label: { en: 'Accessories',   ar: 'الإكسسوارات' },   icon: Gem },
 ];
 
-const SUBCATEGORIES = {
+const STATIC_SUBCATEGORIES = {
   oud: [
-    { key: 'all',     label: { en: 'All Oud',      ar: 'كل العود' } },
-    { key: 'oil',     label: { en: 'Oils',          ar: 'الدهون' } },
-    { key: 'bakhoor', label: { en: 'Bakhoor',       ar: 'بخور' } },
-    { key: 'chips',   label: { en: 'Wood Chips',    ar: 'رقائق العود' } },
+    { key: 'all',     label: { en: 'All Oud',         ar: 'كل العود' } },
+    { key: 'oil',     label: { en: 'Oils',             ar: 'الدهون' } },
+    { key: 'bakhoor', label: { en: 'Bakhoor',          ar: 'بخور' } },
+    { key: 'chips',   label: { en: 'Wood Chips',       ar: 'رقائق العود' } },
   ],
   perfumes: [
-    { key: 'all',    label: { en: 'All Perfumes',  ar: 'كل العطور' } },
-    { key: 'men',    label: { en: 'Men',            ar: 'رجالي' } },
-    { key: 'women',  label: { en: 'Women',          ar: 'نسائي' } },
-    { key: 'unisex', label: { en: 'Unisex',         ar: 'للجنسين' } },
+    { key: 'all',    label: { en: 'All Perfumes',     ar: 'كل العطور' } },
+    { key: 'men',    label: { en: 'Men',               ar: 'رجالي' } },
+    { key: 'women',  label: { en: 'Women',             ar: 'نسائي' } },
+    { key: 'unisex', label: { en: 'Unisex',            ar: 'للجنسين' } },
   ],
   accessories: [
-    { key: 'all',     label: { en: 'All Accessories', ar: 'كل الإكسسوارات' } },
-    { key: 'burners', label: { en: 'Burners',          ar: 'مباخر' } },
-    { key: 'bottles', label: { en: 'Bottles',          ar: 'زجاجات' } },
-    { key: 'gifting', label: { en: 'Gifting',          ar: 'هدايا' } },
+    { key: 'all',     label: { en: 'All Accessories',  ar: 'كل الإكسسوارات' } },
+    { key: 'burners', label: { en: 'Burners',           ar: 'مباخر' } },
+    { key: 'bottles', label: { en: 'Bottles',           ar: 'زجاجات' } },
+    { key: 'gifting', label: { en: 'Gifting',           ar: 'هدايا' } },
   ],
 };
+
+const GENDER_OPTIONS = [
+  { key: 'all',    label: { en: 'All',     ar: 'الكل' } },
+  { key: 'male',   label: { en: 'Male',    ar: 'رجالي' } },
+  { key: 'female', label: { en: 'Female',  ar: 'نسائي' } },
+  { key: 'unisex', label: { en: 'Unisex',  ar: 'للجنسين' } },
+];
 
 const Shop = () => {
   const { t, isWholesale, products, language } = useAppContext();
   const { search: qs } = useLocation();
+
+  // DB-driven category hierarchy (slug → children array)
+  const [dbSubcategories, setDbSubcategories] = useState({});
+
+  useEffect(() => {
+    api.get('/api/categories', { params: { nested: 'true', isActive: 'true' } })
+      .then(({ data }) => {
+        const list = Array.isArray(data?.data) ? data.data : [];
+        const map = {};
+        list.forEach((cat) => {
+          if (Array.isArray(cat.children) && cat.children.length > 0) {
+            map[cat.slug] = [
+              { key: 'all', label: { en: `All ${cat.name?.en || cat.slug}`, ar: `كل ${cat.name?.ar || cat.slug}` } },
+              ...cat.children.map((s) => ({
+                key: s.slug,
+                label: s.name || { en: s.slug, ar: s.slug },
+              })),
+            ];
+          }
+        });
+        if (Object.keys(map).length > 0) setDbSubcategories(map);
+      })
+      .catch(() => {});
+  }, []);
+
   const initialCategory = useMemo(() => {
     const param = new URLSearchParams(qs).get('category') || 'all';
-    return CATEGORIES.some((c) => c.key === param) ? param : 'all';
+    return STATIC_CATEGORIES.some((c) => c.key === param) ? param : 'all';
   }, [qs]);
+
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [activeSubcategory, setActiveSubcategory] = useState('all');
+  const [activeGender, setActiveGender] = useState('all');
 
   const handleCategoryChange = (key) => {
     setActiveCategory(key);
     setActiveSubcategory('all');
+    setActiveGender('all');
   };
+
+  // Prefer DB subcategories, fall back to static
+  const subcategories = useMemo(() => {
+    if (activeCategory === 'all') return null;
+    return dbSubcategories[activeCategory] || STATIC_SUBCATEGORIES[activeCategory] || null;
+  }, [activeCategory, dbSubcategories]);
 
   const filteredProducts = useMemo(() => {
     let result = products;
     if (activeCategory !== 'all') result = result.filter((p) => p.category === activeCategory);
     if (activeSubcategory !== 'all') result = result.filter((p) => p.subcategory === activeSubcategory);
+    if (activeGender !== 'all') result = result.filter((p) => p.gender === activeGender);
     return result;
-  }, [products, activeCategory, activeSubcategory]);
-
-  const subcategories = SUBCATEGORIES[activeCategory] || null;
+  }, [products, activeCategory, activeSubcategory, activeGender]);
 
   const countLabel = filteredProducts.length === 1
     ? `1 ${t('shop_product')}`
@@ -75,8 +116,9 @@ const Shop = () => {
       <div className="shop-body container">
         {!isWholesale ? (
           <>
+            {/* ── Category tabs ── */}
             <nav className="shop-categories">
-              {CATEGORIES.map((cat) => {
+              {STATIC_CATEGORIES.map((cat) => {
                 const Icon = cat.icon;
                 const isActive = activeCategory === cat.key;
                 return (
@@ -92,6 +134,7 @@ const Shop = () => {
               })}
             </nav>
 
+            {/* ── Subcategory pills ── */}
             <AnimatePresence mode="wait">
               {subcategories && (
                 <motion.div
@@ -115,6 +158,19 @@ const Shop = () => {
               )}
             </AnimatePresence>
 
+            {/* ── Gender filter ── */}
+            <div className="shop-gender-row">
+              {GENDER_OPTIONS.map((g) => (
+                <button
+                  key={g.key}
+                  className={`shop-gender-btn ${activeGender === g.key ? 'active' : ''}`}
+                  onClick={() => setActiveGender(g.key)}
+                >
+                  {g.label[language]}
+                </button>
+              ))}
+            </div>
+
             <div className="shop-results-bar">
               <span className="shop-count">{countLabel}</span>
             </div>
@@ -122,7 +178,7 @@ const Shop = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 className="shop-grid"
-                key={`${activeCategory}-${activeSubcategory}`}
+                key={`${activeCategory}-${activeSubcategory}-${activeGender}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
