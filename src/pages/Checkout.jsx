@@ -14,6 +14,10 @@ const Checkout = () => {
   const [orderNumber, setOrderNumber] = useState('');
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
+  const [couponApplied, setCouponApplied] = useState(null);
+  const [couponError, setCouponError] = useState(null);
+  const [couponApplying, setCouponApplying] = useState(false);
   const [formData, setFormData] = useState({
     name: '', email: '', phone: '', address: '', city: '', zip: '',
     cardNumber: '', expiry: '', cvv: ''
@@ -30,9 +34,33 @@ const Checkout = () => {
     }
   }, [user]);
 
-  const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  const couponDiscount = couponApplied?.discount || 0;
+  const total = Math.max(0, subtotal - couponDiscount);
 
   const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleApplyCoupon = async () => {
+    const code = couponCode.trim().toUpperCase();
+    if (!code) return;
+    setCouponError(null);
+    setCouponApplying(true);
+    try {
+      const { data } = await api.post('/api/coupons/validate', { code, subtotal });
+      setCouponApplied({ code: data.data.code, discount: data.data.discount });
+    } catch (err) {
+      setCouponError(err?.response?.data?.message || 'Invalid coupon');
+      setCouponApplied(null);
+    } finally {
+      setCouponApplying(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setCouponApplied(null);
+    setCouponCode('');
+    setCouponError(null);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +72,8 @@ const Checkout = () => {
         items: cart.map((item) => ({ productId: item.id, quantity: item.quantity })),
         isWholesale,
         notes: [formData.address, formData.city, formData.zip].filter(Boolean).join(', '),
-        channel: 'website'
+        channel: 'website',
+        ...(couponApplied ? { couponCode: couponApplied.code, discount: couponApplied.discount } : {})
       };
       const { data } = await api.post('/api/orders', payload);
       setOrderNumber(data?.data?.orderNumber || data?.data?._id || '');
@@ -171,11 +200,47 @@ const Checkout = () => {
               </div>
             ))}
           </div>
+          <div className="coupon-section">
+            {couponApplied ? (
+              <div className="coupon-applied">
+                <span className="coupon-tag">
+                  <CheckCircle size={14} /> {couponApplied.code}
+                </span>
+                <button type="button" className="coupon-remove" onClick={handleRemoveCoupon}>Remove</button>
+              </div>
+            ) : (
+              <div className="coupon-input-row">
+                <input
+                  type="text"
+                  className="coupon-input"
+                  placeholder="Coupon code"
+                  value={couponCode}
+                  onChange={(e) => { setCouponCode(e.target.value.toUpperCase()); setCouponError(null); }}
+                  onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleApplyCoupon())}
+                />
+                <button
+                  type="button"
+                  className="coupon-apply-btn"
+                  onClick={handleApplyCoupon}
+                  disabled={couponApplying || !couponCode.trim()}
+                >
+                  {couponApplying ? '…' : 'Apply'}
+                </button>
+              </div>
+            )}
+            {couponError && <p className="coupon-error">{couponError}</p>}
+          </div>
           <div className="summary-totals">
             <div className="summary-row">
               <span>{t('checkout_subtotal')}</span>
-              <span>{t('price_rm')} {total.toFixed(2)}</span>
+              <span>{t('price_rm')} {subtotal.toFixed(2)}</span>
             </div>
+            {couponApplied && (
+              <div className="summary-row discount-row">
+                <span>Coupon ({couponApplied.code})</span>
+                <span className="discount-amount">− {t('price_rm')} {couponDiscount.toFixed(2)}</span>
+              </div>
+            )}
             <div className="summary-row">
               <span>{t('checkout_shipping_label')}</span>
               <span className="free">{t('checkout_free')}</span>
