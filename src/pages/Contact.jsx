@@ -3,6 +3,7 @@ import { useAppContext } from '../context/AppContext';
 import { api } from '../lib/api';
 import './Contact.css';
 import { Phone, Mail, MapPin, Camera, Send, PlayCircle, Globe } from 'lucide-react';
+import WholesaleConcierge from '../components/WholesaleConcierge';
 
 const Contact = () => {
   const { t } = useAppContext();
@@ -105,6 +106,10 @@ const Contact = () => {
           allowFullScreen=""
           loading="lazy"
         ></iframe>
+      </div>
+
+      <div className="contact-wholesale-section container">
+        <WholesaleConcierge />
       </div>
     </div>
   );
