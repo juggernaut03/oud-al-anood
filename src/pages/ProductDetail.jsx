@@ -122,7 +122,7 @@ const ProductDetail = () => {
 
   const platforms = [
     { id: 'shopee', name: 'Shopee',      logo: '/images/shopee.png' },
-    { id: 'lojada', name: 'Lojada',      logo: '/images/lojada.png' },
+    { id: 'lozada', name: 'Lozada',      logo: '/images/lozada.png' },
     { id: 'tiktok', name: 'TikTok Shop', logo: '/images/tiktok.png' },
   ];
 

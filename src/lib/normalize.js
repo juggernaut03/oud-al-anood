@@ -1,4 +1,4 @@
-const DEFAULT_PURCHASE_LINKS = { shopee: '', lojada: '', tiktok: '' };
+const DEFAULT_PURCHASE_LINKS = { shopee: '', lozada: '', tiktok: '' };
 
 export const normalizeProduct = (p) => {
   if (!p) return p;
