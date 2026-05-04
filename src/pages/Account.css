@@ -199,6 +199,50 @@
   color: #b08a45;
 }
 
+.auth-admin-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  margin-bottom: 1rem;
+}
+.auth-admin-divider::before,
+.auth-admin-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-light, #e8e0d5);
+}
+.auth-admin-divider span {
+  font-size: 0.75rem;
+  color: var(--text-muted, #aaa);
+  letter-spacing: 0.5px;
+}
+
+.auth-admin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #555;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  background: #fafafa;
+}
+.auth-admin-btn:hover {
+  border-color: var(--primary-gold, #c49e59);
+  color: var(--primary-gold, #c49e59);
+  background: #fffdf8;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 480px) {
   .auth-card {
     padding: 2rem 1.5rem;

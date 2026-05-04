@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import './Account.css';
-import { User, Package, Heart, LogOut } from 'lucide-react';
+import { User, Package, Heart, LogOut, ShieldCheck } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import Orders from './Orders';
@@ -207,6 +207,19 @@ const Account = () => {
               {mode === 'login' ? t('account_register_link') : t('account_signin_link')}
             </button>
           </p>
+
+          <div className="auth-admin-divider">
+            <span>or</span>
+          </div>
+          <a
+            href="https://perfume-admin-panel.onrender.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="auth-admin-btn"
+          >
+            <ShieldCheck size={15} />
+            Admin Login
+          </a>
         </div>
       </div>
     );

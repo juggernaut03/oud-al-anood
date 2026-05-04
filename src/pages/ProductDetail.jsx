@@ -123,8 +123,8 @@ const ProductDetail = () => {
 
   const platforms = [
     { id: 'shopee', name: 'Shopee',      logo: '/images/shopee.png' },
-    { id: 'lozada', name: 'Lozada',      logo: '/images/lozada.png' },
-    { id: 'tiktok', name: 'TikTok Shop', logo: '/images/tiktok.png' },
+    { id: 'lozada', name: 'Lazada',      logo: '/images/lazada.jpeg' },
+    { id: 'tiktok', name: 'TikTok Shop', logo: '/images/tiktokshop.png' },
   ];
 
   const reviewCountLabel = reviewSummary.count > 0

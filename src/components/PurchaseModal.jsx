@@ -9,10 +9,9 @@ const PurchaseModal = ({ isOpen, onClose, product }) => {
   if (!isOpen || !product) return null;
 
   const platforms = [
-    { id: 'shopee',   name: 'Shopee',     logo: '/images/shopee.png',   color: '#EE4D2D' },
-    { id: 'grab',     name: 'Grab',       logo: '/images/grab.png',     color: '#00B14F' },
-    { id: 'lalamove', name: 'Lalamove',   logo: '/images/lalamove.png', color: '#F68B1E' },
-    { id: 'jnt',      name: 'J&T Express',logo: '/images/jnt.png',      color: '#FF0000' },
+    { id: 'shopee', name: 'Shopee',      logo: '/images/shopee.png',      color: '#EE4D2D' },
+    { id: 'lozada', name: 'Lazada',      logo: '/images/lazada.jpeg',     color: '#0F146D' },
+    { id: 'tiktok', name: 'TikTok Shop', logo: '/images/tiktokshop.png',  color: '#010101' },
   ];
 
   const containerVariants = {
