@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { MessageCircle, Mail, Package, Globe, Palette, Shield, ArrowRight } from 'lucide-react';
-import qrImage from '../assets/images/qr-code.png';
+const qrImage = '/images/qrnew.jpeg';
 import './WholesaleConcierge.css';
 import { useAppContext } from '../context/AppContext';
 
@@ -43,7 +43,7 @@ const WholesaleConcierge = () => {
 
           <div className="ws-actions">
             <a
-              href="https://wa.me/601111111111?text=Hello%2C%20I%20am%20interested%20in%20a%20wholesale%20partnership%20with%20Oud%20Alnood."
+              href="https://wa.me/60132688779?text=Hello%2C%20I%20am%20interested%20in%20a%20wholesale%20partnership%20with%20Oud%20Al-Anood."
               target="_blank"
               rel="noopener noreferrer"
               className="ws-btn ws-btn-whatsapp"

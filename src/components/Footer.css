@@ -55,8 +55,15 @@
   flex-shrink: 0;
   margin-top: 2px;
 }
-.contact-item span {
+.contact-item span,
+.contact-item a {
   flex: 1;
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.contact-item a:hover {
+  color: var(--primary-gold);
 }
 .links {
   display: flex;

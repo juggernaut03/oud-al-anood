@@ -27,11 +27,14 @@ const Footer = () => {
           </div>
           <div className="contact-item">
             <Phone size={18} />
-            <span>+60 12-345 6789</span>
+            <span>
+              <a href="tel:+60132688779">+60 13-268 8779</a><br />
+              <a href="tel:+60133333219">+60 13-333 3219</a>
+            </span>
           </div>
           <div className="contact-item">
             <Mail size={18} />
-            <span>info@oudalanood.com</span>
+            <a href="mailto:Sales@oudalanood.com">Sales@oudalanood.com</a>
           </div>
         </div>
 

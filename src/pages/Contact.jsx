@@ -45,8 +45,14 @@ const Contact = () => {
         <div className="contact-info">
           <section>
             <h2>{t('contact_details')}</h2>
-            <div className="info-item"><Phone size={18} /><span>P: +60 12-345 6789</span></div>
-            <div className="info-item"><Mail size={18} /><span>E: info@oudalanood.com</span></div>
+            <div className="info-item">
+              <Phone size={18} />
+              <span>
+                <a href="tel:+60132688779">+60 13-268 8779</a><br />
+                <a href="tel:+60133333219">+60 13-333 3219</a>
+              </span>
+            </div>
+            <div className="info-item"><Mail size={18} /><a href="mailto:Sales@oudalanood.com">E: Sales@oudalanood.com</a></div>
             <div className="info-item">
               <MapPin size={18} />
               <span>A: {t('footer_location')}</span>
