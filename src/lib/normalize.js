@@ -7,6 +7,7 @@ export const normalizeProduct = (p) => {
     id: p._id || p.id,
     name: p.name || { en: '', ar: '' },
     description: p.description || { en: '', ar: '' },
+    descriptionBlocks: Array.isArray(p.descriptionBlocks) ? p.descriptionBlocks : [],
     features: Array.isArray(p.features) ? p.features : [],
     purchaseLinks: { ...DEFAULT_PURCHASE_LINKS, ...(p.purchaseLinks || {}) },
     image: p.image || '',

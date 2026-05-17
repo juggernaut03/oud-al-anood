@@ -7,6 +7,7 @@ import { api } from '../lib/api';
 import { normalizeProduct } from '../lib/normalize';
 import { ShoppingBag, Heart, Minus, Plus, ChevronRight, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import ProductDescriptionBlocks from '../components/ProductDescriptionBlocks';
 import { motion } from 'framer-motion';
 
 const matchesId = (p, id) => {
@@ -316,6 +317,13 @@ const ProductDetail = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* ── Rich Description ── */}
+      {Array.isArray(product.descriptionBlocks) && product.descriptionBlocks.length > 0 && (
+        <section className="product-rich-description container">
+          <ProductDescriptionBlocks blocks={product.descriptionBlocks} language={language} />
+        </section>
+      )}
 
       {/* ── Reviews ── */}
       <section className="product-reviews container">

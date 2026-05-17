@@ -72,7 +72,6 @@ const Navbar = () => {
           <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>{t('nav_home')}</Link>
           <Link to="/shop" className={`nav-link ${location.pathname === '/shop' ? 'active' : ''}`}>{t('nav_shop')}</Link>
           <Link to="/offers" className={`nav-link ${location.pathname === '/offers' ? 'active' : ''}`}>{t('nav_specials')}</Link>
-          <Link to="/oud-mohsen" className={`nav-link ${location.pathname === '/oud-mohsen' ? 'active' : ''}`}>{t('nav_oud_mohsen')}</Link>
           <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>{t('nav_about')}</Link>
           <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}>{t('nav_contact')}</Link>
           <Link to="/blog" className={`nav-link ${location.pathname === '/blog' ? 'active' : ''}`}>{t('nav_journal')}</Link>
