@@ -92,7 +92,7 @@ const StoreSelector = () => {
                         <div className="drive-card-details">
                           <span className="drive-card-hours">
                             <Clock size={13} />
-                            {t('store_hours')}
+                            {store.hours?.[language] || t('store_hours')}
                           </span>
                         </div>
                       </div>
@@ -148,11 +148,11 @@ const StoreSelector = () => {
                     </div>
                     <div className="drive-info-item">
                       <div className="drive-info-icon"><Clock size={16} /></div>
-                      <span>{t('store_daily_hours')}</span>
+                      <span>{selectedStore.hours?.[language] || t('store_daily_hours')}</span>
                     </div>
                     <div className="drive-info-item">
                       <div className="drive-info-icon"><Phone size={16} /></div>
-                      <span>+60 3-1234 5678</span>
+                      <span>{selectedStore.phone || '+60 3-1234 5678'}</span>
                     </div>
                   </div>
 

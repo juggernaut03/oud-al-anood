@@ -26,6 +26,8 @@ export const normalizeStore = (s) => {
     id: s._id || s.slug || s.id,
     name: s.name || { en: '', ar: '' },
     address: s.address || { en: '', ar: '' },
+    phone: s.phone || '',
+    hours: s.hours || { en: '', ar: '' },
     mapEmbed: s.mapEmbed || '',
     navLink: s.navLink || ''
   };
