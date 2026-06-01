@@ -631,3 +631,209 @@
   font-size: 1rem;
   color: var(--text-dark, #1a1a1a);
 }
+
+/* ── Password show/hide ─────────────────────────────────────── */
+.auth-password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.auth-password-wrap .auth-input {
+  padding-right: 2.75rem;
+  width: 100%;
+}
+.auth-eye-btn {
+  position: absolute;
+  right: 0.9rem;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text-muted, #888);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.auth-eye-btn:hover {
+  color: var(--text-dark, #1a1a1a);
+}
+
+/* ── Forgot password ─────────────────────────────────────────── */
+.auth-forgot-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.82rem;
+  color: var(--primary-gold, #c49e59);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.auth-forgot-link:hover {
+  color: #b08a45;
+}
+.auth-back-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.auth-back-btn:hover {
+  color: var(--text-dark, #1a1a1a);
+}
+.auth-success {
+  font-size: 0.88rem;
+  color: #2e7d32;
+  background: #f1f8e9;
+  border: 1px solid #c8e6c9;
+  border-radius: 8px;
+  padding: 0.6rem 0.9rem;
+}
+
+/* ── Address Manager ─────────────────────────────────────────── */
+.addr-list-wrap { padding-bottom: 1rem; }
+.addr-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.addr-list-header h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-dark, #1a1a1a);
+}
+.addr-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.addr-card {
+  border: 1.5px solid var(--border-light, #e8e0d5);
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  position: relative;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+.addr-card.default {
+  border-color: var(--primary-gold, #c49e59);
+}
+.addr-default-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary-gold, #c49e59);
+  border: 1px solid var(--primary-gold, #c49e59);
+  border-radius: 4px;
+  padding: 2px 6px;
+  margin-bottom: 0.5rem;
+}
+.addr-card-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted, #888);
+  margin-bottom: 0.4rem;
+}
+.addr-card-name {
+  font-weight: 600;
+  color: var(--text-dark, #1a1a1a);
+  margin-bottom: 0.25rem;
+}
+.addr-card-text {
+  font-size: 0.88rem;
+  color: var(--text-muted, #666);
+  line-height: 1.5;
+}
+.addr-card-phone {
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+  margin-top: 0.4rem;
+}
+.addr-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-light, #e8e0d5);
+}
+.addr-action-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--primary-gold, #c49e59);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.addr-action-btn.danger {
+  color: #b42525;
+}
+.addr-empty {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--text-muted, #aaa);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+.addr-loading {
+  color: var(--text-muted, #888);
+  padding: 2rem 0;
+}
+.addr-form-wrap { padding-bottom: 1rem; }
+.addr-back-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted, #888);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.addr-back-btn:hover { color: var(--text-dark, #1a1a1a); }
+.addr-form-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-dark, #1a1a1a);
+  margin-bottom: 1rem;
+}
+.addr-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.addr-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.addr-default-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-dark, #1a1a1a);
+  cursor: pointer;
+}
+.addr-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 540px) {
+  .addr-row-2 { grid-template-columns: 1fr; }
+  .addr-list { grid-template-columns: 1fr; }
+}

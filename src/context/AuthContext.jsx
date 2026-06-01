@@ -37,6 +37,16 @@ export const AuthProvider = ({ children }) => {
     refresh();
   }, [refresh]);
 
+  // Force-logout when the token-refresh interceptor fails (e.g. refresh token expired).
+  useEffect(() => {
+    const handle = () => {
+      setUser(null);
+      setStatus('unauthenticated');
+    };
+    window.addEventListener('auth:logout', handle);
+    return () => window.removeEventListener('auth:logout', handle);
+  }, []);
+
   const login = useCallback(async ({ email, password }) => {
     const { data } = await api.post('/api/users/login', { email, password });
     if (!data?.success || !data.accessToken) {

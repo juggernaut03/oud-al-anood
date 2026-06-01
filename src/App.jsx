@@ -24,6 +24,7 @@ import Contact from './pages/Contact';
 import ProductDetail from './pages/ProductDetail';
 import Blog from './pages/Blog';
 import Offers from './pages/Offers';
+import ResetPassword from './pages/ResetPassword';
 
 const AppContent = () => {
   const { language, isPurchaseModalOpen, closePurchaseModal, selectedProduct } = useAppContext();
@@ -47,6 +48,7 @@ const AppContent = () => {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:id" element={<Blog />} />
           <Route path="/offers" element={<Offers />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
         <Footer />
         <CartDrawer />
