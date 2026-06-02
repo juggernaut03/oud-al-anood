@@ -9,23 +9,6 @@
   align-items: center;
   gap: var(--spacing-xl);
 }
-
-/* Single-image mode: stack full-width image above the text */
-.hero-container--single {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-}
-.hero-container--single .hero-content {
-  max-width: 100%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.hero-container--single .hero-subtitle {
-  max-width: 600px;
-}
 .hero-content {
   max-width: 500px;
 }
@@ -67,39 +50,14 @@
   background-color: var(--primary-gold);
   transform: translateY(-2px);
 }
+
+/* ── Multi-image collage (default) ─────────────────────────── */
 .hero-collage {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: var(--spacing-md);
   height: 500px;
-}
-/* Single banner image from admin: full-width, no cropping */
-.hero-collage.hero-collage--single {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-}
-.hero-collage--single .collage-item.large {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  overflow: hidden;
-  grid-row: unset;
-}
-.hero-collage--single .collage-item.large img {
-  width: 100%;
-  height: auto;
-  max-height: none;
-  object-fit: unset;
-  display: block;
-  transition: transform 0.5s ease;
-}
-.hero-collage--single .collage-item.large:hover img {
-  transform: scale(1.02);
 }
 .collage-item {
   border-radius: 4px;
@@ -117,6 +75,36 @@
 }
 .large {
   grid-row: span 2;
+}
+
+/* ── Single admin banner: side-by-side layout, full image shown ─ */
+.hero-collage--single {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  background: none;
+  box-shadow: none;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.hero-collage--single .collage-item.large {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  grid-row: unset;
+}
+.hero-collage--single .collage-item.large img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.hero-collage--single .collage-item.large:hover img {
+  transform: scale(1.02);
 }
 
 @media (max-width: 1024px) {
@@ -141,5 +129,6 @@
   }
   .hero-collage--single {
     height: auto;
+    margin-top: var(--spacing-lg);
   }
 }
