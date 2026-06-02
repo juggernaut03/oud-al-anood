@@ -16,7 +16,17 @@ const Hero = () => {
 
   return (
     <section className="hero">
-      <div className="container hero-container">
+      <div className={`container hero-container${image ? ' hero-container--single' : ''}`}>
+
+        {/* Single-image: show image first (full width), then text below */}
+        {image && (
+          <div className="hero-collage hero-collage--single">
+            <div className="collage-item large">
+              <img src={image} alt={title} />
+            </div>
+          </div>
+        )}
+
         <motion.div
           className="hero-content"
           initial={{ opacity: 0, y: 20 }}
@@ -31,25 +41,21 @@ const Hero = () => {
           </Link>
         </motion.div>
 
-        <div className={`hero-collage${image ? ' hero-collage--single' : ''}`}>
-          {image ? (
+        {/* Multi-image collage (default, no admin banner) */}
+        {!image && (
+          <div className="hero-collage">
             <div className="collage-item large">
-              <img src={image} alt={title} />
+              <img src="/images/page1.png" alt="Perfume" />
             </div>
-          ) : (
-            <>
-              <div className="collage-item large">
-                <img src="/images/page1.png" alt="Perfume" />
-              </div>
-              <div className="collage-item small-1">
-                <img src="/images/page3.png" alt="Oud Wood" />
-              </div>
-              <div className="collage-item small-2">
-                <img src="/images/perfume.png" alt="Exquisite Oil" />
-              </div>
-            </>
-          )}
-        </div>
+            <div className="collage-item small-1">
+              <img src="/images/page3.png" alt="Oud Wood" />
+            </div>
+            <div className="collage-item small-2">
+              <img src="/images/perfume.png" alt="Exquisite Oil" />
+            </div>
+          </div>
+        )}
+
       </div>
     </section>
   );

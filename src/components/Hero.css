@@ -9,6 +9,23 @@
   align-items: center;
   gap: var(--spacing-xl);
 }
+
+/* Single-image mode: stack full-width image above the text */
+.hero-container--single {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+.hero-container--single .hero-content {
+  max-width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hero-container--single .hero-subtitle {
+  max-width: 600px;
+}
 .hero-content {
   max-width: 500px;
 }
@@ -57,11 +74,11 @@
   gap: var(--spacing-md);
   height: 500px;
 }
-/* Single banner image from admin: show the full image, no cropping */
+/* Single banner image from admin: full-width, no cropping */
 .hero-collage.hero-collage--single {
   display: block;
-  height: auto;
   width: 100%;
+  height: auto;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--shadow-md);
@@ -71,10 +88,12 @@
   height: auto;
   border-radius: 12px;
   overflow: hidden;
+  grid-row: unset;
 }
 .hero-collage--single .collage-item.large img {
   width: 100%;
   height: auto;
+  max-height: none;
   object-fit: unset;
   display: block;
   transition: transform 0.5s ease;
