@@ -31,7 +31,7 @@ const Hero = () => {
           </Link>
         </motion.div>
 
-        <div className="hero-collage">
+        <div className={`hero-collage${image ? ' hero-collage--single' : ''}`}>
           {image ? (
             <div className="collage-item large">
               <img src={image} alt={title} />
