@@ -545,7 +545,7 @@ const Account = () => {
                 <span>or</span>
               </div>
               <a
-                href="https://perfume-admin-panel.onrender.com/"
+                href="https://admin.oudalanood.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="auth-admin-btn"

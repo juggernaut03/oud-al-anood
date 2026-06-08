@@ -482,7 +482,7 @@
   gap: var(--spacing-md);
   color: #999;
 }
-.social-links :global(svg:hover) {
+.social-links svg:hover {
   color: var(--primary-gold);
   cursor: pointer;
 }
