@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import './Footer.css';
 import { Camera, MessageCircle, Send, MapPin, Phone, Mail } from 'lucide-react';
 
+const APP_VERSION = '1.0.1';
+
 const Footer = () => {
   const { t } = useAppContext();
 
@@ -50,7 +52,7 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <div className="container">
-          <p>&copy; {t('footer_copyright')}. {t('footer_rights')}</p>
+          <p>&copy; {t('footer_copyright')}. {t('footer_rights')} &nbsp;·&nbsp; v{APP_VERSION}</p>
         </div>
       </div>
     </footer>

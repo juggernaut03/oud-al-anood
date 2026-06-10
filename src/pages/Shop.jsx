@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import ProductCard from '../components/ProductCard';
 import BoutiqueToggle from '../components/BoutiqueToggle';
 import WholesaleConcierge from '../components/WholesaleConcierge';
@@ -7,9 +7,9 @@ import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Droplets, SprayCan, Gem, LayoutGrid } from 'lucide-react';
 import { api } from '../lib/api';
+import { normalizeProduct } from '../lib/normalize';
 import './Shop.css';
 
-// Icon mapped by slug (best-guess visual). Falls back to LayoutGrid if no match.
 const ICON_BY_SLUG = {
   oud: Droplets,
   perfumes: SprayCan,
@@ -26,10 +26,9 @@ const GENDER_OPTIONS = [
 ];
 
 const Shop = () => {
-  const { t, isWholesale, products, language } = useAppContext();
+  const { t, isWholesale, language } = useAppContext();
   const { search: qs } = useLocation();
 
-  // DB-driven categories (top-level) and subcategory map (slug → children array)
   const [dbCategories, setDbCategories] = useState([]);
   const [dbSubcategories, setDbSubcategories] = useState({});
 
@@ -69,7 +68,6 @@ const Shop = () => {
       .catch(() => {});
   }, []);
 
-  // Final categories list: "All" + dynamic from DB
   const categories = useMemo(() => [ALL_TAB, ...dbCategories], [dbCategories]);
 
   const initialCategory = useMemo(() => {
@@ -81,7 +79,10 @@ const Shop = () => {
   const [activeSubcategory, setActiveSubcategory] = useState('all');
   const [activeGender, setActiveGender] = useState('all');
 
-  // Sync to URL param once categories arrive from DB
+  // API-driven products
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (dbCategories.length === 0) return;
     const param = new URLSearchParams(qs).get('category');
@@ -89,6 +90,26 @@ const Shop = () => {
       setActiveCategory(param);
     }
   }, [dbCategories, qs]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const fetchProducts = useCallback(() => {
+    setLoading(true);
+    const params = { isActive: 'true', limit: 500 };
+    if (activeCategory !== 'all') params.category = activeCategory;
+    if (activeSubcategory !== 'all') params.subcategory = activeSubcategory;
+    if (activeGender !== 'all') params.gender = activeGender;
+
+    api.get('/api/products', { params })
+      .then(({ data }) => {
+        const list = Array.isArray(data?.data) ? data.data.map(normalizeProduct) : [];
+        setProducts(list);
+      })
+      .catch(() => setProducts([]))
+      .finally(() => setLoading(false));
+  }, [activeCategory, activeSubcategory, activeGender]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   const handleCategoryChange = (key) => {
     setActiveCategory(key);
@@ -101,17 +122,9 @@ const Shop = () => {
     return dbSubcategories[activeCategory] || null;
   }, [activeCategory, dbSubcategories]);
 
-  const filteredProducts = useMemo(() => {
-    let result = products;
-    if (activeCategory !== 'all') result = result.filter((p) => p.category === activeCategory);
-    if (activeSubcategory !== 'all') result = result.filter((p) => p.subcategory === activeSubcategory);
-    if (activeGender !== 'all') result = result.filter((p) => p.gender === activeGender);
-    return result;
-  }, [products, activeCategory, activeSubcategory, activeGender]);
-
-  const countLabel = filteredProducts.length === 1
+  const countLabel = products.length === 1
     ? `1 ${t('shop_product')}`
-    : `${filteredProducts.length} ${t('shop_products')}`;
+    : `${products.length} ${t('shop_products')}`;
 
   return (
     <main className="shop-page">
@@ -191,7 +204,7 @@ const Shop = () => {
             </div>
 
             <div className="shop-results-bar">
-              <span className="shop-count">{countLabel}</span>
+              <span className="shop-count">{loading ? '…' : countLabel}</span>
             </div>
 
             <AnimatePresence mode="wait">
@@ -203,8 +216,8 @@ const Shop = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
               >
-                {filteredProducts.length > 0 ? (
-                  filteredProducts.map((product, i) => (
+                {loading ? null : products.length > 0 ? (
+                  products.map((product, i) => (
                     <motion.div
                       key={product.id}
                       initial={{ opacity: 0, y: 20 }}
