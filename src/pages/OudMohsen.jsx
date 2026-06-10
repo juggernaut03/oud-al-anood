@@ -5,7 +5,7 @@ import './OudMohsen.css';
 const OudMohsen = () => {
   const { t, products } = useAppContext();
 
-  const oudMohsenProducts = products;
+  const oudMohsenProducts = products.filter((p) => p.category === 'oud');
 
   return (
     <div className="oud-mohsen-page container">

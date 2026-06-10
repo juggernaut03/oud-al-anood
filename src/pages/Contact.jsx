@@ -88,7 +88,7 @@ const Contact = () => {
             </div>
             <div className="form-group">
               <label>{t('contact_message')}</label>
-              <textarea name="message" value={formData.message} onChange={handleChange} rows="6" />
+              <textarea name="message" value={formData.message} onChange={handleChange} rows="6" required />
             </div>
             {status && (
               <p style={{ marginTop: 12, color: status.type === 'success' ? '#2f7a45' : '#b42525' }}>
