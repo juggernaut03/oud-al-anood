@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { ShoppingBag, User, Search, MapPin } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppContext, LOGO_URL } from '../context/AppContext';
+import SearchOverlay from './SearchOverlay';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -13,6 +15,7 @@ const Navbar = () => {
     toggleStoreSelector
   } = useAppContext();
   const location = useLocation();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -21,7 +24,11 @@ const Navbar = () => {
       {/* Row 1: Lang, Logo, Actions */}
       <div className="container nav-top">
         <div className="nav-left">
-          <button className="nav-icon-btn">
+          <button
+            className="nav-icon-btn"
+            onClick={() => setIsSearchOpen(true)}
+            aria-label={t('search_placeholder')}
+          >
             <Search size={20} />
           </button>
           <div className="lang-switcher">
@@ -77,6 +84,8 @@ const Navbar = () => {
           <Link to="/blog" className={`nav-link ${location.pathname === '/blog' ? 'active' : ''}`}>{t('nav_journal')}</Link>
         </div>
       </div>
+
+      <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </nav>
   );
 };

@@ -11,6 +11,14 @@ const translations = {
     nav_journal: 'Journal',
     nav_drive: 'Drive to Us',
 
+    // Search
+    search_placeholder: 'Search for oud, perfumes, accessories…',
+    search_hint: 'Start typing to search our collection',
+    search_no_results: 'No products found',
+    search_results: 'results',
+    search_result: 'result',
+    search_view_all: 'View all results',
+
     // Hero / general
     hero_title: 'Exquisite Oud Collections',
     hero_subtitle: 'Crafting excellence since 1995',
@@ -335,6 +343,14 @@ const translations = {
     nav_contact: 'تواصل معنا',
     nav_journal: 'المجلة',
     nav_drive: 'اقتربوا منا',
+
+    // Search
+    search_placeholder: 'ابحث عن العود والعطور والإكسسوارات…',
+    search_hint: 'ابدأ الكتابة للبحث في مجموعتنا',
+    search_no_results: 'لم يتم العثور على منتجات',
+    search_results: 'نتائج',
+    search_result: 'نتيجة',
+    search_view_all: 'عرض كل النتائج',
 
     // Hero / general
     hero_title: 'مجموعات العود الفاخرة',
