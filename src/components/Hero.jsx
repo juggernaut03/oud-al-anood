@@ -2,9 +2,10 @@ import { motion } from 'framer-motion';
 import './Hero.css';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import Skeleton from './Skeleton';
 
 const Hero = () => {
-  const { t, language, banners } = useAppContext();
+  const { t, language, banners, bannersLoading } = useAppContext();
 
   const heroBanner = banners.find((b) => b.section === 'hero');
 
@@ -31,8 +32,12 @@ const Hero = () => {
           </Link>
         </motion.div>
 
-        <div className={`hero-collage${image ? ' hero-collage--single' : ''}`}>
-          {image ? (
+        <div className={`hero-collage${(bannersLoading || image) ? ' hero-collage--single' : ''}`}>
+          {bannersLoading ? (
+            <div className="collage-item large">
+              <Skeleton style={{ width: '100%', height: '100%' }} />
+            </div>
+          ) : image ? (
             <div className="collage-item large">
               <img src={image} alt={title} />
             </div>

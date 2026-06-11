@@ -4,6 +4,7 @@ import BrandGallery from '../components/BrandGallery';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import ProductCard from '../components/ProductCard';
 import ProductCardSkeleton from '../components/ProductCardSkeleton';
+import Skeleton from '../components/Skeleton';
 import { useAppContext } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -31,12 +32,15 @@ const FALLBACK_COLLECTIONS = [
 ];
 
 const Home = () => {
-  const { t, language, blogPosts, products, productsLoading, banners } = useAppContext();
+  const { t, language, blogPosts, products, productsLoading, banners, bannersLoading } = useAppContext();
 
   // Placeholder slots so each collection row reserves its layout while loading.
   const skeletonSlots = Array.from({ length: 4 });
+  const bannerSkeletonSlots = Array.from({ length: 2 });
 
   const cmsBanners = banners.filter((b) => b.section === 'homepage' || b.section === 'promo');
+  // Only fall back to the bundled dummy collections AFTER the banner fetch has
+  // settled — otherwise the dummy banners flash in before the CMS data arrives.
   const collections = cmsBanners.length > 0
     ? cmsBanners.map((b) => ({
         id: b.id,
@@ -53,7 +57,28 @@ const Home = () => {
     <main>
       <Hero />
 
-      {collections.map((collection, idx) => {
+      {bannersLoading
+        ? bannerSkeletonSlots.map((_, idx) => (
+            <section className="home-collection" key={`banner-skeleton-${idx}`}>
+              <div className="container">
+                <div className="hc-banner">
+                  <div className="hc-banner-img">
+                    <Skeleton style={{ width: '100%', height: '100%' }} />
+                  </div>
+                </div>
+                <div className="hc-products-row">
+                  <div className="hc-products-scroll">
+                    {skeletonSlots.map((__, i) => (
+                      <div className="hc-product-item" key={`bs-${idx}-${i}`}>
+                        <ProductCardSkeleton />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          ))
+        : collections.map((collection, idx) => {
         const collectionProducts = products.filter(collection.filter).slice(0, 6);
         return (
           <section className="home-collection" key={collection.id}>

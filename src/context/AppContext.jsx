@@ -61,6 +61,7 @@ export const AppProvider = ({ children }) => {
   const [stores, setStores] = useState(fallbackStores);
   const [selectedStore, setSelectedStore] = useState(fallbackStores[0]);
   const [banners, setBanners] = useState([]);
+  const [bannersLoading, setBannersLoading] = useState(true);
   const [offers, setOffers] = useState([]);
 
   // User orders are loaded from API when authenticated.
@@ -152,6 +153,8 @@ export const AppProvider = ({ children }) => {
         if (!cancelled && list.length) setBanners(list);
       } catch (err) {
         console.error('[AppContext] Failed to fetch banners:', err?.message || err);
+      } finally {
+        if (!cancelled) setBannersLoading(false);
       }
     })();
     return () => {
@@ -342,6 +345,7 @@ export const AppProvider = ({ children }) => {
       testimonials,
       stores,
       banners,
+      bannersLoading,
       offers,
       isStoreSelectorOpen,
       setIsStoreSelectorOpen,
@@ -373,6 +377,7 @@ export const AppProvider = ({ children }) => {
       testimonials,
       stores,
       banners,
+      bannersLoading,
       offers,
       isStoreSelectorOpen,
       toggleStoreSelector,
