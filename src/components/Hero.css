@@ -51,6 +51,29 @@
   transform: translateY(-2px);
 }
 
+/* ── Loading placeholders (reserve the hero text footprint) ──── */
+.hero-title-skeleton {
+  height: 3.2rem;
+  width: 90%;
+  margin-bottom: 0.6rem;
+  border-radius: 6px;
+}
+.hero-title-skeleton.short {
+  width: 60%;
+  margin-bottom: var(--spacing-md);
+}
+.hero-subtitle-skeleton {
+  height: 1.1rem;
+  width: 70%;
+  max-width: 400px;
+  margin-bottom: var(--spacing-lg);
+}
+.hero-cta-skeleton {
+  height: 3rem;
+  width: 180px;
+  border-radius: 6px;
+}
+
 /* ── Multi-image collage (default) ─────────────────────────── */
 .hero-collage {
   display: grid;

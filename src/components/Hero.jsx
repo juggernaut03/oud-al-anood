@@ -25,11 +25,22 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
         >
           <span className="hero-badge">{t('footer_since')}</span>
-          <h1 className="hero-title">{title}</h1>
-          <p className="hero-subtitle">{subtitle}</p>
-          <Link to={ctaLink} className="cta-button">
-            {ctaText}
-          </Link>
+          {bannersLoading ? (
+            <>
+              <Skeleton className="hero-title-skeleton" />
+              <Skeleton className="hero-title-skeleton short" />
+              <Skeleton className="hero-subtitle-skeleton" />
+              <Skeleton className="hero-cta-skeleton" />
+            </>
+          ) : (
+            <>
+              <h1 className="hero-title">{title}</h1>
+              <p className="hero-subtitle">{subtitle}</p>
+              <Link to={ctaLink} className="cta-button">
+                {ctaText}
+              </Link>
+            </>
+          )}
         </motion.div>
 
         <div className={`hero-collage${(bannersLoading || image) ? ' hero-collage--single' : ''}`}>
