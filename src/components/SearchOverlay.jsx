@@ -1,21 +1,29 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, X } from 'lucide-react';
+import { Search, X, Loader2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAppContext } from '../context/AppContext';
+import { api } from '../lib/api';
+import { normalizeProduct } from '../lib/normalize';
 import './SearchOverlay.css';
 
-const normalize = (s) => (s || '').toString().toLowerCase().trim();
+const SEARCH_DEBOUNCE_MS = 300;
+const SEARCH_LIMIT = 20;
 
 const SearchOverlay = ({ isOpen, onClose }) => {
-  const { products, language, t } = useAppContext();
+  const { language, t } = useAppContext();
   const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
   const inputRef = useRef(null);
 
-  // Clear the query and close — used by every close path (button, backdrop,
+  // Clear state and close — used by every close path (button, backdrop,
   // Escape, selecting a result) so the next open starts blank.
   const handleClose = useCallback(() => {
     setQuery('');
+    setResults([]);
+    setSearched(false);
     onClose();
   }, [onClose]);
 
@@ -40,25 +48,43 @@ const SearchOverlay = ({ isOpen, onClose }) => {
     return () => window.removeEventListener('keydown', onKey);
   }, [isOpen, handleClose]);
 
-  const results = useMemo(() => {
-    const q = normalize(query);
-    if (!q) return [];
-    return products.filter((p) => {
-      const haystack = [
-        p.name?.en,
-        p.name?.ar,
-        p.category,
-        p.subcategory,
-        p.description?.en,
-        p.description?.ar,
-      ]
-        .map(normalize)
-        .join(' ');
-      return haystack.includes(q);
-    });
-  }, [query, products]);
+  // Debounced, API-driven search. Stale responses are discarded so only the
+  // latest query's results are shown. All state updates happen inside async
+  // callbacks; the empty-query case is handled purely in render.
+  useEffect(() => {
+    const q = query.trim();
+    if (!q) return;
 
-  const hasQuery = normalize(query).length > 0;
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      setLoading(true);
+      api
+        .get('/api/products', {
+          params: { isActive: 'true', search: q, limit: SEARCH_LIMIT },
+        })
+        .then(({ data }) => {
+          if (cancelled) return;
+          const list = Array.isArray(data?.data) ? data.data.map(normalizeProduct) : [];
+          setResults(list);
+        })
+        .catch(() => {
+          if (!cancelled) setResults([]);
+        })
+        .finally(() => {
+          if (!cancelled) {
+            setLoading(false);
+            setSearched(true);
+          }
+        });
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [query]);
+
+  const hasQuery = query.trim().length > 0;
   const countLabel = `${results.length} ${results.length === 1 ? t('search_result') : t('search_results')}`;
 
   return (
@@ -81,7 +107,11 @@ const SearchOverlay = ({ isOpen, onClose }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="search-input-row">
-              <Search size={22} className="search-input-icon" />
+              {loading && hasQuery ? (
+                <Loader2 size={22} className="search-input-icon search-spinner" />
+              ) : (
+                <Search size={22} className="search-input-icon" />
+              )}
               <input
                 ref={inputRef}
                 type="text"
@@ -98,9 +128,11 @@ const SearchOverlay = ({ isOpen, onClose }) => {
             <div className="search-results">
               {!hasQuery ? (
                 <p className="search-hint">{t('search_hint')}</p>
-              ) : results.length === 0 ? (
+              ) : loading && !searched ? (
+                <p className="search-hint">…</p>
+              ) : results.length === 0 && searched ? (
                 <p className="search-empty">{t('search_no_results')}</p>
-              ) : (
+              ) : results.length > 0 ? (
                 <>
                   <p className="search-count">{countLabel}</p>
                   <ul className="search-result-list">
@@ -126,7 +158,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
                     ))}
                   </ul>
                 </>
-              )}
+              ) : null}
             </div>
           </motion.div>
         </motion.div>

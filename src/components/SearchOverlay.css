@@ -34,6 +34,15 @@
   color: var(--text-muted, #888);
   flex-shrink: 0;
 }
+.search-spinner {
+  animation: search-spin 0.8s linear infinite;
+  color: var(--primary-gold, #b8893a);
+}
+@keyframes search-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .search-input {
   flex: 1;
   border: none;
