@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import { ShoppingBag, User, Search, MapPin } from 'lucide-react';
+import { ShoppingBag, User, MapPin } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppContext, LOGO_URL } from '../context/AppContext';
-import SearchOverlay from './SearchOverlay';
+import HeaderSearch from './HeaderSearch';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -15,22 +14,22 @@ const Navbar = () => {
     toggleStoreSelector
   } = useAppContext();
   const location = useLocation();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <nav className="navbar">
-      {/* Row 1: Lang, Logo, Actions */}
+      {/* Row 1: Logo, Search, Actions */}
       <div className="container nav-top">
-        <div className="nav-left">
-          <button
-            className="nav-icon-btn"
-            onClick={() => setIsSearchOpen(true)}
-            aria-label={t('search_placeholder')}
-          >
-            <Search size={20} />
-          </button>
+        <div className="nav-logo">
+          <Link to="/">
+            <img src={LOGO_URL} alt="OUD AL-ANOOD" className="logo-img" />
+          </Link>
+        </div>
+
+        <HeaderSearch />
+
+        <div className="nav-right">
           <div className="lang-switcher">
             <button
               className={`lang-btn ${language === 'en' ? 'active' : ''}`}
@@ -46,15 +45,6 @@ const Navbar = () => {
               عربي
             </button>
           </div>
-        </div>
-
-        <div className="nav-logo">
-          <Link to="/">
-            <img src={LOGO_URL} alt="OUD AL-ANOOD" className="logo-img" />
-          </Link>
-        </div>
-
-        <div className="nav-right">
           <button
             className="nav-drive-btn"
             onClick={toggleStoreSelector}
@@ -84,8 +74,6 @@ const Navbar = () => {
           <Link to="/blog" className={`nav-link ${location.pathname === '/blog' ? 'active' : ''}`}>{t('nav_journal')}</Link>
         </div>
       </div>
-
-      <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </nav>
   );
 };

@@ -1,6 +1,5 @@
 import Hero from '../components/Hero';
 import './Home.css';
-import BrandGallery from '../components/BrandGallery';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import ProductCard from '../components/ProductCard';
 import ProductCardSkeleton from '../components/ProductCardSkeleton';
@@ -147,8 +146,6 @@ const Home = () => {
           <img src="/images/page5.png" alt={t('home_heritage_title')} />
         </div>
       </section>
-
-      <BrandGallery />
 
       {/* Testimonials */}
       <section className="testimonials-section container">

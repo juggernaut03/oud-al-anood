@@ -41,15 +41,24 @@ const About = () => {
         </div>
       )}
 
-      {sections.map((sec, idx) => (
+      {sections.map((sec, idx) => {
+        const body = sec.body?.[language] || sec.body?.en || '';
+        const isHtml = /<[a-z][\s\S]*>/i.test(body);
+        return (
         <div key={sec._id} className={`about-content ${idx % 2 === 1 ? 'about-content--reverse' : ''}`}>
           <div className="about-text-section">
             {sec.title?.[language] || sec.title?.en ? (
               <h2>{sec.title?.[language] || sec.title?.en}</h2>
             ) : null}
-            {(sec.body?.[language] || sec.body?.en || '').split('\n').filter(Boolean).map((para, i) => (
-              <p key={i}>{para}</p>
-            ))}
+            {isHtml ? (
+              <div
+                className="about-rich-body"
+                dir={language === 'ar' ? 'rtl' : 'ltr'}
+                dangerouslySetInnerHTML={{ __html: body }}
+              />
+            ) : (
+              body.split('\n').filter(Boolean).map((para, i) => <p key={i}>{para}</p>)
+            )}
           </div>
           {sec.image && (
             <div className="about-image-section">
@@ -57,7 +66,8 @@ const About = () => {
             </div>
           )}
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
