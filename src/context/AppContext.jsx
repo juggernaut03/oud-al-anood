@@ -51,8 +51,11 @@ export const AppProvider = ({ children }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isStoreSelectorOpen, setIsStoreSelectorOpen] = useState(false);
 
-  // Remote collections (fallback to local data if API is unreachable so UI never breaks).
-  const [products, setProducts] = useState(fallbackProducts);
+  // Remote collections. Start empty + loading so the UI renders a skeleton on
+  // first paint instead of flashing dummy data; local data is used only as a
+  // fallback if the API is unreachable (set inside the fetch effect on failure).
+  const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
   const [blogPosts, setBlogPosts] = useState(fallbackBlog);
   const [testimonials, setTestimonials] = useState(fallbackTestimonials);
   const [stores, setStores] = useState(fallbackStores);
@@ -95,9 +98,12 @@ export const AppProvider = ({ children }) => {
       try {
         const res = await api.get('/api/products', { params: { isActive: 'true', limit: 100 } });
         const list = toList(res, normalizeProduct);
-        if (!cancelled && list.length) setProducts(list);
+        if (!cancelled) setProducts(list.length ? list : fallbackProducts);
       } catch {
-        // keep fallback
+        // API unreachable — fall back to bundled data so the UI never breaks.
+        if (!cancelled) setProducts(fallbackProducts);
+      } finally {
+        if (!cancelled) setProductsLoading(false);
       }
     })();
     return () => {
@@ -331,6 +337,7 @@ export const AppProvider = ({ children }) => {
       closePurchaseModal,
       selectedProduct,
       products,
+      productsLoading,
       blogPosts,
       testimonials,
       stores,
@@ -361,6 +368,7 @@ export const AppProvider = ({ children }) => {
       closePurchaseModal,
       selectedProduct,
       products,
+      productsLoading,
       blogPosts,
       testimonials,
       stores,

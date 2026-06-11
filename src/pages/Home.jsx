@@ -3,6 +3,7 @@ import './Home.css';
 import BrandGallery from '../components/BrandGallery';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import ProductCard from '../components/ProductCard';
+import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import { useAppContext } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -30,7 +31,10 @@ const FALLBACK_COLLECTIONS = [
 ];
 
 const Home = () => {
-  const { t, language, blogPosts, products, banners } = useAppContext();
+  const { t, language, blogPosts, products, productsLoading, banners } = useAppContext();
+
+  // Placeholder slots so each collection row reserves its layout while loading.
+  const skeletonSlots = Array.from({ length: 4 });
 
   const cmsBanners = banners.filter((b) => b.section === 'homepage' || b.section === 'promo');
   const collections = cmsBanners.length > 0
@@ -78,18 +82,24 @@ const Home = () => {
 
               <div className="hc-products-row">
                 <div className="hc-products-scroll">
-                  {collectionProducts.map((product, i) => (
-                    <motion.div
-                      className="hc-product-item"
-                      key={product.id}
-                      initial={{ opacity: 0, y: 16 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: i * 0.06 }}
-                    >
-                      <ProductCard product={product} />
-                    </motion.div>
-                  ))}
+                  {productsLoading
+                    ? skeletonSlots.map((_, i) => (
+                        <div className="hc-product-item" key={`skeleton-${i}`}>
+                          <ProductCardSkeleton />
+                        </div>
+                      ))
+                    : collectionProducts.map((product, i) => (
+                        <motion.div
+                          className="hc-product-item"
+                          key={product.id}
+                          initial={{ opacity: 0, y: 16 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.4, delay: i * 0.06 }}
+                        >
+                          <ProductCard product={product} />
+                        </motion.div>
+                      ))}
                 </div>
                 <Link to={collection.link} className="hc-view-all">
                   {t('view_all')}

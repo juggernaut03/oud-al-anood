@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import ProductCard from '../components/ProductCard';
+import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import BoutiqueToggle from '../components/BoutiqueToggle';
 import WholesaleConcierge from '../components/WholesaleConcierge';
 import { useAppContext } from '../context/AppContext';
@@ -79,9 +80,10 @@ const Shop = () => {
   const [activeSubcategory, setActiveSubcategory] = useState('all');
   const [activeGender, setActiveGender] = useState('all');
 
-  // API-driven products
+  // API-driven products. Start in the loading state so the first paint is a
+  // skeleton grid rather than an empty/jumping layout before the fetch runs.
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (dbCategories.length === 0) return;
@@ -216,7 +218,11 @@ const Shop = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
               >
-                {loading ? null : products.length > 0 ? (
+                {loading ? (
+                  Array.from({ length: 8 }).map((_, i) => (
+                    <ProductCardSkeleton key={`skeleton-${i}`} />
+                  ))
+                ) : products.length > 0 ? (
                   products.map((product, i) => (
                     <motion.div
                       key={product.id}
