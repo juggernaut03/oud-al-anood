@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Footer.css';
 import { Camera, MessageCircle, Send, MapPin, Phone, Mail } from 'lucide-react';
 
-const APP_VERSION = '1.0.1';
+const APP_VERSION = '1.0.3';
 
 const Footer = () => {
   const { t } = useAppContext();
