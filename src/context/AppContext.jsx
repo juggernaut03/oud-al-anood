@@ -97,7 +97,7 @@ export const AppProvider = ({ children }) => {
     let cancelled = false;
     (async () => {
       try {
-        const res = await api.get('/api/products', { params: { isActive: 'true', limit: 100 } });
+        const res = await api.get('/api/products', { params: { isActive: 'true', limit: 500 } });
         const list = toList(res, normalizeProduct);
         if (!cancelled) setProducts(list.length ? list : fallbackProducts);
       } catch {

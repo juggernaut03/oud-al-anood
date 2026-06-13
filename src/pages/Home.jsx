@@ -78,7 +78,7 @@ const Home = () => {
             </section>
           ))
         : collections.map((collection, idx) => {
-        const collectionProducts = products.filter(collection.filter).slice(0, 6);
+        const collectionProducts = products.filter(collection.filter);
         return (
           <section className="home-collection" key={collection.id}>
             <div className="container">
