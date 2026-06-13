@@ -1,6 +1,6 @@
 import { ShoppingBag, User, MapPin } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAppContext, LOGO_URL } from '../context/AppContext';
+import { useAppContext } from '../context/AppContext';
 import HeaderSearch from './HeaderSearch';
 import './Navbar.css';
 
@@ -9,6 +9,7 @@ const Navbar = () => {
     language,
     setLanguage,
     t,
+    logoUrl,
     setIsCartOpen,
     cart,
     toggleStoreSelector
@@ -23,7 +24,7 @@ const Navbar = () => {
       <div className="container nav-top">
         <div className="nav-logo">
           <Link to="/">
-            <img src={LOGO_URL} alt="OUD AL-ANOOD" className="logo-img" />
+            <img src={logoUrl} alt="OUD AL-ANOOD" className="logo-img" />
           </Link>
         </div>
 

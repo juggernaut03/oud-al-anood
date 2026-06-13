@@ -1,4 +1,4 @@
-import { useAppContext, LOGO_URL } from '../context/AppContext';
+import { useAppContext } from '../context/AppContext';
 import { Link } from 'react-router-dom';
 import './Footer.css';
 import { Camera, MessageCircle, Send, MapPin, Phone, Mail } from 'lucide-react';
@@ -6,13 +6,13 @@ import { Camera, MessageCircle, Send, MapPin, Phone, Mail } from 'lucide-react';
 const APP_VERSION = '1.0.4';
 
 const Footer = () => {
-  const { t } = useAppContext();
+  const { t, logoUrl } = useAppContext();
 
   return (
     <footer className="footer">
       <div className="container footer-content">
         <div className="footer-section brand">
-          <img src={LOGO_URL} alt="OUD AL-ANOOD" className="footer-logo-img" />
+          <img src={logoUrl} alt="OUD AL-ANOOD" className="footer-logo-img" />
           <p className="footer-tagline">{t('footer_since')}</p>
           <div className="social-links">
             <Camera size={20} />

@@ -63,6 +63,7 @@ export const AppProvider = ({ children }) => {
   const [banners, setBanners] = useState([]);
   const [bannersLoading, setBannersLoading] = useState(true);
   const [offers, setOffers] = useState([]);
+  const [settings, setSettings] = useState(null);
 
   // User orders are loaded from API when authenticated.
   const [orders, setOrders] = useState([]);
@@ -78,6 +79,21 @@ export const AppProvider = ({ children }) => {
     document.documentElement.dir = direction;
     document.documentElement.lang = language;
   }, [direction, language]);
+
+  // Logo from settings, falling back to the bundled static asset.
+  const logoUrl = settings?.logo || LOGO_URL;
+
+  // Reflect the admin-configured favicon in the browser tab.
+  useEffect(() => {
+    if (!settings?.favicon) return;
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    link.href = settings.favicon;
+  }, [settings?.favicon]);
 
   // Persist cart + wishlist
   useEffect(() => {
@@ -171,6 +187,23 @@ export const AppProvider = ({ children }) => {
         if (!cancelled && list.length) setOffers(list);
       } catch (err) {
         console.error('[AppContext] Failed to fetch offers:', err?.message || err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Load site settings (logo, favicon, site name) from backend.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await api.get('/api/settings');
+        const data = res?.data?.data || res?.data;
+        if (!cancelled && data) setSettings(data);
+      } catch (err) {
+        console.error('[AppContext] Failed to fetch settings:', err?.message || err);
       }
     })();
     return () => {
@@ -324,6 +357,8 @@ export const AppProvider = ({ children }) => {
       setLanguage,
       direction,
       t,
+      logoUrl,
+      settings,
       cart,
       addToCart,
       removeFromCart,
@@ -358,6 +393,8 @@ export const AppProvider = ({ children }) => {
       setLanguage,
       direction,
       t,
+      logoUrl,
+      settings,
       cart,
       addToCart,
       removeFromCart,
