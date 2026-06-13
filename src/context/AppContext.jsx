@@ -264,7 +264,7 @@ export const AppProvider = ({ children }) => {
   const addToCart = useCallback(
     (product, qty = 1, { silent = false } = {}) => {
       if (!product) return;
-      const finalPrice = isWholesale ? product.price * 0.7 : product.price;
+      const finalPrice = isWholesale ? product.price * 0.8 : product.price;
       const finalProduct = { ...product, price: finalPrice };
       const amount = Math.max(1, Math.floor(qty));
       setCart((prev) => {

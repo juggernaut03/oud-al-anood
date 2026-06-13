@@ -11,7 +11,7 @@ const WholesaleConcierge = () => {
     { icon: Package, titleKey: 'ws_benefit1_title', descKey: 'ws_benefit1_desc' },
     { icon: Globe,   titleKey: 'ws_benefit2_title', descKey: 'ws_benefit2_desc' },
     { icon: Palette, titleKey: 'ws_benefit3_title', descKey: 'ws_benefit3_desc' },
-    { icon: Shield,  titleKey: 'ws_benefit4_title', descKey: 'ws_benefit4_desc' },
+    { icon: Shield,  titleKey: 'ws_benefit4_title' },
   ];
 
   return (
@@ -35,7 +35,7 @@ const WholesaleConcierge = () => {
                 </div>
                 <div>
                   <h4>{t(b.titleKey)}</h4>
-                  <p>{t(b.descKey)}</p>
+                  {b.descKey && <p>{t(b.descKey)}</p>}
                 </div>
               </div>
             ))}
@@ -53,7 +53,7 @@ const WholesaleConcierge = () => {
               <ArrowRight size={15} />
             </a>
             <a
-              href="mailto:wholesale@oudalnood.com?subject=Bulk%20Inquiry"
+              href="mailto:Sales@oudalanood.com?subject=Bulk%20Inquiry"
               className="ws-btn ws-btn-email"
             >
               <Mail size={18} />

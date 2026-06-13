@@ -60,14 +60,14 @@ const translations = {
     // BoutiqueToggle
     toggle_retail: 'Retail',
     toggle_wholesale: 'Wholesale',
-    toggle_wholesale_note: '* Bulk pricing applied (30% discount). Minimum order: 12 units.',
+    toggle_wholesale_note: '* Bulk pricing applied (20% discount). Wholesale orders',
 
     // WholesaleConcierge
     ws_tag: 'Wholesale & Export',
     ws_title: 'Bespoke Concierge',
     ws_desc: 'For bulk orders, international distribution, and corporate gifting — connect directly with our specialized fragrance consultants.',
     ws_benefit1_title: 'Tiered Bulk Pricing',
-    ws_benefit1_desc: '30%+ off on orders of 12+ units',
+    ws_benefit1_desc: '20%+ off on wholesale orders',
     ws_benefit2_title: 'Global Logistics',
     ws_benefit2_desc: 'Express shipping to 40+ countries',
     ws_benefit3_title: 'Custom Branding',
@@ -393,14 +393,14 @@ const translations = {
     // BoutiqueToggle
     toggle_retail: 'تجزئة',
     toggle_wholesale: 'جملة',
-    toggle_wholesale_note: '* سعر الجملة مطبق (خصم ٣٠٪). الحد الأدنى للطلب: ١٢ وحدة.',
+    toggle_wholesale_note: '* سعر الجملة مطبق (خصم ٢٠٪). الحد الأدنى للطلب: ١٢ وحدة.',
 
     // WholesaleConcierge
     ws_tag: 'الجملة والتصدير',
     ws_title: 'خدمة الكونسيرج المخصصة',
     ws_desc: 'للطلبات الكبيرة والتوزيع الدولي والهدايا المؤسسية — تواصل مباشرة مع مستشارينا المتخصصين في العطور.',
     ws_benefit1_title: 'أسعار الجملة المتدرجة',
-    ws_benefit1_desc: 'خصم ٣٠٪+ على طلبات ١٢ وحدة فأكثر',
+    ws_benefit1_desc: 'خصم ٢٠٪+ على طلبات الجملة',
     ws_benefit2_title: 'اللوجستيات العالمية',
     ws_benefit2_desc: 'شحن سريع إلى أكثر من ٤٠ دولة',
     ws_benefit3_title: 'علامة تجارية مخصصة',

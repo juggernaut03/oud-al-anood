@@ -1,7 +1,7 @@
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Sparkles, ArrowRight, Gift, Star, Clock, Crown, Flame } from 'lucide-react';
+import { Sparkles, ArrowRight, Gift, Star, Clock } from 'lucide-react';
 import './Offers.css';
 
 const FALLBACK_OFFERS = [
@@ -37,12 +37,6 @@ const FALLBACK_OFFERS = [
     link: '/shop',
     products: ['Hindi Turabi 3ml', 'Cambodian Old 3ml', 'Velvet Pouch'],
   },
-];
-
-const PERKS = [
-  { icon: Gift,  titleKey: 'offers_perk1_title', descKey: 'offers_perk1_desc' },
-  { icon: Crown, titleKey: 'offers_perk2_title', descKey: 'offers_perk2_desc' },
-  { icon: Flame, titleKey: 'offers_perk3_title', descKey: 'offers_perk3_desc' },
 ];
 
 const fadeUp = {
@@ -183,27 +177,6 @@ const Offers = () => {
         </div>
       </section>
 
-      {/* Perks Strip */}
-      <section className="offers-perks">
-        <div className="container">
-          <div className="perks-grid">
-            {PERKS.map((perk, i) => (
-              <motion.div
-                key={perk.titleKey}
-                className="perk-item"
-                {...fadeUp}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <div className="perk-icon">
-                  <perk.icon size={22} />
-                </div>
-                <h3>{t(perk.titleKey)}</h3>
-                <p>{t(perk.descKey)}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Bespoke Gifting CTA */}
       <section className="offers-cta container">

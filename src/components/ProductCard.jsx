@@ -7,7 +7,7 @@ const ProductCard = ({ product }) => {
   const { wishlist, toggleWishlist, language, t, isWholesale, addToCart } = useAppContext();
   const isWishlisted = wishlist.includes(product.id);
 
-  const displayPrice = isWholesale ? (product.price * 0.7).toFixed(2) : product.price.toFixed(2);
+  const displayPrice = isWholesale ? (product.price * 0.8).toFixed(2) : product.price.toFixed(2);
 
   return (
     <div className={`product-card ${isWholesale ? 'wholesale-mode' : ''}`}>

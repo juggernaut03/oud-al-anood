@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { api } from '../lib/api';
 import './Contact.css';
-import { Phone, Mail, MapPin, Camera, Send, PlayCircle, Globe } from 'lucide-react';
+import { Phone, Mail, MapPin, Camera, Send, PlayCircle, Globe, Clock, Navigation } from 'lucide-react';
 import WholesaleConcierge from '../components/WholesaleConcierge';
 
 const Contact = () => {
-  const { t } = useAppContext();
+  const { t, stores, language } = useAppContext();
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
@@ -102,16 +102,38 @@ const Contact = () => {
         </div>
       </div>
 
-      <div className="map-section">
-        <iframe
-          title={t('contact_map_title')}
-          src="https://maps.google.com/maps?q=Bukit%20Bintang%20Kiosk%20K15,%20Monorail%20Station,%20Kuala%20Lumpur&t=&z=17&ie=UTF8&iwloc=&output=embed"
-          width="100%"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-        ></iframe>
+      <div className="contact-locations container">
+        <div className="contact-locations-header">
+          <span className="contact-locations-label">{t('store_visit')}</span>
+          <h2 className="contact-locations-title">{t('store_drive_title')}</h2>
+          <p className="contact-locations-subtitle">{t('store_drive_subtitle')}</p>
+        </div>
+        <div className="contact-locations-grid">
+          {stores.map((store) => (
+            <div className="contact-location-card" key={store.id}>
+              <div className="contact-location-pin">
+                <MapPin size={22} />
+              </div>
+              <div className="contact-location-body">
+                <h3>{store.name[language]}</h3>
+                <p className="contact-location-address">{store.address[language]}</p>
+                <div className="contact-location-meta">
+                  <span><Clock size={13} />{store.hours?.[language] || t('store_hours')}</span>
+                  {store.phone && <span><Phone size={13} />{store.phone}</span>}
+                </div>
+                <a
+                  href={store.navLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contact-location-directions"
+                >
+                  <Navigation size={15} />
+                  <span>{t('store_directions')}</span>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="contact-wholesale-section container">
