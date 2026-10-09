@@ -67,6 +67,17 @@
   color: var(--primary-gold);
   font-weight: 600;
 }
+.payment-currency-note {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: calc(-1 * var(--spacing-md));
+  margin-bottom: var(--spacing-md);
+}
+.paypal-buttons {
+  margin-top: var(--spacing-md);
+  /* PayPal's iframe sits on a white surface; keep it from stretching too wide */
+  max-width: 750px;
+}
 .place-order-btn {
   width: 100%;
   padding: 1.2rem;

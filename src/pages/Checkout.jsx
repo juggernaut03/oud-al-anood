@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { useAppContext } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../lib/api';
@@ -12,6 +13,9 @@ const Checkout = () => {
   const { user } = useAuth();
   const [isSuccess, setIsSuccess] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
+  const [paymentPending, setPaymentPending] = useState(false);
+  const [paypalConfig, setPaypalConfig] = useState(null); // null = loading
+  const formRef = useRef(null);
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [couponCode, setCouponCode] = useState('');
@@ -19,9 +23,14 @@ const Checkout = () => {
   const [couponError, setCouponError] = useState(null);
   const [couponApplying, setCouponApplying] = useState(false);
   const [formData, setFormData] = useState({
-    name: '', email: '', phone: '', address: '', city: '', zip: '',
-    cardNumber: '', expiry: '', cvv: ''
+    name: '', email: '', phone: '', address: '', city: '', zip: ''
   });
+
+  useEffect(() => {
+    api.get('/api/payments/paypal/config')
+      .then(({ data }) => setPaypalConfig(data.data))
+      .catch(() => setPaypalConfig({ enabled: false }));
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -62,25 +71,51 @@ const Checkout = () => {
     setCouponError(null);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Prices, discounts and the charged amount are all recomputed by the server
+  const buildOrderPayload = () => ({
+    customer: {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      address: [formData.address, formData.city, formData.zip].filter(Boolean).join(', '),
+    },
+    items: cart.map((item) => ({ productId: item.id, quantity: item.quantity, ...(item.variant && { variant: item.variant }) })),
+    isWholesale,
+    notes: [formData.address, formData.city, formData.zip].filter(Boolean).join(', '),
+    ...(couponApplied ? { couponCode: couponApplied.code } : {})
+  });
+
+  const handlePayPalClick = (_data, actions) => {
     setError(null);
+    if (!formRef.current?.reportValidity()) {
+      setError(t('checkout_fill_details'));
+      return actions.reject();
+    }
+    return actions.resolve();
+  };
+
+  const handleCreatePayPalOrder = async () => {
+    try {
+      const { data } = await api.post('/api/payments/paypal/create-order', buildOrderPayload());
+      return data.data.paypalOrderId;
+    } catch (err) {
+      setError(err?.response?.data?.message || t('checkout_payment_failed'));
+      throw err;
+    }
+  };
+
+  const handlePayPalApprove = async (data, actions) => {
     setSubmitting(true);
     try {
-      const payload = {
-        customer: { name: formData.name, email: formData.email, phone: formData.phone },
-        items: cart.map((item) => ({ productId: item.id, quantity: item.quantity })),
-        isWholesale,
-        notes: [formData.address, formData.city, formData.zip].filter(Boolean).join(', '),
-        channel: 'website',
-        ...(couponApplied ? { couponCode: couponApplied.code, discount: couponApplied.discount } : {})
-      };
-      const { data } = await api.post('/api/orders', payload);
-      setOrderNumber(data?.data?.orderNumber || data?.data?._id || '');
+      const { data: res } = await api.post('/api/payments/paypal/capture', { paypalOrderId: data.orderID });
+      setOrderNumber(res.data.orderId || '');
+      setPaymentPending(res.data.payment?.status === 'pending');
       setIsSuccess(true);
       clearCart();
     } catch (err) {
-      setError(err?.response?.data?.message || err?.message || 'Order failed');
+      // Declined card / funding source: let the buyer choose another one in the PayPal window
+      if (err?.response?.data?.code === 'INSTRUMENT_DECLINED') return actions.restart();
+      setError(err?.response?.data?.message || t('checkout_payment_failed'));
     } finally {
       setSubmitting(false);
     }
@@ -96,7 +131,7 @@ const Checkout = () => {
         >
           <CheckCircle size={80} className="success-icon" />
           <h1>{t('checkout_success_title')}</h1>
-          <p>{t('checkout_success_msg')}</p>
+          <p>{paymentPending ? t('checkout_payment_pending') : t('checkout_success_msg')}</p>
           <p className="order-number">{t('checkout_order_id')}{orderNumber || '—'}</p>
           <Link to="/" className="home-btn">{t('checkout_return_home')}</Link>
         </motion.div>
@@ -126,7 +161,7 @@ const Checkout = () => {
       <div className="checkout-grid">
         <div className="checkout-form-section">
           <h2>{t('checkout_shipping')}</h2>
-          <form onSubmit={handleSubmit}>
+          <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
             <div className="form-group">
               <label>{t('checkout_full_name')}</label>
               <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder={t('checkout_name_placeholder')} />
@@ -154,46 +189,63 @@ const Checkout = () => {
               </div>
             </div>
 
-            <h2 className="payment-title">{t('checkout_payment')}</h2>
-            <div className="payment-options">
-              <div className="payment-card selected">
-                <CreditCard size={20} />
-                <span>{t('checkout_card')}</span>
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label>{t('checkout_card_number')}</label>
-              <input type="text" name="cardNumber" value={formData.cardNumber} onChange={handleInputChange} required placeholder="0000 0000 0000 0000" />
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label>{t('checkout_expiry')}</label>
-                <input type="text" name="expiry" value={formData.expiry} onChange={handleInputChange} required placeholder={t('checkout_expiry_placeholder')} />
-              </div>
-              <div className="form-group">
-                <label>{t('checkout_cvv')}</label>
-                <input type="text" name="cvv" value={formData.cvv} onChange={handleInputChange} required placeholder="123" />
-              </div>
-            </div>
-
-            {error && <p style={{ color: '#b42525', marginTop: 12 }}>{error}</p>}
-            <button type="submit" className="place-order-btn" disabled={submitting}>
-              {submitting ? t('checkout_placing') : `${t('checkout_place_order')} • ${t('price_rm')} ${total.toFixed(2)}`}
-            </button>
           </form>
+
+          <h2 className="payment-title">{t('checkout_payment')}</h2>
+          <div className="payment-options">
+            <div className="payment-card selected">
+              <CreditCard size={20} />
+              <span>{t('checkout_paypal_note')}</span>
+            </div>
+          </div>
+
+          {paypalConfig?.enabled && paypalConfig.currency !== 'MYR' && (
+            <p className="payment-currency-note">
+              {t('checkout_charged_in')} {paypalConfig.currency}
+              {paypalConfig.exchangeRate ? ` (≈ ${(total * paypalConfig.exchangeRate).toFixed(2)} ${paypalConfig.currency})` : ''}
+            </p>
+          )}
+
+          {error && <p style={{ color: '#b42525', marginTop: 12 }}>{error}</p>}
+
+          <div className="paypal-buttons">
+            {paypalConfig === null && <p>{t('checkout_payment_loading')}</p>}
+            {paypalConfig && !paypalConfig.enabled && <p style={{ color: '#b42525' }}>{t('checkout_payment_unavailable')}</p>}
+            {paypalConfig?.enabled && (
+              <PayPalScriptProvider
+                options={{
+                  clientId: paypalConfig.clientId,
+                  currency: paypalConfig.currency,
+                  intent: 'capture',
+                  locale: language === 'ar' ? 'ar_EG' : 'en_US',
+                }}
+              >
+                <PayPalButtons
+                  style={{ layout: 'vertical', shape: 'rect', label: 'pay' }}
+                  disabled={submitting}
+                  forceReRender={[total, isWholesale, couponApplied?.code, cart.length]}
+                  onClick={handlePayPalClick}
+                  createOrder={handleCreatePayPalOrder}
+                  onApprove={handlePayPalApprove}
+                  onCancel={() => setError(t('checkout_payment_cancelled'))}
+                  onError={() => setError((prev) => prev || t('checkout_payment_failed'))}
+                />
+              </PayPalScriptProvider>
+            )}
+            {submitting && <p>{t('checkout_placing')}</p>}
+          </div>
         </div>
 
         <div className="order-summary-section">
           <h3>{t('checkout_order_summary')}</h3>
           <div className="summary-items">
             {cart.map(item => (
-              <div key={item.id} className="summary-item">
+              <div key={item.cartKey ?? item.id} className="summary-item">
                 <div className="item-image">
                   <img src={item.image} alt={item.name[language]} />
                 </div>
                 <div className="item-info">
-                  <h4>{item.name[language]}</h4>
+                  <h4>{item.name[language]}{item.variant ? ` · ${item.variant}` : ''}</h4>
                   <p>{t('checkout_qty')}{item.quantity}</p>
                 </div>
                 <span className="item-price">{t('price_rm')} {(item.price * item.quantity).toFixed(2)}</span>

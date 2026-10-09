@@ -47,13 +47,13 @@ const CartDrawer = () => {
                 </div>
               ) : (
                 cart.map(item => (
-                  <div key={item.id} className="cart-item">
+                  <div key={item.cartKey ?? item.id} className="cart-item">
                     <img src={item.image} alt={item.name[language]} />
                     <div className="item-details">
                       <h3>{item.name[language]}</h3>
                       <p>{t('price_rm')} {item.price} x {item.quantity}</p>
                     </div>
-                    <button className="remove-btn" onClick={() => removeFromCart(item.id)}>
+                    <button className="remove-btn" onClick={() => removeFromCart(item.cartKey ?? item.id)}>
                       <Trash2 size={18} />
                     </button>
                   </div>

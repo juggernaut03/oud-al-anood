@@ -298,13 +298,15 @@ export const AppProvider = ({ children }) => {
     (product, qty = 1, { silent = false } = {}) => {
       if (!product) return;
       const finalPrice = isWholesale ? product.price * 0.8 : product.price;
-      const finalProduct = { ...product, price: finalPrice };
+      // Each size variant is its own cart line
+      const cartKey = product.variant ? `${product.id}::${product.variant}` : product.id;
+      const finalProduct = { ...product, price: finalPrice, cartKey };
       const amount = Math.max(1, Math.floor(qty));
       setCart((prev) => {
-        const existing = prev.find((item) => item.id === product.id);
+        const existing = prev.find((item) => (item.cartKey ?? item.id) === cartKey);
         if (existing) {
           return prev.map((item) =>
-            item.id === product.id ? { ...item, quantity: item.quantity + amount } : item
+            (item.cartKey ?? item.id) === cartKey ? { ...item, quantity: item.quantity + amount } : item
           );
         }
         return [...prev, { ...finalProduct, quantity: amount }];
@@ -315,7 +317,7 @@ export const AppProvider = ({ children }) => {
   );
 
   const removeFromCart = useCallback(
-    (id) => setCart((prev) => prev.filter((item) => item.id !== id)),
+    (key) => setCart((prev) => prev.filter((item) => (item.cartKey ?? item.id) !== key)),
     []
   );
 

@@ -255,7 +255,7 @@ const ProductDetail = () => {
               className="add-cart-btn-large"
               onClick={() => {
                 const item = hasVariants && selectedVariant !== null
-                  ? { ...product, price: product.sizeVariants[selectedVariant].price }
+                  ? { ...product, price: product.sizeVariants[selectedVariant].price, variant: product.sizeVariants[selectedVariant].label }
                   : product;
                 addToCart(item, quantity, { silent: true });
                 navigate('/checkout');
